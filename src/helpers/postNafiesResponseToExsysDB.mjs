@@ -35,14 +35,14 @@ const postNafiesResponseToExsysDB = async ({
     isPostRequest: true,
   });
 
-  console.log("exsys post response", response);
-
   const { status } = response || {};
 
   if (status === "success") {
     createCmdMessage({
       type: "success",
-      message: `just updated exsys server with nafies data by apiKey=${exsysApiCodeId}`,
+      message: `just updated exsys server with nafies data by ${chalk.magenta(
+        apiUrl
+      )}`,
     });
   }
 
