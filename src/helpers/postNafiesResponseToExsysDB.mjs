@@ -4,6 +4,7 @@
  *
  */
 import axios from "axios";
+import chalk from "chalk";
 import createExsysApiQuery from "./createExsysApiQuery.mjs";
 import printRequestNetworkError from "./printRequestNetworkError.mjs";
 import createCmdMessage from "./createCmdMessage.mjs";
@@ -12,19 +13,15 @@ const postNafiesResponseToExsysDB = async ({
   exsysApiCodeId,
   nafiesResponse,
 }) => {
-  const apiUrl = createExsysApiQuery("UPDATE_EXSYS_WITH_NAFIES_RESULTS");
+  let apiUrl = createExsysApiQuery("UPDATE_EXSYS_WITH_NAFIES_RESULTS");
+  apiUrl = `${apiUrl}?api_pk=${exsysApiCodeId}`;
 
   let response = {};
   let fetchError;
   let isInternetDisconnected = false;
 
-  const bodyData = {
-    api_pk: exsysApiCodeId,
-    body: nafiesResponse,
-  };
-
   try {
-    const { data } = await axios.post(apiUrl, bodyData);
+    const { data } = await axios.post(apiUrl, nafiesResponse);
     response = data;
   } catch (apiFetchError) {
     fetchError = apiFetchError;
@@ -46,6 +43,13 @@ const postNafiesResponseToExsysDB = async ({
     createCmdMessage({
       type: "success",
       message: `just updated exsys server with nafies data by apiKey=${exsysApiCodeId}`,
+    });
+  }
+
+  if (status === "failure") {
+    createCmdMessage({
+      type: "error",
+      message: `failed to update ${chalk.magenta(apiUrl)}`,
     });
   }
 

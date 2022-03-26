@@ -8,9 +8,7 @@ import https from "https";
 import { CERTIFICATE_PATH } from "../constants.mjs";
 
 const createNafiesRequestOptions = async () => {
-  const certificate = await readFile(CERTIFICATE_PATH, {
-    encoding: "utf8",
-  });
+  const certificate = await readFile(CERTIFICATE_PATH);
 
   const requestOptions = {
     headers: {
