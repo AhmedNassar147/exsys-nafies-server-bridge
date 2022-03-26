@@ -8,16 +8,16 @@ import https from "https";
 import { CERTIFICATE_PATH } from "../constants.mjs";
 
 const createNafiesRequestOptions = async () => {
-  // const certificate = await readFile(CERTIFICATE_PATH, {
-  //   encoding: "utf8",
-  // });
+  const certificate = await readFile(CERTIFICATE_PATH, {
+    encoding: "utf8",
+  });
 
   const requestOptions = {
     headers: {
       "Content-type": "application/fhir+json",
     },
     httpsAgent: new https.Agent({
-      pfx: "",
+      pfx: certificate,
       passphrase: "qLFCpUS8CF_c",
     }),
   };
