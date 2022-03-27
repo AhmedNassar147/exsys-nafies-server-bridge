@@ -19,10 +19,10 @@ const asyncExec = promisify(exec);
     message: "check cli bins...",
   });
 
-  const { stdout, stderr } = await asyncExec("npm config get prefix");
-  const npmGlobalFilePath = (stdout || "").toString();
+  const { stdout } = await asyncExec("npm config get prefix");
+  const npmGlobalFilePath = (stdout || "").toString().replace(/\n/, "");
 
-  if (stderr || !npmGlobalFilePath) {
+  if (!npmGlobalFilePath) {
     createCmdMessage({
       type: "error",
       message: `couldn't get the global \`npm\` path.`,
