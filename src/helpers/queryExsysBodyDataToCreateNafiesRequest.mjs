@@ -3,8 +3,10 @@
  * Helper: `queryExsysBodyDataToCreateNafiesRequest`.
  *
  */
+import chalk from "chalk";
 import axios from "axios";
 import createExsysApiQuery from "./createExsysApiQuery.mjs";
+import createCmdMessage from "./createCmdMessage.mjs";
 import printRequestNetworkError from "./printRequestNetworkError.mjs";
 
 const queryExsysBodyDataToCreateNafiesRequest = async () => {
