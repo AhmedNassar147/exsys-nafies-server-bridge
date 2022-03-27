@@ -4,7 +4,7 @@
  *
  */
 import { spawn } from "child_process";
-import isWindowsPlatform from "./isWindowsPlatform.mjs";
+import { isWindowsPlatform } from "@exsys-server/helpers";
 import { RESTART_MS } from "../constants.mjs";
 
 const restartProcess = () => {

@@ -1,0 +1,26 @@
+{
+  "name": "@exsys-server/bridge",
+  "version": "1.0.0",
+  "private": true,
+  "author": "ahmed nassar",
+  "license": "ISC",
+  "sideEffects": false,
+  "main": "src/index.js",
+  "type": "module",
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "start": "nodemon -q src/index.js"
+  },
+  "dependencies": {
+    "axios": "^0.26.1",
+    "chalk": "^5.0.1",
+    "https": "^1.0.0",
+    "is-online": "^9.0.1",
+    "@exsys-server/helpers": "1.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}

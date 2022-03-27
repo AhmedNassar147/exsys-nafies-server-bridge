@@ -5,9 +5,9 @@
  */
 
 import { writeFile, readFile, mkdir } from "fs/promises";
+import { checkPathExists } from "@exsys-server/helpers";
 import { RESULTS_FOLDER_PATH } from "../constants.mjs";
 import getCurrentDate from "./getCurrentDate.mjs";
-import checkPathExists from "./checkPathExists.mjs";
 
 const updateResultsFolder = async ({
   exsysApiCodeId,

@@ -5,14 +5,13 @@
  */
 import chalk from "chalk";
 import isOnline from "is-online";
+import { checkPathExists, createCmdMessage } from "@exsys-server/helpers";
 import {
   CERTIFICATE_PATH,
   RESTART_CALLING_EXSYS_QUERY_MS,
   RESTART_MS,
 } from "./constants.mjs";
 import restartProcessAndPrintMessage from "./helpers/restartProcessAndPrintMessage.mjs";
-import createCmdMessage from "./helpers/createCmdMessage.mjs";
-import checkPathExists from "./helpers/checkPathExists.mjs";
 import createNafiesRequestOptions from "./helpers/createNafiesRequestOptions.mjs";
 import queryExsysBodyDataToCreateNafiesRequest from "./helpers/queryExsysBodyDataToCreateNafiesRequest.mjs";
 import createNafiesRequestAndUpdateExsysServer from "./helpers/createNafiesRequestAndUpdateExsysServer.mjs";

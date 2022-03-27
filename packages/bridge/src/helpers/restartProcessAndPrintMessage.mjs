@@ -4,7 +4,7 @@
  *
  */
 import chalk from "chalk";
-import createCmdMessage from "./createCmdMessage.mjs";
+import { createCmdMessage } from "@exsys-server/helpers";
 import restartProcess from "./restartProcess.mjs";
 import { RESTART_MS } from "../constants.mjs";
 

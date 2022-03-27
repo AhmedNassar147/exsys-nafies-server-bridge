@@ -1,23 +1,29 @@
 {
-  "name": "exsys-nafies-bridge",
+  "name": "exsys-nafies-server-bridge",
   "version": "1.0.0",
   "private": true,
   "author": "ahmed nassar",
   "license": "ISC",
   "sideEffects": false,
-  "main": "src/index.js",
-  "type": "module",
-  "files": [
-    "src"
+  "workspaces": [
+    "packages/*"
   ],
   "scripts": {
-    "start": "nodemon -q src/index.js"
+    "clean": "rm -rf ./node_modules",
+    "clean-locks": "rm -rf ./yarn.lock",
+    "bootstrap": "lerna bootstrap",
+    "reset": "yarn clean && yarn clean-locks && yarn bootstrap",
+    "prepare": "yarn workspace @exsys-server/start-exsys-nafies-bridge start",
+    "start": "yarn workspace @exsys-server/bridge"
   },
   "dependencies": {
     "axios": "^0.26.1",
     "chalk": "^5.0.1",
     "https": "^1.0.0",
-    "is-online": "^9.0.1"
+    "is-online": "^9.0.1",
+    "@exsys-server/bridge": "1.0.0",
+    "@exsys-server/helpers": "1.0.0",
+    "@exsys-server/start-exsys-nafies-bridge": "1.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

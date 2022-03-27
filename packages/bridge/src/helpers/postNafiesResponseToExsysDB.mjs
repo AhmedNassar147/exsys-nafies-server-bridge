@@ -5,9 +5,9 @@
  */
 import axios from "axios";
 import chalk from "chalk";
+import { createCmdMessage } from "@exsys-server/helpers";
 import createExsysApiQuery from "./createExsysApiQuery.mjs";
 import printRequestNetworkError from "./printRequestNetworkError.mjs";
-import createCmdMessage from "./createCmdMessage.mjs";
 
 const postNafiesResponseToExsysDB = async ({
   exsysApiCodeId,

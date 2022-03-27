@@ -4,7 +4,7 @@
  *
  */
 import chalk from "chalk";
-import createCmdMessage from "./createCmdMessage.mjs";
+import { createCmdMessage } from "@exsys-server/helpers";
 
 const printRequestNetworkError = ({
   fetchError,
