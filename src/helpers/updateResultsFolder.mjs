@@ -23,7 +23,7 @@ const updateResultsFolder = async ({
 
   console.log("RESULTS_FOLDER_PATH", RESULTS_FOLDER_PATH);
 
-  const currentResultFilePath = `${RESULTS_FOLDER_PATH}/${datString}`;
+  const currentResultFilePath = `${RESULTS_FOLDER_PATH}/${datString}.json`;
   let previousResultFileData = {};
 
   if (await checkPathExists(currentResultFilePath)) {
