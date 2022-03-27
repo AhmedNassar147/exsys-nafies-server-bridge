@@ -21,20 +21,21 @@ const updateResultsFolder = async ({
     await mkdir(RESULTS_FOLDER_PATH, { recursive: true });
   }
 
-  console.log("RESULTS_FOLDER_PATH", RESULTS_FOLDER_PATH);
-
   const currentResultFilePath = `${RESULTS_FOLDER_PATH}/${datString}.json`;
-  let previousResultFileData = {};
+  let previousResultFileData = [];
 
   if (await checkPathExists(currentResultFilePath)) {
-    const currentFileResultsJson = readFile(currentResultFilePath, "utf-8");
+    const currentFileResultsJson = await readFile(
+      currentResultFilePath,
+      "utf-8"
+    );
     previousResultFileData = currentFileResultsJson
       ? JSON.parse(currentFileResultsJson)
       : previousResultFileData;
   }
 
-  const nextFileResults = {
-    [`${exsysApiCodeId}-${time}`]: {
+  const nextFileResults = [
+    {
       time,
       api_pk: exsysApiCodeId,
       exsysDataSentToNafiesServer: nafiesPostData,
@@ -42,7 +43,7 @@ const updateResultsFolder = async ({
       successededToPostNafiesDataToExsysServer,
     },
     ...previousResultFileData,
-  };
+  ];
 
   await writeFile(
     currentResultFilePath,

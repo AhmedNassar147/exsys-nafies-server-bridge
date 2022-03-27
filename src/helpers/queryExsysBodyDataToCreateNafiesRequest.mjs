@@ -13,6 +13,11 @@ const queryExsysBodyDataToCreateNafiesRequest = async () => {
   let fetchError;
   let isInternetDisconnected = false;
 
+  createCmdMessage({
+    type: "info",
+    message: `fetching  ${chalk.green(apiUrl)}`,
+  });
+
   try {
     const { data } = await axios.get(apiUrl);
     response = data;
@@ -29,15 +34,6 @@ const queryExsysBodyDataToCreateNafiesRequest = async () => {
 
   const { api_pk: exsysApiCodeId, data: nafiesPostData } = response || {};
   const canCallNafiesPostApi = !!exsysApiCodeId && !!nafiesPostData;
-
-  // if (!canCallNafiesPostApi) {
-  //   createCmdMessage({
-  //     type: "info",
-  //     message: `won't call nafies post \`API\` because I couldn't find ${chalk.green(
-  //       `\`api_pk\` or \`data\``
-  //     )} from ${chalk.green(apiUrl)} `,
-  //   });
-  // }
 
   return {
     exsysApiCodeId,
