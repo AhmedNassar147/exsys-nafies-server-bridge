@@ -12,6 +12,7 @@ import createCmdMessage from "./createCmdMessage.mjs";
 const postNafiesResponseToExsysDB = async ({
   exsysApiCodeId,
   nafiesResponse,
+  onDone,
 }) => {
   const apiUrl = createExsysApiQuery("UPDATE_EXSYS_WITH_NAFIES_RESULTS", {
     api_pk: exsysApiCodeId,
@@ -36,23 +37,31 @@ const postNafiesResponseToExsysDB = async ({
     isPostRequest: true,
   });
 
+  const coloredApiUrl = chalk.magenta(apiUrl);
+
   const { status } = response || {};
 
-  if (status === "success") {
+  if (!status) {
     createCmdMessage({
-      type: "success",
-      message: `just updated exsys server with nafies data by ${chalk.magenta(
-        apiUrl
-      )}`,
+      type: "info",
+      message:
+        `the ${coloredApiUrl} didn't respond with \`status\`` +
+        "please fix that",
     });
   }
 
-  if (status === "failure") {
+  if (status) {
+    const isSuccess = status === "success";
+
     createCmdMessage({
-      type: "error",
-      message: `failed to update ${chalk.magenta(apiUrl)}`,
+      type: isSuccess ? "success" : "error",
+      message: isSuccess
+        ? `just updated exsys server with nafies data by ${coloredApiUrl}`
+        : `failed to update ${coloredApiUrl} with nafies data`,
     });
   }
+
+  await onDone(isSuccess, isInternetDisconnected);
 
   return {
     isInternetDisconnectedWhenPostingNafiesDataToExsys: isInternetDisconnected,

@@ -14,11 +14,9 @@ const printRequestNetworkError = ({
 }) => {
   if (fetchError) {
     const { code, response } = fetchError;
-    const { status } = response || {};
+    const { status, data } = response || {};
 
     isInternetDisconnected = code === "ENETUNREACH" && isInternetDisconnected;
-
-    const { status, data } = response || {};
 
     if (data && isPostRequest) {
       return isInternetDisconnected;

@@ -10,11 +10,14 @@ const CERTIFICATE_NAME = "Certificate_pkcs12.p12";
 const CERTIFICATE_PATH = `../${CERTIFICATE_NAME}`;
 
 const RESTART_MS = 60000;
+const RESTART_CALLING_EXSYS_QUERY_MS = 2000;
 
 const NAFIES_URLS = {
   PRODUCTION: "https://HSB.nphies.sa/$process-message",
   DEVELOPMENT: "http://176.105.150.83:80/$process-message",
 };
+
+const RESULTS_FOLDER_PATH = `${process.cwd()}/results`;
 
 export {
   EXSYS_BASE_URL,
@@ -22,4 +25,6 @@ export {
   NAFIES_URLS,
   CERTIFICATE_PATH,
   RESTART_MS,
+  RESTART_CALLING_EXSYS_QUERY_MS,
+  RESULTS_FOLDER_PATH,
 };

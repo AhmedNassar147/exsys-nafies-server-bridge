@@ -5,14 +5,17 @@
  */
 import chalk from "chalk";
 import isOnline from "is-online";
-import { CERTIFICATE_PATH } from "./constants.mjs";
+import {
+  CERTIFICATE_PATH,
+  RESTART_CALLING_EXSYS_QUERY_MS,
+  RESTART_MS,
+} from "./constants.mjs";
 import restartProcessAndPrintMessage from "./helpers/restartProcessAndPrintMessage.mjs";
 import createCmdMessage from "./helpers/createCmdMessage.mjs";
 import checkPathExists from "./helpers/checkPathExists.mjs";
 import createNafiesRequestOptions from "./helpers/createNafiesRequestOptions.mjs";
 import queryExsysBodyDataToCreateNafiesRequest from "./helpers/queryExsysBodyDataToCreateNafiesRequest.mjs";
-import createNafiesRequest from "./helpers/createNafiesRequest.mjs";
-import postNafiesResponseToExsysDB from "./helpers/postNafiesResponseToExsysDB.mjs";
+import createNafiesRequestAndUpdateExsysServer from "./helpers/createNafiesRequestAndUpdateExsysServer.mjs";
 
 (async () => {
   let restartTimeOutRef;
@@ -22,19 +25,22 @@ import postNafiesResponseToExsysDB from "./helpers/postNafiesResponseToExsysDB.m
   if (!isCertificateFileExsist) {
     createCmdMessage({
       type: "error",
-      message: `the "certificate" doesn't exist in this path ${chalk.white(
+      message: `the ${chalk.magenta(
+        "certificate"
+      )} doesn't exist in this path ${chalk.white(
         CERTIFICATE_PATH
-      )}`,
+      )} ${chalk.magenta(`rechecking in ${RESTART_MS / 60000} minutes.`)}`,
     });
 
-    process.exit(1);
+    restartTimeOutRef = restartProcessAndPrintMessage(restartTimeOutRef, true);
+    return;
   }
+
+  const isNetworkConnected = await isOnline();
 
   const updateTimeoutRefAndRestart = () => {
     restartTimeOutRef = restartProcessAndPrintMessage(restartTimeOutRef);
   };
-
-  const isNetworkConnected = await isOnline();
 
   if (!isNetworkConnected) {
     updateTimeoutRefAndRestart();
@@ -48,49 +54,33 @@ import postNafiesResponseToExsysDB from "./helpers/postNafiesResponseToExsysDB.m
 
   const nafiesSiteRequestOptions = await createNafiesRequestOptions();
 
-  setInterval(async () => {
+  const start = async () => {
     const {
       exsysApiCodeId,
       nafiesPostData,
       isInternetDisconnected,
       canCallNafiesPostApi,
     } = await queryExsysBodyDataToCreateNafiesRequest();
-
     if (isInternetDisconnected || !canCallNafiesPostApi) {
       if (isInternetDisconnected) {
         updateTimeoutRefAndRestart();
       }
 
-      return;
-    }
-
-    const {
-      isInternetDisconnectedWhenNafiesServerCalled,
-      latestExsysApiCodeId,
-      nafiesResponse,
-    } = await createNafiesRequest({
-      nafiesPostData,
-      exsysApiCodeId,
-      nafiesSiteRequestOptions,
-    });
-
-    if (isInternetDisconnectedWhenNafiesServerCalled || !nafiesResponse) {
-      if (isInternetDisconnectedWhenNafiesServerCalled) {
-        updateTimeoutRefAndRestart();
+      if (!canCallNafiesPostApi && !isInternetDisconnected) {
+        setTimeout(async () => await start(), RESTART_CALLING_EXSYS_QUERY_MS);
       }
 
       return;
     }
 
-    const {
-      isInternetDisconnectedWhenPostingNafiesDataToExsys,
-    } = await postNafiesResponseToExsysDB({
-      exsysApiCodeId: latestExsysApiCodeId,
-      nafiesResponse,
+    await createNafiesRequestAndUpdateExsysServer({
+      nafiesPostData,
+      exsysApiCodeId,
+      nafiesSiteRequestOptions,
+      updateTimeoutRefAndRestart,
+      onDone: start,
     });
+  };
 
-    if (isInternetDisconnectedWhenPostingNafiesDataToExsys) {
-      updateTimeoutRefAndRestart();
-    }
-  }, 4000);
+  await start();
 })();
