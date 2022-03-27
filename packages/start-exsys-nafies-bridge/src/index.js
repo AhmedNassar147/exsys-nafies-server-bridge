@@ -41,7 +41,7 @@ const asyncExec = promisify(exec);
     npmGlobalFilePath,
     isWindowsOs ? "" : "lib",
     "node_modules",
-    PACKAGE_NAME,
+    `@exsys-server/${PACKAGE_NAME}`,
   ].filter(Boolean);
 
   await checkIfPackageAlreadyLinkedElseLink({

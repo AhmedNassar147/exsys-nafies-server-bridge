@@ -12,11 +12,11 @@ const checkIfPackageAlreadyLinkedElseLink = async ({
   globalNpmModulesFolder,
 }) => {
   const doesGlobalBinHasCurrentBins = !!(await checkPathExists(
-    globalNpmBinsFolderPath
+    globalNpmBinsFolderPath.replace(/\n/, "")
   ));
 
   const doesGlobalNpmModulesHaveCurrentPackage = !!(await checkPathExists(
-    globalNpmModulesFolder
+    globalNpmModulesFolder.replace(/\n/, "")
   ));
 
   if (doesGlobalNpmModulesHaveCurrentPackage && doesGlobalBinHasCurrentBins) {
