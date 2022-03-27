@@ -21,6 +21,8 @@ const updateResultsFolder = async ({
     await mkdir(RESULTS_FOLDER_PATH, { recursive: true });
   }
 
+  console.log("RESULTS_FOLDER_PATH", RESULTS_FOLDER_PATH);
+
   const currentResultFilePath = `${RESULTS_FOLDER_PATH}/${datString}`;
   let previousResultFileData = {};
 

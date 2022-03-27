@@ -50,9 +50,9 @@ const postNafiesResponseToExsysDB = async ({
     });
   }
 
-  if (status) {
-    const isSuccess = status === "success";
+  const isSuccess = status === "success";
 
+  if (status) {
     createCmdMessage({
       type: isSuccess ? "success" : "error",
       message: isSuccess
