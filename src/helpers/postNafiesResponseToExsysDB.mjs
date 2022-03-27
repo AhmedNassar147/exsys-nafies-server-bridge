@@ -13,8 +13,9 @@ const postNafiesResponseToExsysDB = async ({
   exsysApiCodeId,
   nafiesResponse,
 }) => {
-  let apiUrl = createExsysApiQuery("UPDATE_EXSYS_WITH_NAFIES_RESULTS");
-  apiUrl = `${apiUrl}?api_pk=${exsysApiCodeId}`;
+  const apiUrl = createExsysApiQuery("UPDATE_EXSYS_WITH_NAFIES_RESULTS", {
+    api_pk: exsysApiCodeId,
+  });
 
   let response = {};
   let fetchError;
