@@ -4,10 +4,8 @@
  *
  */
 import axios from "axios";
-import chalk from "chalk";
 import createExsysApiQuery from "./createExsysApiQuery.mjs";
 import printRequestNetworkError from "./printRequestNetworkError.mjs";
-import createCmdMessage from "./createCmdMessage.mjs";
 
 const queryExsysBodyDataToCreateNafiesRequest = async () => {
   const apiUrl = createExsysApiQuery("EXSYS_QUERY_NAFIES_REQUEST_BODY_DATA");
@@ -32,14 +30,14 @@ const queryExsysBodyDataToCreateNafiesRequest = async () => {
   const { api_pk: exsysApiCodeId, data: nafiesPostData } = response || {};
   const canCallNafiesPostApi = !!exsysApiCodeId && !!nafiesPostData;
 
-  if (!canCallNafiesPostApi) {
-    createCmdMessage({
-      type: "info",
-      message: `won't call nafies post \`API\` because I couldn't find ${chalk.green(
-        `\`api_pk\` or \`data\``
-      )} from ${chalk.green(apiUrl)} `,
-    });
-  }
+  // if (!canCallNafiesPostApi) {
+  //   createCmdMessage({
+  //     type: "info",
+  //     message: `won't call nafies post \`API\` because I couldn't find ${chalk.green(
+  //       `\`api_pk\` or \`data\``
+  //     )} from ${chalk.green(apiUrl)} `,
+  //   });
+  // }
 
   return {
     exsysApiCodeId,

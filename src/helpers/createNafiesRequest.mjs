@@ -37,8 +37,11 @@ const createNafiesRequest = async ({
     isPostRequest: true,
   });
 
+  const { response: nafiesResponse } = fetchError || {};
+  const { data: nafiesResponseData } = nafiesResponse || {};
+
   return {
-    nafiesResponse: response,
+    nafiesResponse: response || nafiesResponseData,
     isInternetDisconnectedWhenNafiesServerCalled: isInternetDisconnected,
     latestExsysApiCodeId: exsysApiCodeId,
   };

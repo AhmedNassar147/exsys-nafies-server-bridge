@@ -92,5 +92,5 @@ import postNafiesResponseToExsysDB from "./helpers/postNafiesResponseToExsysDB.m
     if (isInternetDisconnectedWhenPostingNafiesDataToExsys) {
       updateTimeoutRefAndRestart();
     }
-  }, 20000);
+  }, 4000);
 })();

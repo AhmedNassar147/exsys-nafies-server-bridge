@@ -16,9 +16,15 @@ const printRequestNetworkError = ({
     const { code, response } = fetchError;
     const { status } = response || {};
 
-    let isNotFoundApi = status === 404;
-
     isInternetDisconnected = code === "ENETUNREACH" && isInternetDisconnected;
+
+    const { status, data } = response || {};
+
+    if (data && isPostRequest) {
+      return isInternetDisconnected;
+    }
+
+    let isNotFoundApi = status === 404;
 
     createCmdMessage({
       type: "error",
