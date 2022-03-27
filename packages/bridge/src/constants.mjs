@@ -7,7 +7,7 @@ const EXSYS_BASE_URL = "http://172.16.2.3:9090/ords";
 const EXSYS_SCHEMA_NAME = "exsys_api";
 
 const CERTIFICATE_NAME = "Certificate_pkcs12.p12";
-const CERTIFICATE_PATH = `../${CERTIFICATE_NAME}`;
+const CERTIFICATE_PATH = `${process.cwd()}/packages/bridge/src/${CERTIFICATE_NAME}`;
 
 const RESTART_MS = 60000;
 const RESTART_CALLING_EXSYS_QUERY_MS = 2000;
