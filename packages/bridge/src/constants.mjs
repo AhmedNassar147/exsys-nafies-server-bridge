@@ -14,7 +14,7 @@ const CERTIFICATE_NAME_VALUES = {
 
 const CERTIFICATE_NAME_OPTIONS = Object.keys(CERTIFICATE_NAME_VALUES);
 
-const BASE_CERTIFICATE_PATH = `${process.cwd()}/packages/bridge/src`;
+const BASE_CERTIFICATE_PATH = `${process.cwd()}/src`;
 
 const RESTART_MS = 60000;
 const RESTART_CALLING_EXSYS_QUERY_MS = 2000;
