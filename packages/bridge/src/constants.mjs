@@ -6,7 +6,7 @@
 const EXSYS_BASE_URL = "http://172.16.2.3:9090/ords";
 const EXSYS_SCHEMA_NAME = "exsys_api";
 
-export const CERTIFICATE_NAME_VALUES = {
+const CERTIFICATE_NAME_VALUES = {
   Certificate_pkcs12: "Certificate_pkcs12.p12",
   // ? add another Certificate like example above
 };
@@ -46,4 +46,5 @@ export {
   RESTART_CALLING_EXSYS_QUERY_MS,
   RESULTS_FOLDER_PATH,
   INQUIRER_QUESTIONS,
+  CERTIFICATE_NAME_VALUES,
 };
