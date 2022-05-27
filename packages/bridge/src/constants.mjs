@@ -8,7 +8,8 @@ const EXSYS_SCHEMA_NAME = "exsys_api";
 
 const CERTIFICATE_NAME_VALUES = {
   // unique name id:  actual certificate name path
-  Certificate_pkcs12: "Certificate_pkcs12.p12",
+  NAPHIES: "Certificate_pkcs12.p12",
+  RASD: "rasd.cer",
   // ? add another Certificate like example above
 };
 
