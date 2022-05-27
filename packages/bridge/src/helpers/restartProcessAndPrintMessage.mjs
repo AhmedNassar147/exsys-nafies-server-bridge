@@ -8,10 +8,10 @@ import { createCmdMessage } from "@exsys-server/helpers";
 import restartProcess from "./restartProcess.mjs";
 import { RESTART_MS } from "../constants.mjs";
 
-const restartProcessAndPrintMessage = (
+const restartProcessAndPrintMessage = (processArgs) => ({
   restartTimeOutRef,
-  hideNetworkMessage
-) => {
+  hideNetworkMessage,
+}) => {
   if (!hideNetworkMessage) {
     createCmdMessage({
       type: "error",
@@ -25,7 +25,7 @@ const restartProcessAndPrintMessage = (
     restartTimeOutRef.unref();
   }
 
-  return restartProcess();
+  return restartProcess(processArgs);
 };
 
 export default restartProcessAndPrintMessage;

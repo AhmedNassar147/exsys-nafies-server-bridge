@@ -19,6 +19,7 @@
     "https": "^1.0.0",
     "is-online": "^9.0.1",
     "nodemon": "^2.x.x",
+    "inquirer": "^8.x.x",
     "@exsys-server/helpers": "1.0.0"
   }
 }

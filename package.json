@@ -14,16 +14,17 @@
     "bootstrap": "lerna bootstrap",
     "reset": "yarn clean && yarn clean-locks && yarn bootstrap",
     "prepare": "yarn workspace @exsys-server/start-exsys-nafies-bridge start",
-    "start": "yarn workspace @exsys-server/bridge"
+    "start": "yarn workspace @exsys-server/bridge start"
   },
   "dependencies": {
+    "@exsys-server/bridge": "1.0.0",
+    "@exsys-server/helpers": "1.0.0",
+    "@exsys-server/start-exsys-nafies-bridge": "1.0.0",
     "axios": "^0.26.1",
     "chalk": "^5.0.1",
     "https": "^1.0.0",
     "is-online": "^9.0.1",
-    "@exsys-server/bridge": "1.0.0",
-    "@exsys-server/helpers": "1.0.0",
-    "@exsys-server/start-exsys-nafies-bridge": "1.0.0"
+    "inquirer": "^8.2.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

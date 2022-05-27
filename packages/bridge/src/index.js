@@ -4,22 +4,29 @@
  *
  */
 import chalk from "chalk";
+import inquirer from "inquirer";
 import isOnline from "is-online";
 import { checkPathExists, createCmdMessage } from "@exsys-server/helpers";
 import {
-  CERTIFICATE_PATH,
   RESTART_CALLING_EXSYS_QUERY_MS,
   RESTART_MS,
+  INQUIRER_QUESTIONS,
 } from "./constants.mjs";
 import restartProcessAndPrintMessage from "./helpers/restartProcessAndPrintMessage.mjs";
 import createNafiesRequestOptions from "./helpers/createNafiesRequestOptions.mjs";
 import queryExsysBodyDataToCreateNafiesRequest from "./helpers/queryExsysBodyDataToCreateNafiesRequest.mjs";
 import createNafiesRequestAndUpdateExsysServer from "./helpers/createNafiesRequestAndUpdateExsysServer.mjs";
+import createCertificatePath from "./helpers/createCertificatePath.mjs";
 
-(async () => {
+const main = async (certificateNameKey) => {
   let restartTimeOutRef;
 
-  const isCertificateFileExsist = await checkPathExists(CERTIFICATE_PATH);
+  const createRestartProcessAndPrintMessage = restartProcessAndPrintMessage([
+    certificateNameKey,
+  ]);
+
+  const certificatePath = createCertificatePath(certificateNameKey);
+  const isCertificateFileExsist = await checkPathExists(certificatePath);
 
   if (!isCertificateFileExsist) {
     createCmdMessage({
@@ -27,18 +34,23 @@ import createNafiesRequestAndUpdateExsysServer from "./helpers/createNafiesReque
       message: `the ${chalk.magenta(
         "certificate"
       )} doesn't exist in this path ${chalk.white(
-        CERTIFICATE_PATH
+        certificatePath
       )} ${chalk.magenta(`rechecking in ${RESTART_MS / 60000} minutes.`)}`,
     });
 
-    restartTimeOutRef = restartProcessAndPrintMessage(restartTimeOutRef, true);
+    restartTimeOutRef = createRestartProcessAndPrintMessage({
+      restartTimeOutRef,
+      hideNetworkMessage: true,
+    });
     return;
   }
 
   const isNetworkConnected = await isOnline();
 
   const updateTimeoutRefAndRestart = () => {
-    restartTimeOutRef = restartProcessAndPrintMessage(restartTimeOutRef);
+    restartTimeOutRef = createRestartProcessAndPrintMessage({
+      restartTimeOutRef,
+    });
   };
 
   if (!isNetworkConnected) {
@@ -51,7 +63,9 @@ import createNafiesRequestAndUpdateExsysServer from "./helpers/createNafiesReque
     restartTimeOutRef.unref();
   }
 
-  const nafiesSiteRequestOptions = await createNafiesRequestOptions();
+  const nafiesSiteRequestOptions = await createNafiesRequestOptions(
+    certificatePath
+  );
 
   const start = async () => {
     const {
@@ -82,4 +96,18 @@ import createNafiesRequestAndUpdateExsysServer from "./helpers/createNafiesReque
   };
 
   await start();
+};
+
+(async () => {
+  const processArgs = [...process.argv].slice(2);
+  const [oldCertificateNameKey] = processArgs || [];
+  let foundOldCertificateNameKey = oldCertificateNameKey;
+
+  if (!foundOldCertificateNameKey) {
+    const results = await inquirer.prompt(INQUIRER_QUESTIONS);
+    const { certificateNameKey } = results || {};
+    foundOldCertificateNameKey = certificateNameKey;
+  }
+
+  await main(foundOldCertificateNameKey);
 })();

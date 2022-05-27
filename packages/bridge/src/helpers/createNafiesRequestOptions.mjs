@@ -5,10 +5,9 @@
  */
 import { readFile } from "fs/promises";
 import https from "https";
-import { CERTIFICATE_PATH } from "../constants.mjs";
 
-const createNafiesRequestOptions = async () => {
-  const certificate = await readFile(CERTIFICATE_PATH);
+const createNafiesRequestOptions = async (certificatePath) => {
+  const certificate = await readFile(certificatePath);
 
   const requestOptions = {
     headers: {
