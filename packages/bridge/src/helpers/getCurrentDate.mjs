@@ -10,7 +10,7 @@ const getCurrentDate = () => {
 
   return {
     time: time.toLowerCase(),
-    datString: `${day}-${month}-${year}`,
+    dateString: `${day}-${month}-${year}`,
   };
 };
 

@@ -15,13 +15,13 @@ const updateResultsFolder = async ({
   nafiesServerResult,
   successededToPostNafiesDataToExsysServer,
 }) => {
-  const { datString, time } = getCurrentDate();
+  const { dateString, time } = getCurrentDate();
 
   if (!(await checkPathExists(RESULTS_FOLDER_PATH))) {
     await mkdir(RESULTS_FOLDER_PATH, { recursive: true });
   }
 
-  const currentResultFilePath = `${RESULTS_FOLDER_PATH}/${datString}.json`;
+  const currentResultFilePath = `${RESULTS_FOLDER_PATH}/${dateString}.json`;
   let previousResultFileData = [];
 
   if (await checkPathExists(currentResultFilePath)) {
