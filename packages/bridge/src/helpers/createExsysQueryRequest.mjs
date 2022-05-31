@@ -1,6 +1,6 @@
 /*
  *
- * Helper: `queryExsysBodyDataToCreateNafiesRequest`.
+ * Helper: `createExsysQueryRequest`.
  *
  */
 import chalk from "chalk";
@@ -9,8 +9,8 @@ import { createCmdMessage } from "@exsys-server/helpers";
 import createExsysApiQuery from "./createExsysApiQuery.mjs";
 import printRequestNetworkError from "./printRequestNetworkError.mjs";
 
-const queryExsysBodyDataToCreateNafiesRequest = async () => {
-  const apiUrl = createExsysApiQuery("EXSYS_QUERY_NAFIES_REQUEST_BODY_DATA");
+const createExsysQueryRequest = async ({ apiId, params }) => {
+  const apiUrl = createExsysApiQuery(apiId, params);
   let response = {};
   let fetchError;
   let isInternetDisconnected = false;
@@ -34,15 +34,11 @@ const queryExsysBodyDataToCreateNafiesRequest = async () => {
     isInternetDisconnected,
   });
 
-  const { api_pk: exsysApiCodeId, data: nafiesPostData } = response || {};
-  const canCallNafiesPostApi = !!exsysApiCodeId && !!nafiesPostData;
-
   return {
-    exsysApiCodeId,
-    nafiesPostData,
+    response: response || {},
+    fetchError,
     isInternetDisconnected,
-    canCallNafiesPostApi,
   };
 };
 
-export default queryExsysBodyDataToCreateNafiesRequest;
+export default createExsysQueryRequest;

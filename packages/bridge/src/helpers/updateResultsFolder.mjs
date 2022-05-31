@@ -6,22 +6,16 @@
 
 import { writeFile, readFile, mkdir } from "fs/promises";
 import { checkPathExists } from "@exsys-server/helpers";
-import { RESULTS_FOLDER_PATH } from "../constants.mjs";
 import getCurrentDate from "./getCurrentDate.mjs";
 
-const updateResultsFolder = async ({
-  exsysApiCodeId,
-  nafiesPostData,
-  nafiesServerResult,
-  successededToPostNafiesDataToExsysServer,
-}) => {
+const updateResultsFolder = async ({ data, resultsFolderPath }) => {
   const { dateString, time } = getCurrentDate();
 
-  if (!(await checkPathExists(RESULTS_FOLDER_PATH))) {
-    await mkdir(RESULTS_FOLDER_PATH, { recursive: true });
+  if (!(await checkPathExists(resultsFolderPath))) {
+    await mkdir(resultsFolderPath, { recursive: true });
   }
 
-  const currentResultFilePath = `${RESULTS_FOLDER_PATH}/${dateString}.json`;
+  const currentResultFilePath = `${resultsFolderPath}/${dateString}.json`;
   let previousResultFileData = [];
 
   if (await checkPathExists(currentResultFilePath)) {
@@ -37,10 +31,7 @@ const updateResultsFolder = async ({
   const nextFileResults = [
     {
       time,
-      api_pk: exsysApiCodeId,
-      exsysDataSentToNafiesServer: nafiesPostData,
-      nafiesResponseBasedExsysData: nafiesServerResult,
-      successededToPostNafiesDataToExsysServer,
+      ...data,
     },
     ...previousResultFileData,
   ];

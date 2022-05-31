@@ -1,6 +1,6 @@
 /*
  *
- * Helper: `postNafiesResponseToExsysDB`.
+ * Helper: `postCompanyDataResponseToExsysDB`.
  *
  */
 import axios from "axios";
@@ -9,21 +9,20 @@ import { createCmdMessage } from "@exsys-server/helpers";
 import createExsysApiQuery from "./createExsysApiQuery.mjs";
 import printRequestNetworkError from "./printRequestNetworkError.mjs";
 
-const postNafiesResponseToExsysDB = async ({
-  exsysApiCodeId,
-  nafiesResponse,
+const postCompanyDataResponseToExsysDB = async ({
+  apiId,
+  apiParams,
+  apiPostData,
   onDone,
 }) => {
-  const apiUrl = createExsysApiQuery("UPDATE_EXSYS_WITH_NAFIES_RESULTS", {
-    api_pk: exsysApiCodeId,
-  });
+  const apiUrl = createExsysApiQuery(apiId, apiParams);
 
   let response = {};
   let fetchError;
   let isInternetDisconnected = false;
 
   try {
-    const { data } = await axios.post(apiUrl, nafiesResponse);
+    const { data } = await axios.post(apiUrl, apiPostData);
     response = data;
   } catch (apiFetchError) {
     fetchError = apiFetchError;
@@ -56,8 +55,8 @@ const postNafiesResponseToExsysDB = async ({
     createCmdMessage({
       type: isSuccess ? "success" : "error",
       message: isSuccess
-        ? `just updated exsys server with nafies data by ${coloredApiUrl}`
-        : `failed to update ${coloredApiUrl} with nafies data`,
+        ? `just updated exsys server with data by ${coloredApiUrl}`
+        : `failed to update ${coloredApiUrl} with data`,
     });
   }
 
@@ -68,4 +67,4 @@ const postNafiesResponseToExsysDB = async ({
   };
 };
 
-export default postNafiesResponseToExsysDB;
+export default postCompanyDataResponseToExsysDB;

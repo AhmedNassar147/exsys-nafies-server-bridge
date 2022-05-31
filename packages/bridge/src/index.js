@@ -8,15 +8,21 @@ import inquirer from "inquirer";
 import isOnline from "is-online";
 import { checkPathExists, createCmdMessage } from "@exsys-server/helpers";
 import {
-  RESTART_CALLING_EXSYS_QUERY_MS,
   RESTART_MS,
   INQUIRER_QUESTIONS,
+  CERTIFICATE_NAMES,
 } from "./constants.mjs";
 import restartProcessAndPrintMessage from "./helpers/restartProcessAndPrintMessage.mjs";
-import createNafiesRequestOptions from "./helpers/createNafiesRequestOptions.mjs";
-import queryExsysBodyDataToCreateNafiesRequest from "./helpers/queryExsysBodyDataToCreateNafiesRequest.mjs";
-import createNafiesRequestAndUpdateExsysServer from "./helpers/createNafiesRequestAndUpdateExsysServer.mjs";
+import createCompanyRequestOptions from "./helpers/createCompanyRequestOptions.mjs";
 import createCertificatePath from "./helpers/createCertificatePath.mjs";
+import getCompanyByCertificateKey from "./helpers/getCompanyByCertificateKey.mjs";
+import startNaphiesApis from "./engines/naphies/index.mjs";
+import startRasdApis from "./engines/rasd/index.mjs";
+
+const COMPANY_API_START = {
+  [CERTIFICATE_NAMES.NAPHIES]: startNaphiesApis,
+  [CERTIFICATE_NAMES.RASD]: startRasdApis,
+};
 
 const main = async (certificateNameKey) => {
   let restartTimeOutRef;
@@ -63,39 +69,19 @@ const main = async (certificateNameKey) => {
     restartTimeOutRef.unref();
   }
 
-  const nafiesSiteRequestOptions = await createNafiesRequestOptions(
-    certificatePath
-  );
+  const { IS_NAPHIES_COMPANY } = getCompanyByCertificateKey(certificateNameKey);
 
-  const start = async () => {
-    const {
-      exsysApiCodeId,
-      nafiesPostData,
-      isInternetDisconnected,
-      canCallNafiesPostApi,
-    } = await queryExsysBodyDataToCreateNafiesRequest();
-    if (isInternetDisconnected || !canCallNafiesPostApi) {
-      if (isInternetDisconnected) {
-        updateTimeoutRefAndRestart();
-      }
+  const companySiteRequestOptions = await createCompanyRequestOptions({
+    certificatePath,
+    isNaphiesCompany: IS_NAPHIES_COMPANY,
+  });
 
-      if (!canCallNafiesPostApi && !isInternetDisconnected) {
-        setTimeout(async () => await start(), RESTART_CALLING_EXSYS_QUERY_MS);
-      }
+  const startFn = COMPANY_API_START[certificateNameKey];
 
-      return;
-    }
-
-    await createNafiesRequestAndUpdateExsysServer({
-      nafiesPostData,
-      exsysApiCodeId,
-      nafiesSiteRequestOptions,
-      updateTimeoutRefAndRestart,
-      onDone: start,
-    });
-  };
-
-  await start();
+  await startFn({
+    companySiteRequestOptions,
+    updateTimeoutRefAndRestart,
+  });
 };
 
 (async () => {
@@ -109,5 +95,5 @@ const main = async (certificateNameKey) => {
     foundOldCertificateNameKey = certificateNameKey;
   }
 
-  await main(foundOldCertificateNameKey);
+  await main(foundOldCertificateNameKey || COMPANY_API_START.NAPHIES);
 })();
