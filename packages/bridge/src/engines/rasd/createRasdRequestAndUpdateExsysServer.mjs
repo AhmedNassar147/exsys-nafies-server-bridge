@@ -88,7 +88,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
       resultsFolderPath: RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.RASD],
       data: {
         rasdApiName,
-        exsysDataSentToRasdServer: bodyData,
+        exsysDataSentToRasdServer: rasdBodyValues,
         rasdResponseBasedExsysData: response,
         successededToPostRasdDataToExsysServer: isInternetDisconnected
           ? false
@@ -105,10 +105,10 @@ const createRasdRequestAndUpdateExsysServer = async ({
     isInternetDisconnectedWhenPostingNafiesDataToExsys,
   } = await postCompanyDataResponseToExsysDB({
     apiId: "POST_RASD_REQUEST_DATA_TO_EXSYS",
-    apiPostData: response,
-    // apiParams: {
-    //   api_pk: exsysApiCodeId,
-    // },
+    apiPostData: {
+      type: rasdApiName,
+      data: response,
+    },
     onDone: handleExsysDataAfterPost,
   });
 

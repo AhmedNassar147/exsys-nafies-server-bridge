@@ -10,37 +10,84 @@ import {
   RASD_API_TYPE_NAMES,
 } from "../../constants.mjs";
 
+const {
+  inventory_accept,
+  inventory_return,
+  pos_sale,
+  pos_sale_cancel,
+} = RASD_API_TYPE_NAMES;
+
 const startRasdApis = async (options) => {
   const { updateTimeoutRefAndRestart, companySiteRequestOptions } = options;
   const { response, isInternetDisconnected } = await createExsysQueryRequest({
     apiId: "QUERY_EXSYS_RASD_REQUEST_DATA",
   });
 
-  const { type, bodyData } = response;
-  const rasdApiName = RASD_API_TYPE_NAMES[type];
+  if (isInternetDisconnected) {
+    updateTimeoutRefAndRestart();
+    return;
+  }
 
-  if (isInternetDisconnected || !rasdApiName || !bodyData) {
-    if (isInternetDisconnected) {
-      updateTimeoutRefAndRestart();
-    }
+  const {
+    [inventory_accept]: inventoryAcceptBody,
+    [inventory_return]: inventoryReturnBody,
+    [pos_sale]: PosSaleBody,
+    [pos_sale_cancel]: PosSaleCancelBody,
+  } = response || {};
 
-    if ((!rasdApiName || !bodyData) && !isInternetDisconnected) {
-      setTimeout(
-        async () => await startRasdApis(options),
-        RESTART_CALLING_EXSYS_QUERY_MS
-      );
-    }
+
+  const filteredApiBaseData = [
+    {
+      rasdApiName: inventory_accept,
+      bodyData: inventoryAcceptBody,
+    },
+    {
+      rasdApiName: inventory_return,
+      bodyData: inventoryReturnBody,
+    },
+    {
+      rasdApiName: pos_sale,
+      bodyData: PosSaleBody,
+    },
+    {
+      rasdApiName: pos_sale_cancel,
+      bodyData: PosSaleCancelBody,
+    },
+  ].filter(({ bodyData }) => {
+    const { product_list } = bodyData || {};
+    return !!(product_list || []).length;
+  });
+
+  const requestsLength = filteredApiBaseData.length
+
+  if (!requestsLength) {
+    setTimeout(
+      async () => await startRasdApis(options),
+      RESTART_CALLING_EXSYS_QUERY_MS
+    );
 
     return;
   }
 
-  await createRasdRequestAndUpdateExsysServer({
-    rasdApiName,
-    bodyData,
-    companySiteRequestOptions,
-    updateTimeoutRefAndRestart,
-    onDone: startRasdApis,
-  });
+  const handleDone = async (index) => (options) => {
+    const isLastApiCall = requestsLength - 1 === index;
+
+    if(isLastApiCall){
+      await startRasdApis(options)
+    }
+  }
+
+  const configPromises = filteredApiBaseData.map((data, index) =>
+    createRasdRequestAndUpdateExsysServer({
+      ...data,
+      companySiteRequestOptions,
+      updateTimeoutRefAndRestart,
+      onDone: handleDone(index),
+    })
+  );
+
+  await Promise.all(configPromises);
 };
 
 export default startRasdApis;
+
