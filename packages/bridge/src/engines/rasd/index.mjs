@@ -35,7 +35,6 @@ const startRasdApis = async (options) => {
     [pos_sale_cancel]: PosSaleCancelBody,
   } = response || {};
 
-
   const filteredApiBaseData = [
     {
       rasdApiName: inventory_accept,
@@ -58,7 +57,7 @@ const startRasdApis = async (options) => {
     return !!(product_list || []).length;
   });
 
-  const requestsLength = filteredApiBaseData.length
+  const requestsLength = filteredApiBaseData.length;
 
   if (!requestsLength) {
     setTimeout(
@@ -69,13 +68,13 @@ const startRasdApis = async (options) => {
     return;
   }
 
-  const handleDone = async (index) => (options) => {
+  const handleDone = (index) => async (options) => {
     const isLastApiCall = requestsLength - 1 === index;
 
-    if(isLastApiCall){
-      await startRasdApis(options)
+    if (isLastApiCall) {
+      await startRasdApis(options);
     }
-  }
+  };
 
   const configPromises = filteredApiBaseData.map((data, index) =>
     createRasdRequestAndUpdateExsysServer({
@@ -90,4 +89,3 @@ const startRasdApis = async (options) => {
 };
 
 export default startRasdApis;
-
