@@ -15,6 +15,7 @@ const {
   inventory_return,
   pos_sale,
   pos_sale_cancel,
+  inventory_transfer,
 } = RASD_API_TYPE_NAMES;
 
 const startRasdApis = async (options) => {
@@ -31,6 +32,7 @@ const startRasdApis = async (options) => {
   const {
     [inventory_accept]: inventoryAcceptBody,
     [inventory_return]: inventoryReturnBody,
+    [inventory_transfer]: inventoryTransferBody,
     [pos_sale]: PosSaleBody,
     [pos_sale_cancel]: PosSaleCancelBody,
   } = response || {};
@@ -43,6 +45,10 @@ const startRasdApis = async (options) => {
     {
       rasdApiName: inventory_return,
       bodyData: inventoryReturnBody,
+    },
+    {
+      rasdApiName: inventory_transfer,
+      bodyData: inventoryTransferBody,
     },
     {
       rasdApiName: pos_sale,

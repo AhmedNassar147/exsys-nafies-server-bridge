@@ -26,14 +26,15 @@ const RESTART_CALLING_EXSYS_QUERY_MS = 2000;
 const RASD_API_TYPE_NAMES = {
   inventory_accept: "inventory_accept",
   inventory_return: "inventory_return",
+  inventory_transfer: "inventory_transfer",
   pos_sale: "pos_sale",
   pos_sale_cancel: "pos_sale_cancel",
 };
 
-const RASD_SITE_USER_DATA = {
-  branch_user: "68230431000010000",
-  branch_pass: "ef671ff957f38f311584464f110faa47",
-};
+// const RASD_SITE_USER_DATA = {
+//   branch_user: "68230431000010000",
+//   branch_pass: "ef671ff957f38f311584464f110faa47",
+// };
 
 const COMPANY_API_URLS = {
   NAPHIES_PRODUCTION: "https://HSB.nphies.sa/$process-message",
@@ -70,5 +71,5 @@ export {
   CERTIFICATE_NAME_VALUES,
   CERTIFICATE_NAMES,
   RASD_API_TYPE_NAMES,
-  RASD_SITE_USER_DATA,
+  // RASD_SITE_USER_DATA,
 };

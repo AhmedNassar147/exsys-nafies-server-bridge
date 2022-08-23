@@ -6,7 +6,7 @@
 import axios from "axios";
 import {
   COMPANY_API_URLS,
-  RASD_SITE_USER_DATA,
+  // RASD_SITE_USER_DATA,
   RESULTS_FOLDER_PATHS,
   CERTIFICATE_NAMES,
 } from "../../constants.mjs";
@@ -31,7 +31,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
 
   try {
     const rasdBodyValues = {
-      ...RASD_SITE_USER_DATA,
+      // ...RASD_SITE_USER_DATA,
       ...bodyData,
     };
 
@@ -101,16 +101,15 @@ const createRasdRequestAndUpdateExsysServer = async ({
     }
   };
 
-  const {
-    isInternetDisconnectedWhenPostingNafiesDataToExsys,
-  } = await postCompanyDataResponseToExsysDB({
-    apiId: "POST_RASD_REQUEST_DATA_TO_EXSYS",
-    apiPostData: {
-      type: rasdApiName,
-      data: response,
-    },
-    onDone: handleExsysDataAfterPost,
-  });
+  const { isInternetDisconnectedWhenPostingNafiesDataToExsys } =
+    await postCompanyDataResponseToExsysDB({
+      apiId: "POST_RASD_REQUEST_DATA_TO_EXSYS",
+      apiPostData: {
+        type: rasdApiName,
+        data: response,
+      },
+      onDone: handleExsysDataAfterPost,
+    });
 
   if (isInternetDisconnectedWhenPostingNafiesDataToExsys) {
     updateTimeoutRefAndRestart();
