@@ -6,7 +6,6 @@
 import axios from "axios";
 import {
   COMPANY_API_URLS,
-  // RASD_SITE_USER_DATA,
   RESULTS_FOLDER_PATHS,
   CERTIFICATE_NAMES,
 } from "../../constants.mjs";
@@ -30,14 +29,9 @@ const createRasdRequestAndUpdateExsysServer = async ({
   const apiUrl = `${baseApiUrl}/${rasdApiName}`;
 
   try {
-    const rasdBodyValues = {
-      // ...RASD_SITE_USER_DATA,
-      ...bodyData,
-    };
-
     const { data } = await axios.post(
       apiUrl,
-      rasdBodyValues,
+      bodyData,
       companySiteRequestOptions
     );
     response = data;
@@ -88,7 +82,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
       resultsFolderPath: RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.RASD],
       data: {
         rasdApiName,
-        exsysDataSentToRasdServer: rasdBodyValues,
+        exsysDataSentToRasdServer: bodyData,
         rasdResponseBasedExsysData: response,
         successededToPostRasdDataToExsysServer: isInternetDisconnected
           ? false
