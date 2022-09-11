@@ -1,0 +1,17 @@
+{
+  "name": "@exsys-server/command-line-utils",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Contains code for command line..",
+  "author": "exsys",
+  "license": "ISC",
+  "sideEffects": false,
+  "type": "module",
+  "main": "src/index.js",
+  "files": [
+    "src"
+  ],
+  "peerDependencies": {
+    "chalk": "^5.x.x"
+  }
+}

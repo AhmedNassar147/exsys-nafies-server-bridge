@@ -10,7 +10,8 @@ const createCompanyRequestOptions = async ({
   certificatePath,
   isNaphiesCompany,
 }) => {
-  const certificate = await readFile(certificatePath);
+  // const certificate = await readFile(certificatePath);
+  const certificate = undefined;
 
   const requestOptions = {
     headers: {

@@ -38,7 +38,7 @@ const postCompanyDataResponseToExsysDB = async ({
 
   const coloredApiUrl = chalk.magenta(apiUrl);
 
-  const { status } = response || {};
+  const { status, error_code } = response || {};
 
   if (!status) {
     createCmdMessage({
@@ -56,7 +56,9 @@ const postCompanyDataResponseToExsysDB = async ({
       type: isSuccess ? "success" : "error",
       message: isSuccess
         ? `just updated exsys server with data by ${coloredApiUrl}`
-        : `failed to update ${coloredApiUrl} with data`,
+        : `failed to update ${coloredApiUrl} with data
+          exsys error: ${chalk.red(error_code)}
+        `,
     });
   }
 

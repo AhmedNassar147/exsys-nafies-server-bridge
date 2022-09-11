@@ -4,13 +4,14 @@
  *
  */
 import chalk from "chalk";
-import inquirer from "inquirer";
 import isOnline from "is-online";
 import { checkPathExists, createCmdMessage } from "@exsys-server/helpers";
+import { createCliController } from "@exsys-server/command-line-utils";
 import {
   RESTART_MS,
-  INQUIRER_QUESTIONS,
+  CLI_OPTIONS,
   CERTIFICATE_NAMES,
+  CERTIFICATE_NAMES_KEYS,
 } from "./constants.mjs";
 import restartProcessAndPrintMessage from "./helpers/restartProcessAndPrintMessage.mjs";
 import createCompanyRequestOptions from "./helpers/createCompanyRequestOptions.mjs";
@@ -24,8 +25,22 @@ const COMPANY_API_START = {
   [CERTIFICATE_NAMES.RASD]: startRasdApis,
 };
 
-const main = async (certificateNameKey) => {
+const runCliFn = async ({ company }) => {
   let restartTimeOutRef;
+
+  const certificateNameKey = (company || CERTIFICATE_NAMES.RASD).toUpperCase();
+
+  if (certificateNameKey) {
+    if (!CERTIFICATE_NAMES_KEYS.includes(certificateNameKey)) {
+      createCmdMessage({
+        type: "error",
+        message: `company name is not valid, it should be one of ${CERTIFICATE_NAMES_KEYS.join(
+          " , "
+        )}`,
+      });
+      process.exit(2);
+    }
+  }
 
   const createRestartProcessAndPrintMessage = restartProcessAndPrintMessage([
     certificateNameKey,
@@ -34,22 +49,22 @@ const main = async (certificateNameKey) => {
   const certificatePath = createCertificatePath(certificateNameKey);
   const isCertificateFileExsist = await checkPathExists(certificatePath);
 
-  if (!isCertificateFileExsist) {
-    createCmdMessage({
-      type: "error",
-      message: `the ${chalk.magenta(
-        "certificate"
-      )} doesn't exist in this path ${chalk.white(
-        certificatePath
-      )} ${chalk.magenta(`rechecking in ${RESTART_MS / 60000} minutes.`)}`,
-    });
+  // if (!isCertificateFileExsist) {
+  // createCmdMessage({
+  //   type: "error",
+  //   message: `the ${chalk.magenta(
+  //     "certificate"
+  //   )} doesn't exist in this path ${chalk.white(
+  //     certificatePath
+  //   )} ${chalk.magenta(`rechecking in ${RESTART_MS / 60000} minutes.`)}`,
+  // });
 
-    restartTimeOutRef = createRestartProcessAndPrintMessage({
-      restartTimeOutRef,
-      hideNetworkMessage: true,
-    });
-    return;
-  }
+  //   restartTimeOutRef = createRestartProcessAndPrintMessage({
+  //     restartTimeOutRef,
+  //     hideNetworkMessage: true,
+  //   });
+  //   return;
+  // }
 
   const isNetworkConnected = await isOnline();
 
@@ -84,16 +99,7 @@ const main = async (certificateNameKey) => {
   });
 };
 
-(async () => {
-  const processArgs = [...process.argv].slice(2);
-  const [oldCertificateNameKey] = processArgs || [];
-  let foundOldCertificateNameKey = oldCertificateNameKey;
-
-  if (!foundOldCertificateNameKey) {
-    const results = await inquirer.prompt(INQUIRER_QUESTIONS);
-    const { certificateNameKey } = results || {};
-    foundOldCertificateNameKey = certificateNameKey;
-  }
-
-  await main(foundOldCertificateNameKey || COMPANY_API_START.NAPHIES);
-})();
+createCliController({
+  ...CLI_OPTIONS,
+  runCliFn,
+});

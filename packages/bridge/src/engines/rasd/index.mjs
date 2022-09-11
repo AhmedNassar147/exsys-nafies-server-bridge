@@ -16,82 +16,91 @@ const {
   pos_sale,
   pos_sale_cancel,
   inventory_transfer,
+  dispatch_info,
 } = RASD_API_TYPE_NAMES;
 
-const startRasdApis = async (options) => {
-  const { updateTimeoutRefAndRestart, companySiteRequestOptions } = options;
-  const { response, isInternetDisconnected } = await createExsysQueryRequest({
-    apiId: "QUERY_EXSYS_RASD_REQUEST_DATA",
-  });
-
-  if (isInternetDisconnected) {
-    updateTimeoutRefAndRestart();
-    return;
+const createRasdApiWithData = (rasdApiName, baseData) => {
+  let apiWithData = [];
+  if (Array.isArray(baseData) && baseData.length) {
+    apiWithData = baseData.map((bodyData) => ({
+      rasdApiName,
+      bodyData,
+    }));
   }
 
-  const {
-    [inventory_accept]: inventoryAcceptBody,
-    [inventory_return]: inventoryReturnBody,
-    [inventory_transfer]: inventoryTransferBody,
-    [pos_sale]: PosSaleBody,
-    [pos_sale_cancel]: PosSaleCancelBody,
-  } = response || {};
+  return apiWithData;
+};
 
-  const filteredApiBaseData = [
-    {
-      rasdApiName: inventory_accept,
-      bodyData: inventoryAcceptBody,
-    },
-    {
-      rasdApiName: inventory_return,
-      bodyData: inventoryReturnBody,
-    },
-    {
-      rasdApiName: inventory_transfer,
-      bodyData: inventoryTransferBody,
-    },
-    {
-      rasdApiName: pos_sale,
-      bodyData: PosSaleBody,
-    },
-    {
-      rasdApiName: pos_sale_cancel,
-      bodyData: PosSaleCancelBody,
-    },
-  ].filter(({ bodyData }) => {
-    const { product_list } = bodyData || {};
-    return !!(product_list || []).length;
-  });
+const startRasdApis = async (options) => {
+  try {
+    const { updateTimeoutRefAndRestart, companySiteRequestOptions } = options;
+    const { response, isInternetDisconnected } = await createExsysQueryRequest({
+      apiId: "QUERY_EXSYS_RASD_REQUEST_DATA",
+    });
 
-  const requestsLength = filteredApiBaseData.length;
+    if (isInternetDisconnected) {
+      updateTimeoutRefAndRestart();
+      return;
+    }
 
-  if (!requestsLength) {
+    const {
+      [inventory_accept]: inventoryAcceptBody,
+      [inventory_return]: inventoryReturnBody,
+      [inventory_transfer]: inventoryTransferBody,
+      [pos_sale]: posSaleBody,
+      [pos_sale_cancel]: posSaleCancelBody,
+      [dispatch_info]: dispatchInfoBody,
+    } = response || {};
+
+    const filteredApiBaseData = [
+      ...createRasdApiWithData(inventory_accept, inventoryAcceptBody),
+      ...createRasdApiWithData(inventory_return, inventoryReturnBody),
+      ...createRasdApiWithData(inventory_transfer, inventoryTransferBody),
+      ...createRasdApiWithData(pos_sale, posSaleBody),
+      ...createRasdApiWithData(pos_sale_cancel, posSaleCancelBody),
+      ...createRasdApiWithData(dispatch_info, dispatchInfoBody),
+    ].filter(({ rasdApiName, bodyData }) => {
+      const { product_list, notification } = bodyData || {};
+      return rasdApiName === dispatch_info
+        ? !!notification
+        : !!(product_list || []).length;
+    });
+
+    const requestsLength = filteredApiBaseData.length;
+
+    if (!requestsLength) {
+      setTimeout(
+        async () => await startRasdApis(options),
+        RESTART_CALLING_EXSYS_QUERY_MS
+      );
+
+      return;
+    }
+
+    const handleDone = (index) => async (options) => {
+      const isLastApiCall = requestsLength - 1 === index;
+
+      if (isLastApiCall) {
+        // await startRasdApis(options);
+      }
+    };
+
+    const configPromises = filteredApiBaseData.map((data, index) =>
+      createRasdRequestAndUpdateExsysServer({
+        ...data,
+        companySiteRequestOptions,
+        updateTimeoutRefAndRestart,
+        onDone: handleDone(index),
+      })
+    );
+
+    await Promise.all(configPromises);
+  } catch (error) {
     setTimeout(
       async () => await startRasdApis(options),
       RESTART_CALLING_EXSYS_QUERY_MS
     );
-
-    return;
   }
-
-  const handleDone = (index) => async (options) => {
-    const isLastApiCall = requestsLength - 1 === index;
-
-    if (isLastApiCall) {
-      await startRasdApis(options);
-    }
-  };
-
-  const configPromises = filteredApiBaseData.map((data, index) =>
-    createRasdRequestAndUpdateExsysServer({
-      ...data,
-      companySiteRequestOptions,
-      updateTimeoutRefAndRestart,
-      onDone: handleDone(index),
-    })
-  );
-
-  await Promise.all(configPromises);
 };
 
 export default startRasdApis;
