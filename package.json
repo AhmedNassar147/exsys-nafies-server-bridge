@@ -14,7 +14,8 @@
     "bootstrap": "lerna bootstrap",
     "reset": "yarn clean && yarn clean-locks && yarn bootstrap",
     "prepare": "yarn workspace @exsys-server/start-exsys-nphies-bridge start",
-    "start": "yarn workspace @exsys-server/bridge start"
+    "start": "yarn workspace @exsys-server/bridge start",
+    "start-rasd": "yarn workspace @exsys-server/bridge start --ignore-cert"
   },
   "dependencies": {
     "@exsys-server/bridge": "1.0.0",
