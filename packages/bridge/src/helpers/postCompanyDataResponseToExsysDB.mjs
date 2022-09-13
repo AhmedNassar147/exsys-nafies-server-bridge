@@ -13,7 +13,6 @@ const postCompanyDataResponseToExsysDB = async ({
   apiId,
   apiParams,
   apiPostData,
-  onDone,
 }) => {
   const apiUrl = createExsysApiQuery(apiId, apiParams);
 
@@ -62,10 +61,10 @@ const postCompanyDataResponseToExsysDB = async ({
     });
   }
 
-  await onDone(isSuccess, isInternetDisconnected);
-
   return {
     isInternetDisconnectedWhenPostingNafiesDataToExsys: isInternetDisconnected,
+    isSuccessPostingDataToExsys: isSuccess,
+    isDataSentToExsys: true,
   };
 };
 

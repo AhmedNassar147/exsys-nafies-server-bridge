@@ -1,0 +1,17 @@
+{
+  "EXSYS_BASE_URL": "http://207.180.237.36:9090/ords",
+  "EXSYS_SCHEMA_NAME": "exsys_api",
+  "RESTART_MS": 60000,
+  "RESTART_CALLING_EXSYS_QUERY_MS": 2000,
+  "NPHIES_CERT_FILE_NAME": "certs/Certificate_pkcs12.p12",
+  "RASD_CERT_FILE_NAME": "certs/rasd.cer",
+  "COMPANY_API_URLS": {
+    "NPHIES_PRODUCTION": "https://HSB.nphies.sa/$process-message",
+    "NPHIES_DEVELOPMENT": "http://176.105.150.83:80/$process-message",
+    "RASD_PRODUCTION": "https://api.juleb-dev.com/rasd"
+  },
+  "RESULTS_FOLDER_PATHS": {
+    "NPHIES": "results/nphies",
+    "RASD": "results/rasd"
+  }
+}

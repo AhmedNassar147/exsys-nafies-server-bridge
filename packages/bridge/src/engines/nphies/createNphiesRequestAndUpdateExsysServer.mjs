@@ -1,6 +1,6 @@
 /*
  *
- * Helper: `createNafiesRequestAndUpdateExsysServer`.
+ * Helper: `createNphiesRequestAndUpdateExsysServer`.
  *
  */
 import axios from "axios";
@@ -13,10 +13,10 @@ import printRequestNetworkError from "../../helpers/printRequestNetworkError.mjs
 import postCompanyDataResponseToExsysDB from "../../helpers/postCompanyDataResponseToExsysDB.mjs";
 import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
 
-const { NAPHIES_PRODUCTION: apiUrl } = COMPANY_API_URLS;
+const { NPHIES_PRODUCTION: apiUrl } = COMPANY_API_URLS;
 
-const createNafiesRequestAndUpdateExsysServer = async ({
-  nafiesPostData,
+const createNphiesRequestAndUpdateExsysServer = async ({
+  nphiesPostData,
   exsysApiCodeId,
   companySiteRequestOptions,
   updateTimeoutRefAndRestart,
@@ -29,7 +29,7 @@ const createNafiesRequestAndUpdateExsysServer = async ({
   try {
     const { data } = await axios.post(
       apiUrl,
-      nafiesPostData,
+      nphiesPostData,
       companySiteRequestOptions
     );
     response = data;
@@ -68,40 +68,39 @@ const createNafiesRequestAndUpdateExsysServer = async ({
     return;
   }
 
-  const handleExsysDataAfterPost = async (
-    isSuccess,
-    isInternetDisconnected
-  ) => {
-    await updateResultsFolder({
-      resultsFolderPath: RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.NAPHIES],
-      data: {
-        api_pk: exsysApiCodeId,
-        exsysDataSentToNafiesServer: nafiesPostData,
-        nafiesResponseBasedExsysData: response,
-        successededToPostNafiesDataToExsysServer: isInternetDisconnected
-          ? false
-          : isSuccess,
-      },
-    });
-
-    if (!isInternetDisconnected) {
-      await onDone(doneFnOptions);
-    }
-  };
-
   const {
     isInternetDisconnectedWhenPostingNafiesDataToExsys,
+    isSuccessPostingDataToExsys,
+    isDataSentToExsys,
   } = await postCompanyDataResponseToExsysDB({
     apiId: "UPDATE_EXSYS_WITH_NAFIES_RESULTS",
     apiPostData: response,
     apiParams: {
       api_pk: exsysApiCodeId,
     },
-    onDone: handleExsysDataAfterPost,
   });
+
+  await updateResultsFolder({
+    resultsFolderPath: RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.NPHIES],
+    data: {
+      api_pk: exsysApiCodeId,
+      isNphiesDataSentToExsys: isDataSentToExsys,
+      exsysDataSentToNafiesServer: nphiesPostData,
+      nafiesResponseBasedExsysData: response,
+      successededToPostNafiesDataToExsysServer: isInternetDisconnected
+        ? false
+        : isSuccessPostingDataToExsys,
+    },
+  });
+
   if (isInternetDisconnectedWhenPostingNafiesDataToExsys) {
     updateTimeoutRefAndRestart();
+    return;
+  }
+
+  if (isSuccessPostingDataToExsys) {
+    await onDone(doneFnOptions);
   }
 };
 
-export default createNafiesRequestAndUpdateExsysServer;
+export default createNphiesRequestAndUpdateExsysServer;

@@ -1,5 +1,5 @@
 {
-  "name": "@exsys-server/start-exsys-nafies-bridge",
+  "name": "@exsys-server/start-exsys-nphies-bridge",
   "version": "1.0.0",
   "private": true,
   "author": "ahmed nassar",
@@ -11,7 +11,7 @@
     "src"
   ],
   "bin": {
-    "start-exsys-nafies-bridge": "./bin/start-exsys-nafies-bridge.js"
+    "start-exsys-nphies-bridge": "./bin/start-exsys-nphies-bridge.js"
   },
   "scripts": {
     "start": "node src/index.js"

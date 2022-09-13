@@ -8,20 +8,20 @@ import https from "https";
 
 const createCompanyRequestOptions = async ({
   certificatePath,
-  isNaphiesCompany,
+  isNphiesCompany,
+  ignoreCert,
 }) => {
-  // const certificate = await readFile(certificatePath);
-  const certificate = undefined;
+  const certificate = ignoreCert ? undefined : await readFile(certificatePath);
 
   const requestOptions = {
     headers: {
-      "Content-type": !isNaphiesCompany
+      "Content-type": !isNphiesCompany
         ? "application/json"
         : "application/fhir+json",
     },
     httpsAgent: new https.Agent({
       pfx: certificate,
-      ...(!isNaphiesCompany
+      ...(!isNphiesCompany
         ? null
         : {
             passphrase: "qLFCpUS8CF_c",
