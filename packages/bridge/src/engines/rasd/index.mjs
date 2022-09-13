@@ -3,12 +3,17 @@
  * Engine: `startRasdApis`.
  *
  */
-import createRasdRequestAndUpdateExsysServer from "./createRasdRequestAndUpdateExsysServer.mjs";
-import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import {
+  CERTIFICATE_NAMES,
+  RESULTS_FOLDER_PATHS,
   RESTART_CALLING_EXSYS_QUERY_MS,
   RASD_API_TYPE_NAMES,
 } from "../../constants.mjs";
+import createRasdRequestAndUpdateExsysServer from "./createRasdRequestAndUpdateExsysServer.mjs";
+import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
+import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
+
+const resultsFolderPath = RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.RASD];
 
 const {
   inventory_accept,
@@ -77,25 +82,50 @@ const startRasdApis = async (options) => {
       return;
     }
 
-    const handleDone = (index) => async (options) => {
-      const isLastApiCall = requestsLength - 1 === index;
-
-      if (isLastApiCall) {
-        // await startRasdApis(options);
-      }
-    };
-
-    const configPromises = filteredApiBaseData.map((data, index) =>
+    const configPromises = filteredApiBaseData.map((data) =>
       createRasdRequestAndUpdateExsysServer({
         ...data,
         companySiteRequestOptions,
-        updateTimeoutRefAndRestart,
-        onDone: handleDone(index),
       })
     );
 
-    await Promise.all(configPromises);
+    const results = await Promise.all(configPromises);
+
+    console.log("results", results);
+
+    const { shouldRestartServer, localResultsToPrint } = results.reduce(
+      (
+        acc,
+        { localResultsData, shouldRestartServer: itemShouldRestartServer }
+      ) => {
+        acc.localResultsToPrint = [
+          ...acc.localResultsToPrint,
+          localResultsData,
+        ];
+        acc.shouldRestartServer =
+          itemShouldRestartServer || acc.shouldRestartServer;
+
+        return acc;
+      },
+      {
+        shouldRestartServer: false,
+        localResultsToPrint: [],
+      }
+    );
+
+    await updateResultsFolder({
+      resultsFolderPath,
+      data: localResultsToPrint,
+    });
+
+    if (shouldRestartServer) {
+      updateTimeoutRefAndRestart();
+      return;
+    }
+
+    await startRasdApis(options);
   } catch (error) {
+    console.error("error", error);
     setTimeout(
       async () => await startRasdApis(options),
       RESTART_CALLING_EXSYS_QUERY_MS

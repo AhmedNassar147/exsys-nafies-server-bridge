@@ -4,36 +4,44 @@
  *
  */
 
+import { join } from "path";
 import { writeFile, readFile, mkdir } from "fs/promises";
-import { checkPathExists } from "@exsys-server/helpers";
+import {
+  checkPathExists,
+  findRootYarnWorkSpaces,
+  readJsonFile,
+} from "@exsys-server/helpers";
 import getCurrentDate from "./getCurrentDate.mjs";
 
 const updateResultsFolder = async ({ data, resultsFolderPath }) => {
   const { dateString, time } = getCurrentDate();
+  const rootYarnWorkSpacePath = await findRootYarnWorkSpaces();
+  const finalResultsFolderPath = join(rootYarnWorkSpacePath, resultsFolderPath);
 
-  if (!(await checkPathExists(resultsFolderPath))) {
-    await mkdir(resultsFolderPath, { recursive: true });
+  if (!(await checkPathExists(finalResultsFolderPath))) {
+    await mkdir(finalResultsFolderPath, { recursive: true });
   }
 
-  const currentResultFilePath = `${resultsFolderPath}/${dateString}.json`;
+  const currentResultFilePath = `${finalResultsFolderPath}/${dateString}.json`;
   let previousResultFileData = [];
 
   if (await checkPathExists(currentResultFilePath)) {
-    const currentFileResultsJson = await readFile(
-      currentResultFilePath,
-      "utf-8"
-    );
-    previousResultFileData = currentFileResultsJson
-      ? JSON.parse(currentFileResultsJson)
-      : previousResultFileData;
+    previousResultFileData = await readJsonFile(currentResultFilePath, true);
   }
 
   const nextFileResults = [
-    {
-      time,
-      ...data,
-    },
-    ...previousResultFileData,
+    ...(Array.isArray(data)
+      ? data.map((item) => ({
+          ...item,
+          time,
+        }))
+      : [
+          {
+            time,
+            ...data,
+          },
+        ]),
+    ...(previousResultFileData || []),
   ];
 
   await writeFile(

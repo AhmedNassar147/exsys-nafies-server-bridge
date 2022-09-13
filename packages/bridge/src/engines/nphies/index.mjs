@@ -1,20 +1,20 @@
 /*
  *
- * Engine: `startNaphiesApis`.
+ * Engine: `startNphiesApis`.
  *
  */
-import createNafiesRequestAndUpdateExsysServer from "./createNafiesRequestAndUpdateExsysServer.mjs";
+import createNafiesRequestAndUpdateExsysServer from "./createNphiesRequestAndUpdateExsysServer.mjs";
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import { RESTART_CALLING_EXSYS_QUERY_MS } from "../../constants.mjs";
 
-const startNaphiesApis = async (options) => {
+const startNphiesApis = async (options) => {
   const { updateTimeoutRefAndRestart, companySiteRequestOptions } = options;
   const { response, isInternetDisconnected } = await createExsysQueryRequest({
     apiId: "QUERY_EXSYS_NAFIES_REQUEST_BODY_DATA",
   });
 
-  const { api_pk: exsysApiCodeId, data: nafiesPostData } = response;
-  const canCallNafiesPostApi = !!exsysApiCodeId && !!nafiesPostData;
+  const { api_pk: exsysApiCodeId, data: nphiesPostData } = response;
+  const canCallNafiesPostApi = !!exsysApiCodeId && !!nphiesPostData;
 
   if (isInternetDisconnected || !canCallNafiesPostApi) {
     if (isInternetDisconnected) {
@@ -23,7 +23,7 @@ const startNaphiesApis = async (options) => {
 
     if (!canCallNafiesPostApi && !isInternetDisconnected) {
       setTimeout(
-        async () => await startNaphiesApis(options),
+        async () => await startNphiesApis(options),
         RESTART_CALLING_EXSYS_QUERY_MS
       );
     }
@@ -32,12 +32,12 @@ const startNaphiesApis = async (options) => {
   }
 
   await createNafiesRequestAndUpdateExsysServer({
-    nafiesPostData,
+    nphiesPostData,
     exsysApiCodeId,
     companySiteRequestOptions,
     updateTimeoutRefAndRestart,
-    onDone: startNaphiesApis,
+    onDone: startNphiesApis,
   });
 };
 
-export default startNaphiesApis;
+export default startNphiesApis;

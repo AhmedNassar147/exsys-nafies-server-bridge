@@ -13,7 +13,7 @@ const CHALK_COLOR = {
 
 const createCmdMessage = ({ type, message }) =>
   console.log(
-    `${chalk.bold.magenta("[exsys-nafies-bridge]:")} ${chalk[CHALK_COLOR[type]](
+    `${chalk.bold.magenta("[exsys-nphies-bridge]:")} ${chalk[CHALK_COLOR[type]](
       message
     )}`
   );

@@ -3,29 +3,34 @@
  * Server index file.
  *
  */
+import { join } from "path";
 import chalk from "chalk";
 import isOnline from "is-online";
-import { checkPathExists, createCmdMessage } from "@exsys-server/helpers";
+import {
+  checkPathExists,
+  createCmdMessage,
+  findRootYarnWorkSpaces,
+} from "@exsys-server/helpers";
 import { createCliController } from "@exsys-server/command-line-utils";
 import {
   RESTART_MS,
   CLI_OPTIONS,
   CERTIFICATE_NAMES,
   CERTIFICATE_NAMES_KEYS,
+  CERTIFICATE_NAME_VALUES,
 } from "./constants.mjs";
 import restartProcessAndPrintMessage from "./helpers/restartProcessAndPrintMessage.mjs";
 import createCompanyRequestOptions from "./helpers/createCompanyRequestOptions.mjs";
-import createCertificatePath from "./helpers/createCertificatePath.mjs";
 import getCompanyByCertificateKey from "./helpers/getCompanyByCertificateKey.mjs";
-import startNaphiesApis from "./engines/naphies/index.mjs";
+import startNphiesApis from "./engines/nphies/index.mjs";
 import startRasdApis from "./engines/rasd/index.mjs";
 
 const COMPANY_API_START = {
-  [CERTIFICATE_NAMES.NAPHIES]: startNaphiesApis,
+  [CERTIFICATE_NAMES.NPHIES]: startNphiesApis,
   [CERTIFICATE_NAMES.RASD]: startRasdApis,
 };
 
-const runCliFn = async ({ company }) => {
+const runCliFn = async ({ company, ignoreCert }) => {
   let restartTimeOutRef;
 
   const certificateNameKey = (company || CERTIFICATE_NAMES.RASD).toUpperCase();
@@ -46,25 +51,34 @@ const runCliFn = async ({ company }) => {
     certificateNameKey,
   ]);
 
-  const certificatePath = createCertificatePath(certificateNameKey);
-  const isCertificateFileExsist = await checkPathExists(certificatePath);
+  let certificatePath = undefined;
 
-  // if (!isCertificateFileExsist) {
-  // createCmdMessage({
-  //   type: "error",
-  //   message: `the ${chalk.magenta(
-  //     "certificate"
-  //   )} doesn't exist in this path ${chalk.white(
-  //     certificatePath
-  //   )} ${chalk.magenta(`rechecking in ${RESTART_MS / 60000} minutes.`)}`,
-  // });
+  if (!ignoreCert) {
+    const rootYarnWorkSpacePath = await findRootYarnWorkSpaces();
+    certificatePath = join(
+      rootYarnWorkSpacePath,
+      CERTIFICATE_NAME_VALUES[certificateNameKey]
+    );
 
-  //   restartTimeOutRef = createRestartProcessAndPrintMessage({
-  //     restartTimeOutRef,
-  //     hideNetworkMessage: true,
-  //   });
-  //   return;
-  // }
+    const isCertificateFileExsist = await checkPathExists(certificatePath);
+
+    if (!isCertificateFileExsist) {
+      createCmdMessage({
+        type: "error",
+        message: `the ${chalk.magenta(
+          "certificate"
+        )} doesn't exist in this path ${chalk.white(
+          certificatePath
+        )} ${chalk.magenta(`rechecking in ${RESTART_MS / 60000} minutes.`)}`,
+      });
+
+      restartTimeOutRef = createRestartProcessAndPrintMessage({
+        restartTimeOutRef,
+        hideNetworkMessage: true,
+      });
+      return;
+    }
+  }
 
   const isNetworkConnected = await isOnline();
 
@@ -84,11 +98,12 @@ const runCliFn = async ({ company }) => {
     restartTimeOutRef.unref();
   }
 
-  const { IS_NAPHIES_COMPANY } = getCompanyByCertificateKey(certificateNameKey);
+  const { IS_NPHIES_COMPANY } = getCompanyByCertificateKey(certificateNameKey);
 
   const companySiteRequestOptions = await createCompanyRequestOptions({
     certificatePath,
-    isNaphiesCompany: IS_NAPHIES_COMPANY,
+    isNphiesCompany: IS_NPHIES_COMPANY,
+    ignoreCert,
   });
 
   const startFn = COMPANY_API_START[certificateNameKey];

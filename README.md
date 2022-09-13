@@ -1,3 +1,3 @@
-# exsys-nafies-server-bridge
+# exsys-nphies-server-bridge
 
-create a bridge between exsys and nafies servers
+create a bridge between exsys and nphies servers
