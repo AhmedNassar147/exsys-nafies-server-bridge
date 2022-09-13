@@ -1,6 +1,8 @@
 /node_modules
 /packages/**/node_modules
 /results
+/certs
+/config-override.json
 *.p12
 /*.p12
 *.cer
