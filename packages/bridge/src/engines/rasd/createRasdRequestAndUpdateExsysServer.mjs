@@ -60,7 +60,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
   const { notification } = bodyData;
   const isDispatchInfoApis = rasdApiName === dispatch_info;
 
-  const curredRasdResponse = response || [];
+  let curredRasdResponse = response || [];
 
   if (isDispatchInfoApis) {
     if (Array.isArray(response)) {
