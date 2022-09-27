@@ -68,7 +68,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
     } else {
       curredRasdResponse = {
         ...(response || null),
-        notification,
+        notification_id: notification,
       };
     }
   }
