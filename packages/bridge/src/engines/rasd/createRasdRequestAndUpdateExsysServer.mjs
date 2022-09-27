@@ -64,7 +64,10 @@ const createRasdRequestAndUpdateExsysServer = async ({
 
   if (isDispatchInfoApis) {
     if (Array.isArray(response)) {
-      curredRasdResponse = response.map((item) => ({ ...item, notification }));
+      curredRasdResponse = response.map((item) => ({
+        ...item,
+        notification_id: notification,
+      }));
     } else {
       curredRasdResponse = {
         ...(response || null),
