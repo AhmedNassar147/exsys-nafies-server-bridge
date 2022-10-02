@@ -13,8 +13,9 @@ const postCompanyDataResponseToExsysDB = async ({
   apiId,
   apiParams,
   apiPostData,
+  exsysBaseUrl,
 }) => {
-  const apiUrl = createExsysApiQuery(apiId, apiParams);
+  const apiUrl = createExsysApiQuery({ exsysBaseUrl, apiId, apiParams });
 
   let response = {};
   let fetchError;

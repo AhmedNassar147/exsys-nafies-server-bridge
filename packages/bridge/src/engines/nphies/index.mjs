@@ -8,8 +8,13 @@ import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import { RESTART_CALLING_EXSYS_QUERY_MS } from "../../constants.mjs";
 
 const startNphiesApis = async (options) => {
-  const { updateTimeoutRefAndRestart, companySiteRequestOptions } = options;
+  const {
+    updateTimeoutRefAndRestart,
+    companySiteRequestOptions,
+    exsysBaseUrl,
+  } = options;
   const { response, isInternetDisconnected } = await createExsysQueryRequest({
+    exsysBaseUrl,
     apiId: "QUERY_EXSYS_NAFIES_REQUEST_BODY_DATA",
   });
 
@@ -32,6 +37,7 @@ const startNphiesApis = async (options) => {
   }
 
   await createNafiesRequestAndUpdateExsysServer({
+    exsysBaseUrl,
     nphiesPostData,
     exsysApiCodeId,
     companySiteRequestOptions,

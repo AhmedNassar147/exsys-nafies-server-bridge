@@ -9,8 +9,12 @@ import { createCmdMessage } from "@exsys-server/helpers";
 import createExsysApiQuery from "./createExsysApiQuery.mjs";
 import printRequestNetworkError from "./printRequestNetworkError.mjs";
 
-const createExsysQueryRequest = async ({ apiId, params }) => {
-  const apiUrl = createExsysApiQuery(apiId, params);
+const createExsysQueryRequest = async ({ exsysBaseUrl, apiId, params }) => {
+  const apiUrl = createExsysApiQuery({
+    exsysBaseUrl,
+    apiId,
+    apiParams: params,
+  });
   let response = {};
   let fetchError;
   let isInternetDisconnected = false;

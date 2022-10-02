@@ -4,20 +4,26 @@
  *
  */
 import { sharedHelperKey } from "@exsys-server/command-line-utils";
-import { readJsonFile, findRootYarnWorkSpaces } from "@exsys-server/helpers";
 
-const rootYarnWorkSpacePath = await findRootYarnWorkSpaces();
+const EXSYS_BASE_URL = "http://LOCALHOST:9090/ords";
+const EXSYS_SCHEMA_NAME = "exsys_api";
+const RESTART_MS = 60000;
+const RESTART_CALLING_EXSYS_QUERY_MS = 2000;
 
-const {
-  EXSYS_BASE_URL,
-  EXSYS_SCHEMA_NAME,
-  NPHIES_CERT_FILE_NAME,
-  RASD_CERT_FILE_NAME,
-  RESTART_MS,
-  RESTART_CALLING_EXSYS_QUERY_MS,
-  RESULTS_FOLDER_PATHS,
-  COMPANY_API_URLS,
-} = await readJsonFile(`${rootYarnWorkSpacePath}/config-override.json`, true);
+const NPHIES_CERT_FILE_NAME = "certs/Certificate_pkcs12.p12";
+const RASD_CERT_FILE_NAME = "certs/rasd.cer";
+
+const COMPANY_API_URLS = {
+  NPHIES_PRODUCTION: "https://HSB.nphies.sa/$process-message",
+  NPHIES_DEVELOPMENT: "http://176.105.150.83:80/$process-message",
+  RASD_DEVELOPMENT: "https://api.juleb-dev.com/rasd",
+  RASD_PRODUCTION: "https://api.juleb.com/rasd",
+};
+
+const RESULTS_FOLDER_PATHS = {
+  NPHIES: "results/nphies",
+  RASD: "results/rasd",
+};
 
 const CERTIFICATE_NAMES = {
   NPHIES: "NPHIES",
@@ -29,6 +35,10 @@ const CLI_OPTIONS = {
   description: "a nodejs bridge to nphies and rasd apis",
   helpersKeys: [
     sharedHelperKey,
+    {
+      keyOrKeys: "exsys-base-url",
+      description: `point the bridge to call a the exsys base endpoints url (--exsys-base-url=${EXSYS_BASE_URL})`,
+    },
     {
       keyOrKeys: "company",
       description: `point the bridge to call a company endpoints (--company=${CERTIFICATE_NAMES.RASD.toLowerCase()})`,

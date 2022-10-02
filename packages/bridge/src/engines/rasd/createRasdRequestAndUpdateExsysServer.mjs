@@ -15,9 +15,10 @@ const createRasdRequestAndUpdateExsysServer = async ({
   rasdApiName,
   bodyData,
   companySiteRequestOptions,
-  production,
+  isProduction,
+  exsysBaseUrl,
 }) => {
-  const baseApiUrl = production ? RASD_PRODUCTION : RASD_DEVELOPMENT;
+  const baseApiUrl = isProduction ? RASD_PRODUCTION : RASD_DEVELOPMENT;
 
   let response;
   let fetchError;
@@ -92,6 +93,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
     ? await postCompanyDataResponseToExsysDB({
         apiId: "POST_RASD_REQUEST_DATA_TO_EXSYS",
         apiPostData: apiPostDataToExsys,
+        exsysBaseUrl,
       })
     : {
         isInternetDisconnectedWhenPostingNafiesDataToExsys: false,

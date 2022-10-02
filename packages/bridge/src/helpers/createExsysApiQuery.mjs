@@ -6,14 +6,16 @@
 import API_IDS from "../apiIds.mjs";
 import { EXSYS_BASE_URL, EXSYS_SCHEMA_NAME } from "../constants.mjs";
 
-const createExsysApiQuery = (apiId, apiParams) => {
+const createExsysApiQuery = ({ exsysBaseUrl, apiId, apiParams }) => {
   const apiIdResource = API_IDS[apiId];
 
   if (!apiIdResource) {
     throw new Error(`api id ${apiId} not found in /apiIds.js`);
   }
 
-  let apiUrl = `${EXSYS_BASE_URL}/${EXSYS_SCHEMA_NAME}/${apiIdResource}`;
+  let apiUrl = `${
+    exsysBaseUrl || EXSYS_BASE_URL
+  }/${EXSYS_SCHEMA_NAME}/${apiIdResource}`;
 
   if (apiParams) {
     const keys = Object.keys(apiParams);

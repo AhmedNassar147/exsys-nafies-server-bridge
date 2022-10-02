@@ -21,6 +21,7 @@ const createNphiesRequestAndUpdateExsysServer = async ({
   companySiteRequestOptions,
   updateTimeoutRefAndRestart,
   onDone,
+  exsysBaseUrl,
 }) => {
   let response;
   let fetchError;
@@ -75,6 +76,7 @@ const createNphiesRequestAndUpdateExsysServer = async ({
   } = await postCompanyDataResponseToExsysDB({
     apiId: "UPDATE_EXSYS_WITH_NAFIES_RESULTS",
     apiPostData: response,
+    exsysBaseUrl,
     apiParams: {
       api_pk: exsysApiCodeId,
     },

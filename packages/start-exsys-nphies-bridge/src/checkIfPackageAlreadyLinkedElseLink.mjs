@@ -24,8 +24,6 @@ const checkIfPackageAlreadyLinkedElseLink = async ({
       type: "success",
       message: "already linked 😉",
     });
-
-    return;
   }
 
   try {

@@ -41,9 +41,11 @@ const startRasdApis = async (options) => {
     const {
       updateTimeoutRefAndRestart,
       companySiteRequestOptions,
-      production,
+      isProduction,
+      exsysBaseUrl,
     } = options;
     const { response, isInternetDisconnected } = await createExsysQueryRequest({
+      exsysBaseUrl,
       apiId: "QUERY_EXSYS_RASD_REQUEST_DATA",
     });
 
@@ -90,7 +92,8 @@ const startRasdApis = async (options) => {
       createRasdRequestAndUpdateExsysServer({
         ...data,
         companySiteRequestOptions,
-        production,
+        isProduction,
+        exsysBaseUrl,
       })
     );
 

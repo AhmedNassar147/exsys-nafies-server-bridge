@@ -30,7 +30,7 @@ const COMPANY_API_START = {
   [CERTIFICATE_NAMES.RASD]: startRasdApis,
 };
 
-const runCliFn = async ({ company, ignoreCert, production }) => {
+const runCliFn = async ({ company, ignoreCert, production, exsysBaseUrl }) => {
   let restartTimeOutRef;
 
   const certificateNameKey = (company || CERTIFICATE_NAMES.RASD).toUpperCase();
@@ -111,7 +111,8 @@ const runCliFn = async ({ company, ignoreCert, production }) => {
   await startFn({
     companySiteRequestOptions,
     updateTimeoutRefAndRestart,
-    production,
+    isProduction: production,
+    exsysBaseUrl,
   });
 };
 
