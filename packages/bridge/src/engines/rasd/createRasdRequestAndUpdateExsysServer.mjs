@@ -8,14 +8,17 @@ import { COMPANY_API_URLS, RASD_API_TYPE_NAMES } from "../../constants.mjs";
 import printRequestNetworkError from "../../helpers/printRequestNetworkError.mjs";
 import postCompanyDataResponseToExsysDB from "../../helpers/postCompanyDataResponseToExsysDB.mjs";
 
-const baseApiUrl = COMPANY_API_URLS.RASD_PRODUCTION;
+const { RASD_PRODUCTION, RASD_DEVELOPMENT } = COMPANY_API_URLS;
 const { dispatch_info } = RASD_API_TYPE_NAMES;
 
 const createRasdRequestAndUpdateExsysServer = async ({
   rasdApiName,
   bodyData,
   companySiteRequestOptions,
+  production,
 }) => {
+  const baseApiUrl = production ? RASD_PRODUCTION : RASD_DEVELOPMENT;
+
   let response;
   let fetchError;
   let isInternetDisconnected = false;

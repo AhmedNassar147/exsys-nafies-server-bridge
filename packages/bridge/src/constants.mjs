@@ -32,6 +32,10 @@ const CLI_OPTIONS = {
       description: `point the bridge to call a company endpoints (--company=${CERTIFICATE_NAMES.RASD.toLowerCase()})`,
     },
     {
+      keyOrKeys: "production",
+      description: `point the bridge to call a company endpoints in production mode (--production)`,
+    },
+    {
       keyOrKeys: "ignore-cert",
       description: `ignore certification for current company (--ignore-cert)`,
     },

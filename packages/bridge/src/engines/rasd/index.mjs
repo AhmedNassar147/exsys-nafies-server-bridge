@@ -38,7 +38,11 @@ const createRasdApiWithData = (rasdApiName, baseData) => {
 
 const startRasdApis = async (options) => {
   try {
-    const { updateTimeoutRefAndRestart, companySiteRequestOptions } = options;
+    const {
+      updateTimeoutRefAndRestart,
+      companySiteRequestOptions,
+      production,
+    } = options;
     const { response, isInternetDisconnected } = await createExsysQueryRequest({
       apiId: "QUERY_EXSYS_RASD_REQUEST_DATA",
     });
@@ -86,6 +90,7 @@ const startRasdApis = async (options) => {
       createRasdRequestAndUpdateExsysServer({
         ...data,
         companySiteRequestOptions,
+        production,
       })
     );
 
