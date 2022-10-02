@@ -4,7 +4,9 @@
  *
  */
 import { sharedHelperKey } from "@exsys-server/command-line-utils";
-import { readJsonFile } from "@exsys-server/helpers";
+import { readJsonFile, findRootYarnWorkSpaces } from "@exsys-server/helpers";
+
+const rootYarnWorkSpacePath = await findRootYarnWorkSpaces();
 
 const {
   EXSYS_BASE_URL,
@@ -15,7 +17,7 @@ const {
   RESTART_CALLING_EXSYS_QUERY_MS,
   RESULTS_FOLDER_PATHS,
   COMPANY_API_URLS,
-} = await readJsonFile("../../config-override.json", true);
+} = await readJsonFile(`${rootYarnWorkSpacePath}/config-override.json`, true);
 
 const CERTIFICATE_NAMES = {
   NPHIES: "NPHIES",
