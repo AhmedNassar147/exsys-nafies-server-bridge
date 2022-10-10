@@ -15,8 +15,8 @@
     "reset": "yarn clean && yarn clean-locks && yarn bootstrap",
     "prepare": "yarn workspace @exsys-server/start-exsys-nphies-bridge start",
     "start": "yarn workspace @exsys-server/bridge start",
-    "nassar-start-rasd": "yarn workspace @exsys-server/bridge start --ignore-cert --exsys-base-url=http://149.102.140.8:9090/ords",
-    "nassar-start-rasd-prod": "yarn workspace @exsys-server/bridge start --ignore-cert --exsys-base-url=http://149.102.140.8:9090/ords",
+    "nassar-start-rasd": "yarn workspace @exsys-server/bridge start --ignore-cert --exsys-base-url=http://149.102.140.8:9090/ords/exsys_api",
+    "nassar-start-rasd-prod": "yarn workspace @exsys-server/bridge start --ignore-cert --exsys-base-url=http://149.102.140.8:9090/ords/exsys_api",
     "start-rasd": "yarn workspace @exsys-server/bridge start --ignore-cert",
     "start-rasd-prod": "yarn workspace @exsys-server/bridge start --ignore-cert --production"
   },
