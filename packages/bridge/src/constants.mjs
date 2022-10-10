@@ -5,8 +5,7 @@
  */
 import { sharedHelperKey } from "@exsys-server/command-line-utils";
 
-const EXSYS_BASE_URL = "http://LOCALHOST:9090/ords";
-const EXSYS_SCHEMA_NAME = "exsys_api";
+const EXSYS_BASE_URL = "http://LOCALHOST:9090/ords/exsys_api";
 const RESTART_MS = 60000;
 const RESTART_CALLING_EXSYS_QUERY_MS = 2000;
 
@@ -74,7 +73,6 @@ const RASD_API_TYPE_NAMES = {
 
 export {
   EXSYS_BASE_URL,
-  EXSYS_SCHEMA_NAME,
   COMPANY_API_URLS,
   RESTART_MS,
   RESTART_CALLING_EXSYS_QUERY_MS,
