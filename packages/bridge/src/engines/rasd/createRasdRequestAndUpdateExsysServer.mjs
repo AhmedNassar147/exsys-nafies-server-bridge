@@ -86,7 +86,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
   };
 
   const {
-    isInternetDisconnectedWhenPostingNafiesDataToExsys,
+    isInternetDisconnectedWhenPostingDataToExsys,
     isSuccessPostingDataToExsys,
     isDataSentToExsys,
   } = shouldPostDataToExsys
@@ -96,22 +96,21 @@ const createRasdRequestAndUpdateExsysServer = async ({
         exsysBaseUrl,
       })
     : {
-        isInternetDisconnectedWhenPostingNafiesDataToExsys: false,
+        isInternetDisconnectedWhenPostingDataToExsys: false,
         isSuccessPostingDataToExsys: false,
         isDataSentToExsys: false,
       };
 
   return {
     shouldRestartServer:
-      isInternetDisconnected ||
-      isInternetDisconnectedWhenPostingNafiesDataToExsys,
+      isInternetDisconnected || isInternetDisconnectedWhenPostingDataToExsys,
     localResultsData: {
       rasdApiName,
       exsysDataSentToRasdServer: bodyData,
       rasdResponseBasedExsysData: apiPostDataToExsys,
       isRasdDataSentToExsys: isDataSentToExsys,
       successededToPostRasdDataToExsysServer:
-        isInternetDisconnectedWhenPostingNafiesDataToExsys
+        isInternetDisconnectedWhenPostingDataToExsys
           ? false
           : isSuccessPostingDataToExsys,
     },

@@ -17,21 +17,24 @@ const COMPANY_API_URLS = {
   NPHIES_DEVELOPMENT: "http://176.105.150.83:80/$process-message",
   RASD_DEVELOPMENT: "https://api.juleb-dev.com/rasd",
   RASD_PRODUCTION: "https://api.juleb.com/rasd",
+  TADAWY_PRODUCTION: "https://waba.360dialog.io/v1/messages",
 };
 
 const RESULTS_FOLDER_PATHS = {
   NPHIES: "results/nphies",
   RASD: "results/rasd",
+  TADAWY: "results/tadawy",
 };
 
 const CERTIFICATE_NAMES = {
   NPHIES: "NPHIES",
   RASD: "RASD",
+  TADAWY: "TADAWY",
 };
 
 const CLI_OPTIONS = {
   scriptName: "start-exsys-nphies-bridge",
-  description: "a nodejs bridge to nphies and rasd apis",
+  description: "a nodejs bridge to nphies, rasd and tadawy apis",
   helpersKeys: [
     sharedHelperKey,
     {

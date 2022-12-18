@@ -18,7 +18,9 @@
     "nassar-start-rasd": "yarn workspace @exsys-server/bridge start --ignore-cert --exsys-base-url=http://149.102.140.8:9090/ords/exsys_api",
     "nassar-start-rasd-prod": "yarn workspace @exsys-server/bridge start --ignore-cert --exsys-base-url=http://149.102.140.8:9090/ords/exsys_api",
     "start-rasd": "yarn workspace @exsys-server/bridge start --ignore-cert",
-    "start-rasd-prod": "yarn workspace @exsys-server/bridge start --ignore-cert --production"
+    "start-rasd-prod": "yarn workspace @exsys-server/bridge start --ignore-cert --production",
+    "start-tadawy": "yarn workspace @exsys-server/bridge start --ignore-cert --company=TADAWY",
+    "nassar-start-tadawy": "yarn workspace @exsys-server/bridge start --ignore-cert --company=TADAWY --exsys-base-url=http://149.102.140.8:9090/ords/exsys_api"
   },
   "dependencies": {
     "@exsys-server/bridge": "1.0.0",

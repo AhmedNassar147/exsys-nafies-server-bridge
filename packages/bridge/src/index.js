@@ -22,12 +22,14 @@ import {
 import restartProcessAndPrintMessage from "./helpers/restartProcessAndPrintMessage.mjs";
 import createCompanyRequestOptions from "./helpers/createCompanyRequestOptions.mjs";
 import getCompanyByCertificateKey from "./helpers/getCompanyByCertificateKey.mjs";
-import startNphiesApis from "./engines/nphies/index.mjs";
-import startRasdApis from "./engines/rasd/index.mjs";
+import runNphiesEngine from "./engines/nphies/index.mjs";
+import runRasdEngine from "./engines/rasd/index.mjs";
+import runTadawyEngine from "./engines/tadawy/index.mjs";
 
 const COMPANY_API_START = {
-  [CERTIFICATE_NAMES.NPHIES]: startNphiesApis,
-  [CERTIFICATE_NAMES.RASD]: startRasdApis,
+  [CERTIFICATE_NAMES.NPHIES]: runNphiesEngine,
+  [CERTIFICATE_NAMES.RASD]: runRasdEngine,
+  [CERTIFICATE_NAMES.TADAWY]: runTadawyEngine,
 };
 
 const runCliFn = async ({ company, ignoreCert, production, exsysBaseUrl }) => {

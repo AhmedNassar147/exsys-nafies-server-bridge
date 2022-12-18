@@ -70,7 +70,7 @@ const createNphiesRequestAndUpdateExsysServer = async ({
   }
 
   const {
-    isInternetDisconnectedWhenPostingNafiesDataToExsys,
+    isInternetDisconnectedWhenPostingDataToExsys,
     isSuccessPostingDataToExsys,
     isDataSentToExsys,
   } = await postCompanyDataResponseToExsysDB({
@@ -95,7 +95,7 @@ const createNphiesRequestAndUpdateExsysServer = async ({
     },
   });
 
-  if (isInternetDisconnectedWhenPostingNafiesDataToExsys) {
+  if (isInternetDisconnectedWhenPostingDataToExsys) {
     updateTimeoutRefAndRestart();
     return;
   }

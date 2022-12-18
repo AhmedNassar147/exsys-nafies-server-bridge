@@ -63,7 +63,7 @@ const postCompanyDataResponseToExsysDB = async ({
   }
 
   return {
-    isInternetDisconnectedWhenPostingNafiesDataToExsys: isInternetDisconnected,
+    isInternetDisconnectedWhenPostingDataToExsys: isInternetDisconnected,
     isSuccessPostingDataToExsys: isSuccess,
     isDataSentToExsys: true,
   };
