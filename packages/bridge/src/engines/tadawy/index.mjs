@@ -16,7 +16,7 @@ import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
 const resultsFolderPath = RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.TADAWY];
 
 const replace4SpacesOrEnterInText = (valueText) =>
-  valueText && valueText.replace(/\s{4,}|\n/g, " ");
+  valueText && valueText.replace(/\s{4,}|\t|\n/g, " ");
 
 const startTadawyApis = async (options) => {
   try {
