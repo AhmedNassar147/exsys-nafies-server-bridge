@@ -13,5 +13,6 @@
   },
   "files.trimTrailingWhitespace": true,
   "editor.rulers": [90],
-  "typescript.tsdk": "exsys-bridge-app/node_modules/typescript/lib"
+  "typescript.tsdk": "exsys-bridge-app/node_modules/typescript/lib",
+  "cSpell.words": ["jawaly"]
 }

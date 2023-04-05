@@ -18,6 +18,7 @@ import {
   CERTIFICATE_NAMES,
   CERTIFICATE_NAMES_KEYS,
   CERTIFICATE_NAME_VALUES,
+  EXSYS_DEV_BASE_URL,
 } from "./constants.mjs";
 import restartProcessAndPrintMessage from "./helpers/restartProcessAndPrintMessage.mjs";
 import createCompanyRequestOptions from "./helpers/createCompanyRequestOptions.mjs";
@@ -25,14 +26,22 @@ import getCompanyByCertificateKey from "./helpers/getCompanyByCertificateKey.mjs
 import runNphiesEngine from "./engines/nphies/index.mjs";
 import runRasdEngine from "./engines/rasd/index.mjs";
 import runTadawyEngine from "./engines/tadawy/index.mjs";
+import runJawalyEngine from "./engines/jawaly/index.mjs";
 
 const COMPANY_API_START = {
   [CERTIFICATE_NAMES.NPHIES]: runNphiesEngine,
   [CERTIFICATE_NAMES.RASD]: runRasdEngine,
   [CERTIFICATE_NAMES.TADAWY]: runTadawyEngine,
+  [CERTIFICATE_NAMES.JAWALY]: runJawalyEngine,
 };
 
-const runCliFn = async ({ company, ignoreCert, production, exsysBaseUrl }) => {
+const runCliFn = async ({
+  company,
+  ignoreCert,
+  production,
+  exsysBaseUrl,
+  devMode,
+}) => {
   let restartTimeOutRef;
 
   const certificateNameKey = (company || CERTIFICATE_NAMES.RASD).toUpperCase();
@@ -109,12 +118,13 @@ const runCliFn = async ({ company, ignoreCert, production, exsysBaseUrl }) => {
   });
 
   const startFn = COMPANY_API_START[certificateNameKey];
+  const curredExsysBaseUrl = exsysBaseUrl || EXSYS_DEV_BASE_URL;
 
   await startFn({
     companySiteRequestOptions,
     updateTimeoutRefAndRestart,
     isProduction: production,
-    exsysBaseUrl,
+    exsysBaseUrl: devMode ? curredExsysBaseUrl : exsysBaseUrl,
   });
 };
 

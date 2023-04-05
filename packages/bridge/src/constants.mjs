@@ -6,6 +6,7 @@
 import { sharedHelperKey } from "@exsys-server/command-line-utils";
 
 const EXSYS_BASE_URL = "http://LOCALHOST:9090/ords/exsys_api";
+const EXSYS_DEV_BASE_URL = "http://149.102.140.8:9090/ords/exsys_api";
 const RESTART_MS = 60000;
 const RESTART_CALLING_EXSYS_QUERY_MS = 2000;
 
@@ -18,18 +19,21 @@ const COMPANY_API_URLS = {
   RASD_DEVELOPMENT: "https://api.juleb-dev.com/rasd",
   RASD_PRODUCTION: "https://api.juleb.com/rasd",
   TADAWY_PRODUCTION: "https://waba.360dialog.io/v1/messages",
+  JAWALY_PRODUCTION: "https://api-sms.4jawaly.com/api/v1/account/area/sms/send",
 };
 
 const RESULTS_FOLDER_PATHS = {
   NPHIES: "results/nphies",
   RASD: "results/rasd",
   TADAWY: "results/tadawy",
+  JAWALY: "results/jawaly",
 };
 
 const CERTIFICATE_NAMES = {
   NPHIES: "NPHIES",
   RASD: "RASD",
   TADAWY: "TADAWY",
+  JAWALY: "JAWALY",
 };
 
 const CLI_OPTIONS = {
@@ -52,6 +56,10 @@ const CLI_OPTIONS = {
     {
       keyOrKeys: "ignore-cert",
       description: `ignore certification for current company (--ignore-cert)`,
+    },
+    {
+      keyOrKeys: "dev-mode",
+      description: `setup development mode (--dev-mode)`,
     },
   ],
 };
@@ -76,6 +84,7 @@ const RASD_API_TYPE_NAMES = {
 
 export {
   EXSYS_BASE_URL,
+  EXSYS_DEV_BASE_URL,
   COMPANY_API_URLS,
   RESTART_MS,
   RESTART_CALLING_EXSYS_QUERY_MS,

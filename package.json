@@ -15,12 +15,14 @@
     "reset": "yarn clean && yarn clean-locks && yarn bootstrap",
     "prepare": "yarn workspace @exsys-server/start-exsys-nphies-bridge start",
     "start": "yarn workspace @exsys-server/bridge start",
-    "nassar-start-rasd": "yarn workspace @exsys-server/bridge start --ignore-cert --exsys-base-url=http://149.102.140.8:9090/ords/exsys_api",
-    "nassar-start-rasd-prod": "yarn workspace @exsys-server/bridge start --ignore-cert --exsys-base-url=http://149.102.140.8:9090/ords/exsys_api",
-    "start-rasd": "yarn workspace @exsys-server/bridge start --ignore-cert",
-    "start-rasd-prod": "yarn workspace @exsys-server/bridge start --ignore-cert --production",
-    "start-tadawy": "yarn workspace @exsys-server/bridge start --ignore-cert --company=TADAWY",
-    "nassar-start-tadawy": "yarn workspace @exsys-server/bridge start --ignore-cert --company=TADAWY --exsys-base-url=http://149.102.140.8:9090/ords/exsys_api"
+    "nassar-start-rasd": "yarn start --ignore-cert --dev-mode",
+    "nassar-start-rasd-prod": "yarn start --ignore-cert --dev-mode",
+    "start-rasd": "yarn start --ignore-cert",
+    "start-rasd-prod": "yarn start --ignore-cert --production",
+    "start-tadawy": "yarn start --ignore-cert --company=TADAWY",
+    "nassar-start-tadawy": "yarn start --ignore-cert --company=TADAWY --dev-mode",
+    "start-jawaly": "yarn start --ignore-cert --company=JAWALY",
+    "nassar-start-jawaly": "yarn start --ignore-cert --company=JAWALY --dev-mode"
   },
   "dependencies": {
     "@exsys-server/bridge": "1.0.0",
