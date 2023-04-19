@@ -3,8 +3,8 @@
  * Helper: `createTadawyRequestAndUpdateExsysServer`.
  *
  */
-import axios from "axios";
 import { COMPANY_API_URLS } from "../../constants.mjs";
+import createAxiosPostRequest from "../../helpers/createAxiosPostRequest.mjs";
 import postCompanyDataResponseToExsysDB from "../../helpers/postCompanyDataResponseToExsysDB.mjs";
 
 const { TADAWY_PRODUCTION } = COMPANY_API_URLS;
@@ -16,24 +16,11 @@ const createTadawyRequestAndUpdateExsysServer = async ({
   exsysBaseUrl,
   message_id,
 }) => {
-  let response;
-  let responseStatus;
-
-  try {
-    const { data, status } = await axios.post(
-      TADAWY_PRODUCTION,
-      bodyData,
-      companySiteRequestOptions
-    );
-    response = data;
-    responseStatus = status;
-  } catch (apiFetchError) {
-    const { response: tadawyResponse } = apiFetchError || {};
-    const { data: tadawyResponseData, status } = tadawyResponse || {};
-
-    responseStatus = status;
-    response = tadawyResponseData;
-  }
+  const { response, responseStatus } = await createAxiosPostRequest({
+    apiUrl: TADAWY_PRODUCTION,
+    bodyData,
+    requestOptions: companySiteRequestOptions,
+  });
 
   const { messages, meta, errors } = response || {};
   const foundResponseStatus = responseStatus;

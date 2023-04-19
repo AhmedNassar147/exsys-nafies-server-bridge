@@ -17,9 +17,11 @@ const API_IDS = {
   // http://149.102.140.8:9090/ords/exsys_api/exsys_whatsapp_pkg/whatsapp_response_dml
   POST_TADAWY_RESPONSE_TO_EXSYS: "exsys_whatsapp_pkg/whatsapp_response_dml",
   // http://149.102.140.8:9090/ords/exsys_api/exsys_whatsapp_pkg/api_sms_not_send_data
-  QUERY_EXSYS_JAWALY_MESSAGE_DATA: "exsys_whatsapp_pkg/api_sms_not_send_data",
+  QUERY_EXSYS_WHATSAPP_SMS_NOT_SEND_DATA:
+    "exsys_whatsapp_pkg/api_sms_not_send_data",
   // http://149.102.140.8:9090/ords/exsys_api/exsys_whatsapp_pkg/api_sms_response_dml
-  POST_JAWALY_RESPONSE_TO_EXSYS: "exsys_whatsapp_pkg/api_sms_response_dml",
+  QUERY_EXSYS_WHATSAPP_SMS_RESPONSE_TO_EXSYS:
+    "exsys_whatsapp_pkg/api_sms_response_dml",
 };
 
 export default API_IDS;

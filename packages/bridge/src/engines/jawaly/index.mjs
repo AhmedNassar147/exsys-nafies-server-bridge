@@ -1,20 +1,17 @@
 /*
  *
- * Engine: `startJawalyApis`.
+ * Engine: `startSmsApis`.
  *
  */
-import {
-  CERTIFICATE_NAMES,
-  RESULTS_FOLDER_PATHS,
-  RESTART_CALLING_EXSYS_QUERY_MS,
-} from "../../constants.mjs";
-import createJawalyRequestAndUpdateExsysServer from "./createJawalyRequestAndUpdateExsysServer.mjs";
+import { createCmdMessage } from "@exsys-server/helpers";
+import { RESTART_CALLING_EXSYS_QUERY_MS } from "../../constants.mjs";
+import getDataFromResponse from "./getDataFromResponse.mjs";
+import createDataWillBePostedToExsys from "./createDataWillBePostedToExsys.mjs";
+import createSmsRequestAndUpdateExsysServer from "./createSmsRequestAndUpdateExsysServer.mjs";
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
 
-const resultsFolderPath = RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.JAWALY];
-
-const startJawalyApis = async (options) => {
+const startSmsApis = async (options) => {
   try {
     const {
       updateTimeoutRefAndRestart,
@@ -25,7 +22,7 @@ const startJawalyApis = async (options) => {
 
     const { response, isInternetDisconnected } = await createExsysQueryRequest({
       exsysBaseUrl,
-      apiId: "QUERY_EXSYS_JAWALY_MESSAGE_DATA",
+      apiId: "QUERY_EXSYS_WHATSAPP_SMS_NOT_SEND_DATA",
     });
 
     if (isInternetDisconnected) {
@@ -33,12 +30,30 @@ const startJawalyApis = async (options) => {
       return;
     }
 
-    const { api_key, api_secret, message_id, sms_body } = response || {};
-    const { messages } = sms_body || {};
+    const formattedResults = getDataFromResponse(response);
+    const {
+      restartIf,
+      resultsFolderPath,
+      companySiteRequestOptionsAuth,
+      printNoCompanyProvided,
+      requestDataParamsOrBody,
+      dataToSendToExsys,
+      smsSendingCompanyName,
+      companyApiUrl,
+      isCompanyQueryPostByQueryFetch,
+    } = formattedResults || {};
 
-    if (!messages || !messages.length || !api_key || !api_secret) {
+    if (printNoCompanyProvided) {
+      createCmdMessage({
+        type: "error",
+        message:
+          "`sms_sending_company_name` is not found in `QUERY_EXSYS_WHATSAPP_SMS_NOT_SEND_DATA` api",
+      });
+    }
+
+    if (restartIf) {
       setTimeout(
-        async () => await startJawalyApis(options),
+        async () => await startSmsApis(options),
         RESTART_CALLING_EXSYS_QUERY_MS
       );
 
@@ -46,17 +61,19 @@ const startJawalyApis = async (options) => {
     }
 
     const { localResultsData, shouldRestartServer } =
-      await createJawalyRequestAndUpdateExsysServer({
-        message_id,
-        bodyData: sms_body,
+      await createSmsRequestAndUpdateExsysServer({
         isProduction,
         exsysBaseUrl,
+        companyApiUrl,
+        isCompanyQueryPostByQueryFetch,
+        createDataWillBePostedToExsys: createDataWillBePostedToExsys({
+          smsSendingCompanyName,
+          dataToSendToExsys,
+        }),
+        bodyData: requestDataParamsOrBody,
         companySiteRequestOptions: {
           ...companySiteRequestOptions,
-          auth: {
-            username: api_key,
-            password: api_secret,
-          },
+          auth: companySiteRequestOptionsAuth,
         },
       });
 
@@ -70,14 +87,14 @@ const startJawalyApis = async (options) => {
       return;
     }
 
-    await startJawalyApis(options);
+    await startSmsApis(options);
   } catch (error) {
     console.error("error", error);
     setTimeout(
-      async () => await startJawalyApis(options),
+      async () => await startSmsApis(options),
       RESTART_CALLING_EXSYS_QUERY_MS
     );
   }
 };
 
-export default startJawalyApis;
+export default startSmsApis;
