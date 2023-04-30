@@ -25,8 +25,17 @@ const startSmsApis = async (options) => {
       apiId: "QUERY_EXSYS_WHATSAPP_SMS_NOT_SEND_DATA",
     });
 
-    if (isInternetDisconnected || !isObjectHasData(response)) {
+    if (isInternetDisconnected) {
       updateTimeoutRefAndRestart();
+      return;
+    }
+
+    if (!isObjectHasData(response)) {
+      setTimeout(
+        async () => await startSmsApis(options),
+        RESTART_CALLING_EXSYS_QUERY_MS
+      );
+
       return;
     }
 
