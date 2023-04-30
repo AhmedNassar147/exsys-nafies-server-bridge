@@ -27,12 +27,14 @@ import runNphiesEngine from "./engines/nphies/index.mjs";
 import runRasdEngine from "./engines/rasd/index.mjs";
 import runTadawyEngine from "./engines/tadawy/index.mjs";
 import runJawalyEngine from "./engines/jawaly/index.mjs";
+import runRasdXmlEngine from "./engines/rasdXml/index.mjs";
 
 const COMPANY_API_START = {
   [CERTIFICATE_NAMES.NPHIES]: runNphiesEngine,
   [CERTIFICATE_NAMES.RASD]: runRasdEngine,
   [CERTIFICATE_NAMES.TADAWY]: runTadawyEngine,
   [CERTIFICATE_NAMES.JAWALY]: runJawalyEngine,
+  [CERTIFICATE_NAMES.RASD_XML]: runRasdXmlEngine,
 };
 
 const runCliFn = async ({
