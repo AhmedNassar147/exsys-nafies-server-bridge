@@ -3,7 +3,7 @@
  * Engine: `startSmsApis`.
  *
  */
-import { createCmdMessage } from "@exsys-server/helpers";
+import { createCmdMessage, isObjectHasData } from "@exsys-server/helpers";
 import { RESTART_CALLING_EXSYS_QUERY_MS } from "../../constants.mjs";
 import getDataFromResponse from "./getDataFromResponse.mjs";
 import createDataWillBePostedToExsys from "./createDataWillBePostedToExsys.mjs";
@@ -25,7 +25,7 @@ const startSmsApis = async (options) => {
       apiId: "QUERY_EXSYS_WHATSAPP_SMS_NOT_SEND_DATA",
     });
 
-    if (isInternetDisconnected) {
+    if (isInternetDisconnected || !isObjectHasData(response)) {
       updateTimeoutRefAndRestart();
       return;
     }
