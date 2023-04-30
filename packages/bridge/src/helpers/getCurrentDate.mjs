@@ -12,24 +12,22 @@ const formalizeValue = (value) => {
 const getCurrentDate = () => {
   const ts = Date.now();
 
-  const date_ob = new Date(ts);
-  const date = date_ob.getDate();
-  const year = date_ob.getFullYear();
-  const month = formalizeValue(date_ob.getMonth() + 1);
-  const hours = formalizeValue(date_ob.getHours());
-  const minutes = formalizeValue(date_ob.getMinutes());
-  const seconds = formalizeValue(date_ob.getSeconds());
-  const amOrPm = date_ob.getHours() < 12 ? "AM" : "PM";
+  const date = new Date(ts);
+  const day = date.getDate();
+  const year = date.getFullYear();
+  const month = formalizeValue(date.getMonth() + 1);
+  const hours = formalizeValue(date.getHours());
+  const minutes = formalizeValue(date.getMinutes());
+  const seconds = formalizeValue(date.getSeconds());
+  const amOrPm = date.getHours() < 12 ? "am" : "pm";
 
-  const time = `${hours}:${minutes}:${seconds} ${amOrPm}`.toLowerCase();
-  const dateString = `${month}/${date}/${year}`;
+  const time = `${hours}:${minutes}:${seconds} ${amOrPm}`;
+  const dateString = `${day}-${month}-${year}`;
 
   return {
     time,
     dateString,
   };
 };
-
-getCurrentDate();
 
 export default getCurrentDate;
