@@ -3,7 +3,7 @@
  * Helper: `findRootYarnWorkSpaces`.
  *
  */
-import { normalize, join } from "path";
+import { normalize, join, dirname } from "path";
 import readJsonFile from "./readJsonFile.mjs";
 import checkPathExists from "./checkPathExists.mjs";
 
@@ -24,7 +24,7 @@ const readPackageJSON = async (dir) => {
 
 const findRootYarnWorkSpaces = async (initial, maxReties) => {
   if (!initial) {
-    initial = process.cwd();
+    initial = dirname(import.meta.url).replace(/^file:\/\/\//, "");
   }
 
   initial = normalize(initial);
