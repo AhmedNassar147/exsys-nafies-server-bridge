@@ -13,7 +13,7 @@ const createDispatchInfoProperResponseFromParsedXml =
 
       return {
         error: getTextValueOfObject(h1),
-        exsysDataWhenRasdRespondsWithError,
+        ...exsysDataWhenRasdRespondsWithError,
       };
     }
 
@@ -25,7 +25,7 @@ const createDispatchInfoProperResponseFromParsedXml =
       return {
         errorCode: getTextValueOfObject(faultstring),
         error: getTextValueOfObject(faultcode),
-        exsysDataWhenRasdRespondsWithError,
+        ...exsysDataWhenRasdRespondsWithError,
       };
     }
 
@@ -36,7 +36,7 @@ const createDispatchInfoProperResponseFromParsedXml =
     }
 
     return {
-      data: keys.map((key) => {
+      data: keys.reduce((acc, key) => {
         const {
           DISPATCHNOTIFICATIONID,
           NOTIFICATIONID,
@@ -46,23 +46,29 @@ const createDispatchInfoProperResponseFromParsedXml =
         } = foundParsedXmlBody[key];
         const { PRODUCT } = PRODUCTLIST || {};
 
-        return {
-          notificationId: getTextValueOfObject(
-            DISPATCHNOTIFICATIONID || NOTIFICATIONID
-          ),
-          notificationDate: getTextValueOfObject(NOTIFICATIONDATE),
-          fromGln: getTextValueOfObject(FROMGLN),
-          products: Array.isArray(PRODUCT)
-            ? PRODUCT.map(({ GTIN, SN, BN, XD, RC }) => ({
-                gtin: getTextValueOfObject(GTIN),
-                sn: getTextValueOfObject(SN),
-                bn: getTextValueOfObject(BN),
-                xd: getTextValueOfObject(XD),
-                rc: getTextValueOfObject(RC),
-              }))
-            : [],
-        };
-      }),
+        const notificationId = getTextValueOfObject(
+          DISPATCHNOTIFICATIONID || NOTIFICATIONID
+        );
+        const notificationDate = getTextValueOfObject(NOTIFICATIONDATE);
+        const fromGln = getTextValueOfObject(FROMGLN);
+
+        const products = Array.isArray(PRODUCT)
+          ? PRODUCT.map(({ GTIN, SN, BN, XD, RC }) => ({
+              gtin: getTextValueOfObject(GTIN),
+              sn: getTextValueOfObject(SN),
+              bn: getTextValueOfObject(BN),
+              xd: getTextValueOfObject(XD),
+              rc: getTextValueOfObject(RC),
+              notificationId,
+              notificationDate,
+              fromGln,
+            }))
+          : [];
+
+        acc.push(...products);
+
+        return acc;
+      }, []),
     };
   };
 
@@ -70,41 +76,41 @@ const createDispatchInfoProperResponseFromParsedXml =
 //   "_declaration": { "_attributes": { "version": "1.0", "encoding": "UTF-8" } },
 //   "S:Envelope": {
 //     "_attributes": { "xmlns:S": "http://schemas.xmlsoap.org/soap/envelope/" },
-//     "S:Body": {
-//       "ns2:AcceptDispatchNotificationServiceResponse": {
-//         "_attributes": {
-//           "xmlns:ns2": "http://dtts.sfda.gov.sa/DispatchDetailService"
+// "S:Body": {
+//   "ns2:AcceptDispatchNotificationServiceResponse": {
+//     "_attributes": {
+//       "xmlns:ns2": "http://dtts.sfda.gov.sa/DispatchDetailService"
+//     },
+//     "DISPATCHNOTIFICATIONID": { "_text": "732162605" },
+//     "NOTIFICATIONDATE": { "_text": "2023-04-04" },
+//     "FROMGLN": { "_text": "6285125000034" },
+//     "PRODUCTLIST": {
+//       "PRODUCT": [
+//         {
+//           "GTIN": { "_text": "05712249108427" },
+//           "SN": { "_text": "1065129204838" },
+//           "BN": { "_text": "NP5F088" },
+//           "XD": { "_text": "2025-08-31" },
+//           "RC": { "_text": "00000" }
 //         },
-//         "DISPATCHNOTIFICATIONID": { "_text": "732162605" },
-//         "NOTIFICATIONDATE": { "_text": "2023-04-04" },
-//         "FROMGLN": { "_text": "6285125000034" },
-//         "PRODUCTLIST": {
-//           "PRODUCT": [
-//             {
-//               "GTIN": { "_text": "05712249108427" },
-//               "SN": { "_text": "1065129204838" },
-//               "BN": { "_text": "NP5F088" },
-//               "XD": { "_text": "2025-08-31" },
-//               "RC": { "_text": "00000" }
-//             },
-//             {
-//               "GTIN": { "_text": "05712249108427" },
-//               "SN": { "_text": "1609764718224" },
-//               "BN": { "_text": "NP5F088" },
-//               "XD": { "_text": "2025-08-31" },
-//               "RC": { "_text": "00000" }
-//             },
-//             {
-//               "GTIN": { "_text": "05712249113834" },
-//               "SN": { "_text": "1327592133362" },
-//               "BN": { "_text": "N086926" },
-//               "XD": { "_text": "2024-09-30" },
-//               "RC": { "_text": "00000" }
-//             }
-//           ]
+//         {
+//           "GTIN": { "_text": "05712249108427" },
+//           "SN": { "_text": "1609764718224" },
+//           "BN": { "_text": "NP5F088" },
+//           "XD": { "_text": "2025-08-31" },
+//           "RC": { "_text": "00000" }
+//         },
+//         {
+//           "GTIN": { "_text": "05712249113834" },
+//           "SN": { "_text": "1327592133362" },
+//           "BN": { "_text": "N086926" },
+//           "XD": { "_text": "2024-09-30" },
+//           "RC": { "_text": "00000" }
 //         }
-//       }
+//       ]
 //     }
+//   }
+// }
 //   }
 // }
 
