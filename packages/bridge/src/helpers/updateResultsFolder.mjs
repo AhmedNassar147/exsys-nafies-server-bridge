@@ -5,7 +5,7 @@
  */
 
 import { join } from "path";
-import { writeFile, readFile, mkdir } from "fs/promises";
+import { writeFile, mkdir } from "fs/promises";
 import {
   checkPathExists,
   findRootYarnWorkSpaces,

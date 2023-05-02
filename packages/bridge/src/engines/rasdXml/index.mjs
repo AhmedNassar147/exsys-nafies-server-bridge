@@ -9,41 +9,13 @@ import {
   RESULTS_FOLDER_PATHS,
   RESTART_CALLING_EXSYS_QUERY_MS,
 } from "../../constants.mjs";
-import {
-  RASD_API_TYPE_NAMES_XML,
-  RASD_REQUESTS_XML_TEMP,
-} from "./constants.mjs";
+import { RASD_API_TYPE_NAMES_XML } from "./constants.mjs";
 import createRasdRequestAndUpdateExsysServer from "./createRasdRequestAndUpdateExsysServer.mjs";
+import createBuildRasdRequestData from "./createBuildRasdRequestData.mjs";
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
 
 const resultsFolderPath = RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.RASD_XML];
-
-// const x = {
-//   dispatchDetailService: [
-//     {
-//       userName: "62864010000140000",
-//       password: "RMOHmoh2005",
-//       data: ["732162605", "732162606"],
-//     },
-//   ],
-//   pharmacySaleService: [
-//     {
-//       userName: "",
-//       password: "",
-//       toGln: 10,
-//       prescriptionDate: "2023-04-06",
-//       data: [
-//         {
-//           gti: "06285096000842",
-//           serial: "5C4YDPMWG1",
-//           batch: "246M",
-//           expiryDate: "2025-07-31",
-//         },
-//       ],
-//     },
-//   ],
-// };
 
 const {
   dispatchDetailService,
@@ -54,24 +26,6 @@ const {
   acceptService,
   returnService,
 } = RASD_API_TYPE_NAMES_XML;
-
-const buildRasdRequestData = (data, rasdApiName) => {
-  if (!data || !data.length) {
-    return [false];
-  }
-
-  return data.map(({ userName, password, ...options }) => ({
-    companySiteRequestOptions: {
-      ...companySiteRequestOptions,
-      auth: {
-        username: userName,
-        password: password,
-      },
-    },
-    dataToSendToExsys: options,
-    bodyData: RASD_REQUESTS_XML_TEMP[rasdApiName](options),
-  }));
-};
 
 const startRasdApis = async (options) => {
   try {
@@ -86,24 +40,46 @@ const startRasdApis = async (options) => {
       apiId: "QUERY_EXSYS_RASD_XML_REQUEST_DATA",
     });
 
-    if (isInternetDisconnected || !isObjectHasData(response)) {
+    if (isInternetDisconnected) {
       updateTimeoutRefAndRestart();
+      return;
+    }
+
+    if (!isObjectHasData(response)) {
+      setTimeout(
+        async () => await startRasdApis(options),
+        RESTART_CALLING_EXSYS_QUERY_MS
+      );
       return;
     }
 
     const {
       [dispatchDetailService]: dispatchDetailServiceData,
-      [pharmacySaleService]: pharmacySaleServiceData,
-      [pharmacySaleCancelService]: pharmacySaleCancelServiceData,
-      [dispatchService]: dispatchServiceData,
       [acceptDispatchService]: acceptDispatchServiceData,
       [acceptService]: acceptServiceData,
       [returnService]: returnServiceData,
+      [pharmacySaleService]: pharmacySaleServiceData,
+      [pharmacySaleCancelService]: pharmacySaleCancelServiceData,
+      [dispatchService]: dispatchServiceData,
     } = response || {};
+
+    const buildRasdRequestData = createBuildRasdRequestData({
+      companySiteRequestOptions,
+      isProduction,
+      exsysBaseUrl,
+    });
 
     const filteredApiBaseData = [
       ...buildRasdRequestData(dispatchDetailServiceData, dispatchDetailService),
-      ...buildRasdRequestData(pharmacySaleServiceData, pharmacySaleService),
+      ...buildRasdRequestData(acceptDispatchServiceData, acceptDispatchService),
+      // ...buildRasdRequestData(acceptServiceData, acceptService),
+      // ...buildRasdRequestData(returnServiceData, returnService),
+      // ...buildRasdRequestData(dispatchServiceData, dispatchService),
+      // ...buildRasdRequestData(pharmacySaleServiceData, pharmacySaleService),
+      // ...buildRasdRequestData(
+      //   pharmacySaleCancelServiceData,
+      //   pharmacySaleCancelService
+      // ),
     ].filter(Boolean);
 
     if (!filteredApiBaseData.length) {
@@ -115,42 +91,8 @@ const startRasdApis = async (options) => {
       return;
     }
 
-    console.log("rasdRequestsData", filteredApiBaseData);
-
-    return;
-
-    // const filteredApiBaseData = [
-    //   ...createRasdApiWithData(inventory_accept, inventoryAcceptBody),
-    //   ...createRasdApiWithData(inventory_return, inventoryReturnBody),
-    //   ...createRasdApiWithData(inventory_transfer, inventoryTransferBody),
-    //   ...createRasdApiWithData(pos_sale, posSaleBody),
-    //   ...createRasdApiWithData(pos_sale_cancel, posSaleCancelBody),
-    //   ...createRasdApiWithData(dispatch_info, dispatchInfoBody),
-    // ].filter(({ rasdApiName, bodyData }) => {
-    //   const { product_list, notification } = bodyData || {};
-    //   return rasdApiName === dispatch_info
-    //     ? !!notification
-    //     : !!(product_list || []).length;
-    // });
-
-    const requestsLength = filteredApiBaseData.length;
-
-    if (!requestsLength) {
-      setTimeout(
-        async () => await startRasdApis(options),
-        RESTART_CALLING_EXSYS_QUERY_MS
-      );
-
-      return;
-    }
-
-    const configPromises = filteredApiBaseData.map((data) =>
-      createRasdRequestAndUpdateExsysServer({
-        ...data,
-        companySiteRequestOptions,
-        isProduction,
-        exsysBaseUrl,
-      })
+    const configPromises = filteredApiBaseData.map((options) =>
+      createRasdRequestAndUpdateExsysServer(options)
     );
 
     const results = await Promise.all(configPromises);

@@ -3,86 +3,52 @@
  * Helper: `createRasdRequestAndUpdateExsysServer`.
  *
  */
-import axios from "axios";
-import { COMPANY_API_URLS, RASD_API_TYPE_NAMES } from "../../constants.mjs";
-import printRequestNetworkError from "../../helpers/printRequestNetworkError.mjs";
+import { xml2json } from "xml-js";
+import { camelCaseFirstLetter, isObjectHasData } from "@exsys-server/helpers";
+import createAxiosPostRequest from "../../helpers/createAxiosPostRequest.mjs";
+import { COMPANY_API_URLS } from "../../constants.mjs";
 import postCompanyDataResponseToExsysDB from "../../helpers/postCompanyDataResponseToExsysDB.mjs";
 
-const { RASD_PRODUCTION, RASD_DEVELOPMENT } = COMPANY_API_URLS;
-const { dispatch_info } = RASD_API_TYPE_NAMES;
+const { RASD_PRODUCTION_XML } = COMPANY_API_URLS;
+
+const ENVELOPE = "S:Envelope";
 
 const createRasdRequestAndUpdateExsysServer = async ({
   rasdApiName,
   bodyData,
   companySiteRequestOptions,
-  isProduction,
   exsysBaseUrl,
+  jsonFromXmlBodyTransformer,
 }) => {
-  const baseApiUrl = isProduction ? RASD_PRODUCTION : RASD_DEVELOPMENT;
+  const _rasdApiName = camelCaseFirstLetter(rasdApiName);
+  const apiUrl = `${RASD_PRODUCTION_XML}/${_rasdApiName}/${_rasdApiName}`;
 
-  let response;
-  let fetchError;
-  let isInternetDisconnected = false;
-  let responseStatus;
-
-  const apiUrl = `${baseApiUrl}/${rasdApiName}`;
-
-  try {
-    const { data, status } = await axios.post(
-      apiUrl,
-      bodyData,
-      companySiteRequestOptions
-    );
-    response = data;
-    responseStatus = status;
-  } catch (apiFetchError) {
-    fetchError = apiFetchError;
-    const { response: rasdResponse } = fetchError || {};
-    const { data: rasdResponseData } = rasdResponse || {};
-
-    if (rasdResponseData) {
-      response = rasdResponseData;
-    }
-    isInternetDisconnected = true;
-  }
-
-  isInternetDisconnected = printRequestNetworkError({
-    fetchError,
+  const { response, responseStatus } = await createAxiosPostRequest({
     apiUrl,
-    isInternetDisconnected,
-    isPostRequest: true,
+    bodyData,
+    requestOptions: companySiteRequestOptions,
   });
 
-  const iSuccessStatus = [200, 201].includes(responseStatus);
-  const { statusCode } = response || {};
+  // const isSuccess = [200, 201].includes(responseStatus);
 
-  const isInternalServerError = statusCode === 500 || responseStatus === 500;
+  const jsonFromXml = xml2json(response, { compact: true });
 
-  const shouldPostDataToExsys =
-    !isInternetDisconnected && !isInternalServerError && iSuccessStatus;
+  const parsedJson = !jsonFromXml ? {} : JSON.parse(jsonFromXml);
+  const { [ENVELOPE]: envelope, html } = parsedJson;
 
-  const { notification } = bodyData;
-  const isDispatchInfoApis = rasdApiName === dispatch_info;
+  const { ["S:Body"]: body } = envelope || {
+    [ENVELOPE]: {},
+  };
 
-  let curredRasdResponse = response || [];
+  const { body: htmlBody } = html || {};
 
-  if (isDispatchInfoApis) {
-    if (Array.isArray(response)) {
-      curredRasdResponse = response.map((item) => ({
-        ...item,
-        notification_id: notification,
-      }));
-    } else {
-      curredRasdResponse = {
-        ...(response || null),
-        notification_id: notification,
-      };
-    }
-  }
+  const transformedRasdResponse = jsonFromXmlBodyTransformer(body, htmlBody);
+
+  const shouldPostDataToExsys = isObjectHasData(transformedRasdResponse);
 
   const apiPostDataToExsys = {
-    type: rasdApiName,
-    data: curredRasdResponse,
+    responseFromRasdApiName: rasdApiName,
+    ...transformedRasdResponse,
   };
 
   const {
@@ -102,8 +68,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
       };
 
   return {
-    shouldRestartServer:
-      isInternetDisconnected || isInternetDisconnectedWhenPostingDataToExsys,
+    shouldRestartServer: isInternetDisconnectedWhenPostingDataToExsys,
     localResultsData: {
       rasdApiName,
       exsysDataSentToRasdServer: bodyData,

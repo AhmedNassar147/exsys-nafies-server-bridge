@@ -21,8 +21,7 @@ const COMPANY_API_URLS = {
   TADAWY_PRODUCTION: "https://waba.360dialog.io/v1/messages",
   JAWALY_PRODUCTION: "https://api-sms.4jawaly.com/api/v1/account/area/sms/send",
   BRCITCO_PRODUCTION: "https://www.brcitco-api.com/api/sendsms",
-  RASD_DEVELOPMENT_XML: "http://rsd.sfda.gov.sa/ws",
-  RASD_XML: "https://rsd.sfda.gov.sa/ws",
+  RASD_PRODUCTION_XML: "https://rsd.sfda.gov.sa/ws",
 };
 
 const RESULTS_FOLDER_PATHS = {

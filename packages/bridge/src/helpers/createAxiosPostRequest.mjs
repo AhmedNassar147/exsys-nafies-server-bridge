@@ -16,7 +16,6 @@ const createAxiosPostRequest = async ({ apiUrl, bodyData, requestOptions }) => {
   } catch (apiFetchError) {
     const { response: serverResponse } = apiFetchError || {};
     const { data: responseData, status } = serverResponse || {};
-
     responseStatus = status;
     response = responseData;
   }

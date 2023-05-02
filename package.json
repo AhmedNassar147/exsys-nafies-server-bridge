@@ -34,7 +34,8 @@
     "axios": "^0.26.1",
     "chalk": "^5.0.1",
     "https": "^1.0.0",
-    "is-online": "^9.0.1"
+    "is-online": "^9.0.1",
+    "xml-js": "^1.6.11"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"

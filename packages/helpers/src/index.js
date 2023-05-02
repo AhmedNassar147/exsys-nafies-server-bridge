@@ -9,6 +9,7 @@ import isWindowsPlatform from "./isWindowsPlatform.mjs";
 import readJsonFile from "./readJsonFile.mjs";
 import findRootYarnWorkSpaces from "./findRootYarnWorkSpaces.mjs";
 import isObjectHasData from "./isObjectHasData.mjs";
+import camelCaseFirstLetter from "./camelCaseFirstLetter.mjs";
 
 export {
   checkPathExists,
@@ -17,4 +18,5 @@ export {
   readJsonFile,
   findRootYarnWorkSpaces,
   isObjectHasData,
+  camelCaseFirstLetter,
 };
