@@ -70,16 +70,16 @@ const startRasdApis = async (options) => {
     });
 
     const filteredApiBaseData = [
+      ...buildRasdRequestData(acceptServiceData, acceptService),
+      ...buildRasdRequestData(returnServiceData, returnService),
+      ...buildRasdRequestData(pharmacySaleServiceData, pharmacySaleService),
       ...buildRasdRequestData(dispatchDetailServiceData, dispatchDetailService),
       ...buildRasdRequestData(acceptDispatchServiceData, acceptDispatchService),
-      // ...buildRasdRequestData(acceptServiceData, acceptService),
-      // ...buildRasdRequestData(returnServiceData, returnService),
-      // ...buildRasdRequestData(dispatchServiceData, dispatchService),
-      // ...buildRasdRequestData(pharmacySaleServiceData, pharmacySaleService),
-      // ...buildRasdRequestData(
-      //   pharmacySaleCancelServiceData,
-      //   pharmacySaleCancelService
-      // ),
+      ...buildRasdRequestData(dispatchServiceData, dispatchService),
+      ...buildRasdRequestData(
+        pharmacySaleCancelServiceData,
+        pharmacySaleCancelService
+      ),
     ].filter(Boolean);
 
     if (!filteredApiBaseData.length) {
@@ -95,12 +95,17 @@ const startRasdApis = async (options) => {
       createRasdRequestAndUpdateExsysServer(options)
     );
 
-    const results = await Promise.all(configPromises);
+    const results = await Promise.allSettled(configPromises);
 
     const { shouldRestartServer, localResultsToPrint } = results.reduce(
       (
         acc,
-        { localResultsData, shouldRestartServer: itemShouldRestartServer }
+        {
+          value: {
+            localResultsData,
+            shouldRestartServer: itemShouldRestartServer,
+          },
+        }
       ) => {
         acc.localResultsToPrint = [
           ...acc.localResultsToPrint,
