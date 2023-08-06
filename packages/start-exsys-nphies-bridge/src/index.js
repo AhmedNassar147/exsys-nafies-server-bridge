@@ -63,10 +63,8 @@ const asyncExec = promisify(exec);
       }
     );
 
-    const currentUserExecutionPolicyWithoutSpaces = currentUserExecutionPolicy.replace(
-      /\s|\r/g,
-      ""
-    );
+    const currentUserExecutionPolicyWithoutSpaces =
+      currentUserExecutionPolicy.replace(/\s|\r/g, "");
 
     const isExecutionPolicyAlreadyUnRestricted =
       currentUserExecutionPolicyWithoutSpaces === "Unrestricted";

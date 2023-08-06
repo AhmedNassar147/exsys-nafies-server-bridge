@@ -21,6 +21,8 @@ const COMPANY_API_URLS = {
   TADAWY_PRODUCTION: "https://waba.360dialog.io/v1/messages",
   JAWALY_PRODUCTION: "https://api-sms.4jawaly.com/api/v1/account/area/sms/send",
   BRCITCO_PRODUCTION: "https://www.brcitco-api.com/api/sendsms",
+  // https://www.jawalbsms.ws/api.php/sendsms?user=XXXX&pass=XXXX&to=966XXXXXXX&message=XXXX&sender=XXXX
+  JAWALBSMS_PRODUCTION: "https://www.jawalbsms.ws/api.php/sendsms",
   RASD_PRODUCTION_XML: "https://rsd.sfda.gov.sa/ws",
 };
 
@@ -30,6 +32,7 @@ const RESULTS_FOLDER_PATHS = {
   TADAWY: "results/tadawy",
   JAWALY: "results/sms/jawaly",
   BRCITCO: "results/sms/brcitco",
+  JAWALBSMS: "results/sms/jawalbsms",
   RASD_XML: "results/rasd_xml",
 };
 
@@ -40,6 +43,7 @@ const CERTIFICATE_NAMES = {
   RASD: "RASD",
   TADAWY: "TADAWY",
   JAWALY: "JAWALY",
+  JAWALBSMS: "JAWALBSMS",
   BRCITCO: "BRCITCO",
   RASD_XML: "RASD_XML",
 };

@@ -24,6 +24,12 @@ const createDataWillBePostedToExsys =
           ...(dataToSendToExsys || null),
           status: response === "ok" ? responseStatus : 302,
         };
+      case CERTIFICATE_NAMES.JAWALBSMS:
+        return {
+          response,
+          ...(dataToSendToExsys || null),
+          status: response !== "-110" ? responseStatus : 302,
+        };
 
       default:
         return {};

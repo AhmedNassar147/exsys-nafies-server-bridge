@@ -10,7 +10,8 @@ import {
   COMPANY_API_URLS,
 } from "../../constants.mjs";
 
-const { JAWALY_PRODUCTION, BRCITCO_PRODUCTION } = COMPANY_API_URLS;
+const { JAWALY_PRODUCTION, BRCITCO_PRODUCTION, JAWALBSMS_PRODUCTION } =
+  COMPANY_API_URLS;
 
 const getDataFromResponse = ({
   sms_sending_company_name,
@@ -51,8 +52,12 @@ const getDataFromResponse = ({
           password: api_secret,
         },
       };
+
+    case CERTIFICATE_NAMES.JAWALBSMS:
     case CERTIFICATE_NAMES.BRCITCO:
       const { user, pass, to, sender, message } = response;
+      const isJawalbsms =
+        sms_sending_company_name === CERTIFICATE_NAMES.JAWALBSMS;
 
       return {
         restartIf:
@@ -66,7 +71,7 @@ const getDataFromResponse = ({
         resultsFolderPath,
         smsSendingCompanyName: sms_sending_company_name,
         printNoCompanyProvided: baseRestartIf,
-        companyApiUrl: BRCITCO_PRODUCTION,
+        companyApiUrl: isJawalbsms ? JAWALBSMS_PRODUCTION : BRCITCO_PRODUCTION,
         isCompanyQueryPostByQueryFetch: true,
         dataToSendToExsys,
         requestDataParamsOrBody: {
