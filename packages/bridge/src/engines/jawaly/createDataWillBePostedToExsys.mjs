@@ -28,7 +28,9 @@ const createDataWillBePostedToExsys =
         return {
           response,
           ...(dataToSendToExsys || null),
-          status: response !== "-110" ? responseStatus : 302,
+          status: response.toString().includes("STATUS: Success")
+            ? responseStatus
+            : 302,
         };
 
       default:
