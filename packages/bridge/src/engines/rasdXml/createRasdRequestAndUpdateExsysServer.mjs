@@ -57,7 +57,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
     isDataSentToExsys,
   } = shouldPostDataToExsys
     ? await postCompanyDataResponseToExsysDB({
-        apiId: "POST_RASD_REQUEST_DATA_TO_EXSYS",
+        apiId: "POST_RASD_XML_REQUEST_DATA_TO_EXSYS",
         apiPostData: apiPostDataToExsys,
         exsysBaseUrl,
       })

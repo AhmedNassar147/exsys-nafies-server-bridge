@@ -25,6 +25,8 @@ const API_IDS = {
   // http://149.102.140.8:9090/ords/exsys_api/exsys_rasd_pkg/get_rasd_products_data_xml
   QUERY_EXSYS_RASD_XML_REQUEST_DATA:
     "exsys_rasd_pkg/get_rasd_products_data_xml",
+  // http://localhost:9090/ords/exsys_api/exsys_rasd_pkg/rasd_products_dml_xml
+  POST_RASD_XML_REQUEST_DATA_TO_EXSYS: "exsys_rasd_pkg/rasd_products_dml_xml",
 };
 
 export default API_IDS;
