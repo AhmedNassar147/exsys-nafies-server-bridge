@@ -53,7 +53,9 @@ const createDispatchInfoProperResponseFromParsedXml =
         const fromGln = getTextValueOfObject(FROMGLN);
 
         const products = Array.isArray(PRODUCT)
-          ? PRODUCT.map(({ GTIN, SN, BN, XD, RC }) => ({
+          ? PRODUCT.filter(
+              ({ GTIN, SN, BN, XD }) => !GTIN && !SN && !BN && !XD
+            ).map(({ GTIN, SN, BN, XD, RC }) => ({
               gtin: getTextValueOfObject(GTIN),
               sn: getTextValueOfObject(SN),
               bn: getTextValueOfObject(BN),

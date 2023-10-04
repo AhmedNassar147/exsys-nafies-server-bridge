@@ -16,6 +16,7 @@ const ENVELOPE = "S:Envelope";
 const createRasdRequestAndUpdateExsysServer = async ({
   rasdApiName,
   bodyData,
+  exsysData,
   companySiteRequestOptions,
   exsysBaseUrl,
   jsonFromXmlBodyTransformer,
@@ -23,7 +24,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
   const _rasdApiName = camelCaseFirstLetter(rasdApiName);
   const apiUrl = `${RASD_PRODUCTION_XML}/${_rasdApiName}/${_rasdApiName}`;
 
-  const { response, responseStatus } = await createAxiosPostRequest({
+  const { response } = await createAxiosPostRequest({
     apiUrl,
     bodyData,
     requestOptions: companySiteRequestOptions,
@@ -71,6 +72,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
     shouldRestartServer: isInternetDisconnectedWhenPostingDataToExsys,
     localResultsData: {
       rasdApiName,
+      exsysData,
       exsysDataSentToRasdServer: bodyData,
       rasdResponseBasedExsysData: apiPostDataToExsys,
       isRasdDataSentToExsys: isDataSentToExsys,

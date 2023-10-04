@@ -43,6 +43,20 @@ ${data
 const createProductsXml = ({ data, toGln, prescriptionDate, rasdApiName }) => {
   const { apiName, tagName } = getApiAndTagName(rasdApiName);
 
+  const dataLength = data.length;
+
+  const finalData = [
+    ...data,
+    dataLength === 1
+      ? {
+          gtin: "",
+          sn: "",
+          bn: "",
+          xd: "",
+        }
+      : null,
+  ];
+
   return `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
       <${tagName} xmlns="http://dtts.sfda.gov.sa/${apiName}">
@@ -53,7 +67,7 @@ const createProductsXml = ({ data, toGln, prescriptionDate, rasdApiName }) => {
           : ""
       }
         <PRODUCTLIST xmlns="">
-          ${data
+          ${finalData
             .map(
               ({ gtin, sn, bn, xd }) =>
                 `<PRODUCT>

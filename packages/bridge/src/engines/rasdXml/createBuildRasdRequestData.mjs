@@ -20,6 +20,7 @@ const createBuildRasdRequestData =
         rasdApiName,
         isProduction,
         exsysBaseUrl,
+        exsysData,
         companySiteRequestOptions: {
           ...companySiteRequestOptions,
           headers: {
