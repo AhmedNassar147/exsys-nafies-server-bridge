@@ -9,23 +9,12 @@ import {
   RESULTS_FOLDER_PATHS,
   RESTART_CALLING_EXSYS_QUERY_MS,
 } from "../../constants.mjs";
-import { RASD_API_TYPE_NAMES_XML } from "./constants.mjs";
 import createRasdRequestAndUpdateExsysServer from "./createRasdRequestAndUpdateExsysServer.mjs";
-import createBuildRasdRequestData from "./createBuildRasdRequestData.mjs";
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
+import buildRasdRequestDataFromExsysResponse from "./buildRasdRequestDataFromExsysResponse.js";
 
 const resultsFolderPath = RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.RASD_XML];
-
-const {
-  dispatchDetailService,
-  pharmacySaleService,
-  pharmacySaleCancelService,
-  dispatchService,
-  acceptDispatchService,
-  acceptService,
-  returnService,
-} = RASD_API_TYPE_NAMES_XML;
 
 const startRasdApis = async (options) => {
   try {
@@ -53,36 +42,14 @@ const startRasdApis = async (options) => {
       return;
     }
 
-    const {
-      [dispatchDetailService]: dispatchDetailServiceData,
-      [acceptDispatchService]: acceptDispatchServiceData,
-      [acceptService]: acceptServiceData,
-      [returnService]: returnServiceData,
-      [pharmacySaleService]: pharmacySaleServiceData,
-      [pharmacySaleCancelService]: pharmacySaleCancelServiceData,
-      [dispatchService]: dispatchServiceData,
-    } = response || {};
-
-    const buildRasdRequestData = createBuildRasdRequestData({
+    const rasdApiBaseData = buildRasdRequestDataFromExsysResponse({
+      response,
       companySiteRequestOptions,
       isProduction,
       exsysBaseUrl,
     });
 
-    const filteredApiBaseData = [
-      ...buildRasdRequestData(acceptServiceData, acceptService),
-      ...buildRasdRequestData(returnServiceData, returnService),
-      ...buildRasdRequestData(pharmacySaleServiceData, pharmacySaleService),
-      ...buildRasdRequestData(dispatchDetailServiceData, dispatchDetailService),
-      ...buildRasdRequestData(acceptDispatchServiceData, acceptDispatchService),
-      ...buildRasdRequestData(dispatchServiceData, dispatchService),
-      ...buildRasdRequestData(
-        pharmacySaleCancelServiceData,
-        pharmacySaleCancelService
-      ),
-    ].filter(Boolean);
-
-    if (!filteredApiBaseData.length) {
+    if (!rasdApiBaseData.length) {
       setTimeout(
         async () => await startRasdApis(options),
         RESTART_CALLING_EXSYS_QUERY_MS
@@ -91,7 +58,7 @@ const startRasdApis = async (options) => {
       return;
     }
 
-    const configPromises = filteredApiBaseData.map((options) =>
+    const configPromises = rasdApiBaseData.map((options) =>
       createRasdRequestAndUpdateExsysServer(options)
     );
 
