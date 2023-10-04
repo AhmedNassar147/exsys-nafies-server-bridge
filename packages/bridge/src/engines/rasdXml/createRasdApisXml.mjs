@@ -55,7 +55,7 @@ const createProductsXml = ({ data, toGln, prescriptionDate, rasdApiName }) => {
           xd: "",
         }
       : null,
-  ];
+  ].filter(Boolean);
 
   return `<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
   <s:Body xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
