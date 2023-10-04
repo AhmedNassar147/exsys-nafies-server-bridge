@@ -54,7 +54,7 @@ const createDispatchInfoProperResponseFromParsedXml =
 
         const products = Array.isArray(PRODUCT)
           ? PRODUCT.filter(
-              ({ GTIN, SN, BN, XD }) => !GTIN && !SN && !BN && !XD
+              ({ GTIN, SN, BN, XD }) => !!GTIN && !!SN && !!BN && !!XD
             ).map(({ GTIN, SN, BN, XD, RC }) => ({
               gtin: getTextValueOfObject(GTIN),
               sn: getTextValueOfObject(SN),
