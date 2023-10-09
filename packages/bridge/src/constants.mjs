@@ -34,6 +34,7 @@ const RESULTS_FOLDER_PATHS = {
   BRCITCO: "results/sms/brcitco",
   JAWALBSMS: "results/sms/jawalbsms",
   RASD_XML: "results/rasd_xml",
+  ZOHO_CRM: "results/zoho_crm",
 };
 
 const RESULT_FOLDER_KEYS = Object.keys(RESULTS_FOLDER_PATHS);
@@ -46,6 +47,7 @@ const CERTIFICATE_NAMES = {
   JAWALBSMS: "JAWALBSMS",
   BRCITCO: "BRCITCO",
   RASD_XML: "RASD_XML",
+  ZOHO_CRM: "ZOHO_CRM",
 };
 
 const CLI_OPTIONS = {

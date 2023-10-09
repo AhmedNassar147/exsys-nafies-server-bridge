@@ -27,6 +27,10 @@ const API_IDS = {
     "exsys_rasd_pkg/get_rasd_products_data_xml",
   // http://localhost:9090/ords/exsys_api/exsys_rasd_pkg/rasd_products_dml_xml
   POST_RASD_XML_REQUEST_DATA_TO_EXSYS: "exsys_rasd_pkg/rasd_products_dml_xml",
+  // http://149.102.140.8:9090/ords/exsys_api/op_external_booking/crm_not_send_data
+  QUERY_EXSYS_ZOHO_DATA: "op_external_booking/crm_not_send_data",
+  // http://149.102.140.8:9090/ords/exsys_api/op_external_booking/crm_response_dml
+  POST_EXSYS_ZOHO_DATA: "op_external_booking/crm_response_dml",
 };
 
 export default API_IDS;
