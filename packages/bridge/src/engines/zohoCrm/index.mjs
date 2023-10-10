@@ -4,17 +4,15 @@
  *
  */
 import { isArrayHasData } from "@exsys-server/helpers";
-import {
-  CERTIFICATE_NAMES,
-  RESULTS_FOLDER_PATHS,
-  RESTART_CALLING_EXSYS_QUERY_MS,
-} from "../../constants.mjs";
+import { CERTIFICATE_NAMES, RESULTS_FOLDER_PATHS } from "../../constants.mjs";
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import queryZohoAccessToken from "./queryZohoAccessToken.mjs";
 import createZohoRequestAndUpdateExsysServer from "./createZohoRequestAndUpdateExsysServer.mjs";
 import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
 
 const resultsFolderPath = RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.ZOHO_CRM];
+
+const maxRestartMs = 8000;
 
 const startZohoCrmApis = async (options) => {
   try {
@@ -36,10 +34,7 @@ const startZohoCrmApis = async (options) => {
     const { data } = response || {};
 
     if (!isArrayHasData(data)) {
-      setTimeout(
-        async () => await startZohoCrmApis(options),
-        RESTART_CALLING_EXSYS_QUERY_MS
-      );
+      setTimeout(async () => await startZohoCrmApis(options), maxRestartMs);
       return;
     }
 
@@ -48,10 +43,7 @@ const startZohoCrmApis = async (options) => {
 
     if (!hasAccessToken) {
       console.error("zoho didn't provide access token, restarting server ...");
-      setTimeout(
-        async () => await startZohoCrmApis(options),
-        RESTART_CALLING_EXSYS_QUERY_MS
-      );
+      setTimeout(async () => await startZohoCrmApis(options), maxRestartMs);
       return;
     }
 
@@ -80,16 +72,10 @@ const startZohoCrmApis = async (options) => {
       return;
     }
 
-    setTimeout(
-      async () => await startZohoCrmApis(options),
-      RESTART_CALLING_EXSYS_QUERY_MS
-    );
+    setTimeout(async () => await startZohoCrmApis(options), maxRestartMs);
   } catch (error) {
     console.error("error", error);
-    setTimeout(
-      async () => await startZohoCrmApis(options),
-      RESTART_CALLING_EXSYS_QUERY_MS
-    );
+    setTimeout(async () => await startZohoCrmApis(options), maxRestartMs);
   }
 };
 
