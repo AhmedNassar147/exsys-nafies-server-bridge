@@ -12,7 +12,6 @@ const { TADAWY_PRODUCTION } = COMPANY_API_URLS;
 const createTadawyRequestAndUpdateExsysServer = async ({
   bodyData,
   companySiteRequestOptions,
-  // isProduction,
   exsysBaseUrl,
   message_id,
 }) => {

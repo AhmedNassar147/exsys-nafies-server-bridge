@@ -11,6 +11,7 @@ import findRootYarnWorkSpaces from "./findRootYarnWorkSpaces.mjs";
 import isObjectHasData from "./isObjectHasData.mjs";
 import isArrayHasData from "./isArrayHasData.mjs";
 import camelCaseFirstLetter from "./camelCaseFirstLetter.mjs";
+import createRootFolderInResults from "./createRootFolderInResults.mjs";
 
 export {
   checkPathExists,
@@ -21,4 +22,5 @@ export {
   isObjectHasData,
   isArrayHasData,
   camelCaseFirstLetter,
+  createRootFolderInResults,
 };

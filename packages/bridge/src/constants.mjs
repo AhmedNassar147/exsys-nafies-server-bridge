@@ -18,7 +18,8 @@ const COMPANY_API_URLS = {
   NPHIES_DEVELOPMENT: "http://176.105.150.83:80/$process-message",
   RASD_DEVELOPMENT: "https://api.juleb-dev.com/rasd",
   RASD_PRODUCTION: "https://api.juleb.com/rasd",
-  TADAWY_PRODUCTION: "https://waba.360dialog.io/v1/messages",
+  TADAWY_PRODUCTION: "https://waba-v2.360dialog.io/messages",
+  TADAWY_MEDIA: "https://waba-v2.360dialog.io/media",
   JAWALY_PRODUCTION: "https://api-sms.4jawaly.com/api/v1/account/area/sms/send",
   BRCITCO_PRODUCTION: "https://www.brcitco-api.com/api/sendsms",
   // https://www.jawalbsms.ws/api.php/sendsms?user=XXXX&pass=XXXX&to=966XXXXXXX&message=XXXX&sender=XXXX
@@ -27,14 +28,14 @@ const COMPANY_API_URLS = {
 };
 
 const RESULTS_FOLDER_PATHS = {
-  NPHIES: "results/nphies",
-  RASD: "results/rasd",
-  TADAWY: "results/tadawy",
-  JAWALY: "results/sms/jawaly",
-  BRCITCO: "results/sms/brcitco",
-  JAWALBSMS: "results/sms/jawalbsms",
-  RASD_XML: "results/rasd_xml",
-  ZOHO_CRM: "results/zoho_crm",
+  NPHIES: "nphies",
+  RASD: "rasd",
+  TADAWY: "tadawy",
+  JAWALY: "sms/jawaly",
+  BRCITCO: "sms/brcitco",
+  JAWALBSMS: "sms/jawalbsms",
+  RASD_XML: "rasd_xml",
+  ZOHO_CRM: "zoho_crm",
 };
 
 const RESULT_FOLDER_KEYS = Object.keys(RESULTS_FOLDER_PATHS);

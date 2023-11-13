@@ -4,23 +4,19 @@
  *
  */
 
-import { join } from "path";
-import { writeFile, mkdir } from "fs/promises";
+import { writeFile } from "fs/promises";
 import {
   checkPathExists,
-  findRootYarnWorkSpaces,
   readJsonFile,
+  createRootFolderInResults,
 } from "@exsys-server/helpers";
 import getCurrentDate from "./getCurrentDate.mjs";
 
 const updateResultsFolder = async ({ data, resultsFolderPath }) => {
   const { dateString, time } = getCurrentDate();
-  const rootYarnWorkSpacePath = await findRootYarnWorkSpaces();
-  const finalResultsFolderPath = join(rootYarnWorkSpacePath, resultsFolderPath);
-
-  if (!(await checkPathExists(finalResultsFolderPath))) {
-    await mkdir(finalResultsFolderPath, { recursive: true });
-  }
+  const finalResultsFolderPath = await createRootFolderInResults(
+    resultsFolderPath
+  );
 
   const currentResultFilePath = `${finalResultsFolderPath}/${dateString}.json`;
   let previousResultFileData = [];
