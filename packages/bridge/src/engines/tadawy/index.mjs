@@ -4,17 +4,15 @@
  *
  */
 import { isArrayHasData, isObjectHasData } from "@exsys-server/helpers";
-import {
-  CERTIFICATE_NAMES,
-  RESULTS_FOLDER_PATHS,
-  RESTART_CALLING_EXSYS_QUERY_MS,
-} from "../../constants.mjs";
+import { CERTIFICATE_NAMES, RESULTS_FOLDER_PATHS } from "../../constants.mjs";
 import makeUploadFileRequest from "./makeUploadFileRequest.mjs";
 import createTadawyRequestAndUpdateExsysServer from "./createTadawyRequestAndUpdateExsysServer.mjs";
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
 
 const resultsFolderPath = RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.TADAWY];
+
+const restartMs = 4000;
 
 const startTadawyApis = async (options) => {
   try {
@@ -44,10 +42,7 @@ const startTadawyApis = async (options) => {
     } = response || {};
 
     if (!isObjectHasData(response) || !isObjectHasData(message)) {
-      setTimeout(
-        async () => await startTadawyApis(options),
-        RESTART_CALLING_EXSYS_QUERY_MS
-      );
+      setTimeout(async () => await startTadawyApis(options), restartMs);
 
       return;
     }
@@ -125,10 +120,7 @@ const startTadawyApis = async (options) => {
     await startTadawyApis(options);
   } catch (error) {
     console.error("error", error);
-    setTimeout(
-      async () => await startTadawyApis(options),
-      RESTART_CALLING_EXSYS_QUERY_MS
-    );
+    setTimeout(async () => await startTadawyApis(options), restartMs);
   }
 };
 
