@@ -9,16 +9,23 @@ import {
   checkPathExists,
   readJsonFile,
   createRootFolderInResults,
+  getCurrentDate,
 } from "@exsys-server/helpers";
-import getCurrentDate from "./getCurrentDate.mjs";
 
-const updateResultsFolder = async ({ data, resultsFolderPath }) => {
+const updateResultsFolder = async ({ data, resultsFolderPath, fileName }) => {
   const { dateString, time } = getCurrentDate();
   const finalResultsFolderPath = await createRootFolderInResults(
-    resultsFolderPath
+    fileName ? `${resultsFolderPath}/${dateString}` : resultsFolderPath
   );
 
-  const currentResultFilePath = `${finalResultsFolderPath}/${dateString}.json`;
+  const fileSegments = [
+    finalResultsFolderPath,
+    fileName ? "" : dateString,
+    fileName,
+  ].filter(Boolean);
+
+  const currentResultFilePath = `${fileSegments.join("/")}.json`;
+
   let previousResultFileData = [];
 
   if (await checkPathExists(currentResultFilePath)) {

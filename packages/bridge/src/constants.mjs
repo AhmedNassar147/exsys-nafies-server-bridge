@@ -8,7 +8,7 @@ import { sharedHelperKey } from "@exsys-server/command-line-utils";
 const EXSYS_BASE_URL = "http://LOCALHOST:9090/ords/exsys_api";
 const EXSYS_DEV_BASE_URL = "http://149.102.140.8:9090/ords/exsys_api";
 const RESTART_MS = 60000;
-const RESTART_CALLING_EXSYS_QUERY_MS = 2000;
+const RESTART_CALLING_EXSYS_QUERY_MS = 3000;
 
 const NPHIES_CERT_FILE_NAME = "certs/Certificate_pkcs12.p12";
 const RASD_CERT_FILE_NAME = "certs/rasd.cer";

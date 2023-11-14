@@ -12,6 +12,7 @@ import isObjectHasData from "./isObjectHasData.mjs";
 import isArrayHasData from "./isArrayHasData.mjs";
 import camelCaseFirstLetter from "./camelCaseFirstLetter.mjs";
 import createRootFolderInResults from "./createRootFolderInResults.mjs";
+import getCurrentDate from "./getCurrentDate.mjs";
 
 export {
   checkPathExists,
@@ -23,4 +24,5 @@ export {
   isArrayHasData,
   camelCaseFirstLetter,
   createRootFolderInResults,
+  getCurrentDate,
 };
