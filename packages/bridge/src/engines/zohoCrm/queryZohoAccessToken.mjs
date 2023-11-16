@@ -18,7 +18,7 @@ const queryZohoAccessToken = async () => {
 
   return {
     hasAccessToken: !!access_token,
-    zohoApiUrl: `${api_domain}/crm/v5/Contacts/upsert`,
+    zohoApiUrl: `${api_domain}/crm/v5/Reservations/upsert`,
     headers: {
       Authorization: "Bearer " + access_token,
     },
