@@ -46,9 +46,11 @@ const createRasdRequestAndUpdateExsysServer = async ({
   const transformedRasdResponse = jsonFromXmlBodyTransformer(body, htmlBody);
 
   const shouldPostDataToExsys = isObjectHasData(transformedRasdResponse);
+  const { acceptType } = exsysData;
 
   const apiPostDataToExsys = {
     responseFromRasdApiName: rasdApiName,
+    acceptType,
     ...transformedRasdResponse,
   };
 

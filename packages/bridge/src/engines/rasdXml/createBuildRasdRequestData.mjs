@@ -14,7 +14,7 @@ const createBuildRasdRequestData =
     }
 
     return data.map((exsysData) => {
-      const { userName, password, ...options } = exsysData;
+      const { userName, password, acceptType, ...options } = exsysData;
 
       return {
         rasdApiName,
