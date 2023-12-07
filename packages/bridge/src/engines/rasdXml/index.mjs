@@ -65,15 +65,14 @@ const startRasdApis = async (options) => {
     const results = await Promise.allSettled(configPromises);
 
     const { shouldRestartServer, localResultsToPrint } = results.reduce(
-      (
-        acc,
-        {
-          value: {
-            localResultsData,
-            shouldRestartServer: itemShouldRestartServer,
-          },
+      (acc, { value }) => {
+        if (!value) {
+          return acc;
         }
-      ) => {
+        const {
+          localResultsData,
+          shouldRestartServer: itemShouldRestartServer,
+        } = value;
         acc.localResultsToPrint = [
           ...acc.localResultsToPrint,
           localResultsData,
