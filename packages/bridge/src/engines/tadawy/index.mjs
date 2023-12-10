@@ -10,7 +10,9 @@ import createTadawyRequestAndUpdateExsysServer from "./createTadawyRequestAndUpd
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
 import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
 
-const resultsFolderPath = RESULTS_FOLDER_PATHS[CERTIFICATE_NAMES.TADAWY];
+const { TADAWY } = CERTIFICATE_NAMES;
+
+const resultsFolderPath = RESULTS_FOLDER_PATHS[TADAWY];
 
 const restartMs = 4000;
 
@@ -26,6 +28,9 @@ const startTadawyApis = async (options) => {
     const { response, isInternetDisconnected } = await createExsysQueryRequest({
       exsysBaseUrl,
       apiId: "QUERY_EXSYS_TADAWY_MESSAGE_DATA",
+      params: {
+        companyName: TADAWY,
+      },
     });
 
     if (isInternetDisconnected) {

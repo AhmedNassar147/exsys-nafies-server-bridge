@@ -18,6 +18,7 @@ const COMPANY_API_URLS = {
   NPHIES_DEVELOPMENT: "http://176.105.150.83:80/$process-message",
   RASD_DEVELOPMENT: "https://api.juleb-dev.com/rasd",
   RASD_PRODUCTION: "https://api.juleb.com/rasd",
+  MOTTASL_PRODUCTION: "https://api.mottasl.com/v2/message",
   TADAWY_PRODUCTION: "https://waba-v2.360dialog.io/messages",
   TADAWY_MEDIA: "https://waba-v2.360dialog.io/media",
   JAWALY_PRODUCTION: "https://api-sms.4jawaly.com/api/v1/account/area/sms/send",
@@ -36,6 +37,7 @@ const RESULTS_FOLDER_PATHS = {
   JAWALBSMS: "sms/jawalbsms",
   RASD_XML: "rasd_xml",
   ZOHO_CRM: "zoho_crm",
+  MOTTASL: "mottasl",
 };
 
 const RESULT_FOLDER_KEYS = Object.keys(RESULTS_FOLDER_PATHS);
@@ -49,6 +51,7 @@ const CERTIFICATE_NAMES = {
   BRCITCO: "BRCITCO",
   RASD_XML: "RASD_XML",
   ZOHO_CRM: "ZOHO_CRM",
+  MOTTASL: "MOTTASL",
 };
 
 const CLI_OPTIONS = {

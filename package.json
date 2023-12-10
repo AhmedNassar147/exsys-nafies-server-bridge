@@ -23,6 +23,8 @@
     "start-rasdXml-prod": "yarn start --ignore-cert --production --company=RASD_XML",
     "start-tadawy": "yarn start --ignore-cert --company=TADAWY",
     "nassar-start-tadawy": "yarn start --ignore-cert --company=TADAWY --dev-mode",
+    "start-mottasl": "yarn start --ignore-cert --company=MOTTASL",
+    "nassar-start-mottasl": "yarn start --ignore-cert --company=MOTTASL --dev-mode",
     "start-jawaly": "yarn start --ignore-cert --company=JAWALY",
     "nassar-start-jawaly": "yarn start --ignore-cert --company=JAWALY --dev-mode",
     "start-zoho-crm": "yarn start --ignore-cert --company=ZOHO_CRM",
