@@ -56,7 +56,7 @@ const startZohoCrmApis = async (options) => {
           ...companySiteRequestOptions,
           headers: {
             ...companySiteRequestOptions.headers,
-            Accept: "application/json",
+            Accept: "*/*",
             ...headers,
           },
         },

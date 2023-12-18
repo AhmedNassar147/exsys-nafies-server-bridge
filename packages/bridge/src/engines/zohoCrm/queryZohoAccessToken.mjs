@@ -14,11 +14,11 @@ const queryZohoAccessToken = async () => {
     apiUrl,
   });
 
-  const { api_domain, access_token } = response;
+  const { access_token /* api_domain, */ } = response;
 
   return {
     hasAccessToken: !!access_token,
-    zohoApiUrl: `${api_domain}/crm/v5/Reservations/upsert`,
+    zohoApiUrl: `http://20.21.106.9:3001/crm/v5/Reservations/upsert`,
     headers: {
       Authorization: "Bearer " + access_token,
     },

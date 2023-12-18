@@ -31,7 +31,7 @@ const createZohoRequestAndUpdateExsysServer = async ({
     requestOptions: companySiteRequestOptions,
   });
 
-  const { data, status, message } = response;
+  const { data, status, message } = response || {};
 
   const isSuccess = status !== "error" && isArrayHasData(data);
 
@@ -59,8 +59,6 @@ const createZohoRequestAndUpdateExsysServer = async ({
         message,
         appointment_id: Appointment_ID,
       };
-
-  // const abc = false;
 
   const {
     isInternetDisconnectedWhenPostingDataToExsys,
