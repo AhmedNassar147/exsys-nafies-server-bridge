@@ -33,6 +33,36 @@ const createDataWillBePostedToExsys =
             : 302,
         };
 
+      case CERTIFICATE_NAMES.TAQNYAT:
+        const {
+          statusCode,
+          message: apiMessage,
+          // messageId,
+          // cost,
+          // currency,
+          // totalCount,
+          // msgLength,
+          // accepted,
+          // rejected,
+        } = response || {};
+
+        // {
+        //   "statusCode": 201,
+        //   "messageId": 6937614257,
+        //   "cost": "0.0500",
+        //   "currency": "SAR",
+        //   "totalCount": 1,
+        //   "msgLength": 1,
+        //   "accepted": "[966565658140,]",
+        //   "rejected": "[]"
+        // }
+
+        return {
+          status: statusCode || responseStatus,
+          error_details: apiMessage,
+          ...(dataToSendToExsys || null),
+        };
+
       default:
         return {};
     }

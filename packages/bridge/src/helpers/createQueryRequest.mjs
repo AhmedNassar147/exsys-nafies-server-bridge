@@ -28,6 +28,10 @@ const createQueryRequest = async ({ baseApiUrl, params }) => {
     responseStatus = status;
   } catch (apiFetchError) {
     fetchError = apiFetchError;
+    const { response: nafiesResponse } = fetchError || {};
+    const { data: nafiesResponseData } = nafiesResponse || {};
+
+    response = nafiesResponseData;
     isInternetDisconnected = true;
   }
 

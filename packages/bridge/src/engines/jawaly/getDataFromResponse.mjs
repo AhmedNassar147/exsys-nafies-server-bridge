@@ -10,12 +10,17 @@ import {
   COMPANY_API_URLS,
 } from "../../constants.mjs";
 
-const { JAWALY_PRODUCTION, BRCITCO_PRODUCTION, JAWALBSMS_PRODUCTION } =
-  COMPANY_API_URLS;
+const {
+  JAWALY_PRODUCTION,
+  BRCITCO_PRODUCTION,
+  JAWALBSMS_PRODUCTION,
+  TAQNYAT_PRODUCTION,
+} = COMPANY_API_URLS;
 
 const getDataFromResponse = ({
   sms_sending_company_name,
   message_id,
+  sender,
   ...response
 } = {}) => {
   const resultsFolderPath = RESULTS_FOLDER_PATHS[sms_sending_company_name];
@@ -55,7 +60,7 @@ const getDataFromResponse = ({
 
     case CERTIFICATE_NAMES.JAWALBSMS:
     case CERTIFICATE_NAMES.BRCITCO:
-      const { user, pass, to, sender, message } = response;
+      const { user, pass, to, message } = response;
       const isJawalbsms =
         sms_sending_company_name === CERTIFICATE_NAMES.JAWALBSMS;
 
@@ -81,6 +86,32 @@ const getDataFromResponse = ({
           sender,
           message,
         },
+        companySiteRequestOptionsAuth: undefined,
+      };
+
+    case CERTIFICATE_NAMES.TAQNYAT:
+      const { bearerTokens, recipients, body } = response;
+
+      return {
+        restartIf:
+          baseRestartIf ||
+          !sender ||
+          !body ||
+          !recipients ||
+          !message_id ||
+          !bearerTokens,
+        resultsFolderPath,
+        smsSendingCompanyName: sms_sending_company_name,
+        printNoCompanyProvided: baseRestartIf,
+        isCompanyQueryPostByQueryFetch: true,
+        requestDataParamsOrBody: {
+          bearerTokens,
+          sender,
+          recipients,
+          body,
+        },
+        companyApiUrl: TAQNYAT_PRODUCTION,
+        dataToSendToExsys,
         companySiteRequestOptionsAuth: undefined,
       };
 

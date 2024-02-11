@@ -18,6 +18,7 @@ const COMPANY_API_URLS = {
   NPHIES_DEVELOPMENT: "http://176.105.150.83:80/$process-message",
   RASD_DEVELOPMENT: "https://api.juleb-dev.com/rasd",
   RASD_PRODUCTION: "https://api.juleb.com/rasd",
+  RASD_PRODUCTION_XML: "https://rsd.sfda.gov.sa/ws",
   MOTTASL_PRODUCTION: "https://api.mottasl.com/v2/message",
   TADAWY_PRODUCTION: "https://waba-v2.360dialog.io/messages",
   TADAWY_MEDIA: "https://waba-v2.360dialog.io/media",
@@ -25,7 +26,8 @@ const COMPANY_API_URLS = {
   BRCITCO_PRODUCTION: "https://www.brcitco-api.com/api/sendsms",
   // https://www.jawalbsms.ws/api.php/sendsms?user=XXXX&pass=XXXX&to=966XXXXXXX&message=XXXX&sender=XXXX
   JAWALBSMS_PRODUCTION: "https://www.jawalbsms.ws/api.php/sendsms",
-  RASD_PRODUCTION_XML: "https://rsd.sfda.gov.sa/ws",
+  // https://api.taqnyat.sa/v1/messages?bearerTokens=ab8b66d58fcd96afdd1283cf6403f5b3&sender=Centralcare&recipients=966565658140&body=Test
+  TAQNYAT_PRODUCTION: "https://api.taqnyat.sa/v1/messages",
 };
 
 const RESULTS_FOLDER_PATHS = {
@@ -34,6 +36,7 @@ const RESULTS_FOLDER_PATHS = {
   TADAWY: "tadawy",
   JAWALY: "sms/jawaly",
   BRCITCO: "sms/brcitco",
+  TAQNYAT: "sms/taqnyat",
   JAWALBSMS: "sms/jawalbsms",
   RASD_XML: "rasd_xml",
   ZOHO_CRM: "zoho_crm",
@@ -52,6 +55,7 @@ const CERTIFICATE_NAMES = {
   RASD_XML: "RASD_XML",
   ZOHO_CRM: "ZOHO_CRM",
   MOTTASL: "MOTTASL",
+  TAQNYAT: "TAQNYAT",
 };
 
 const CLI_OPTIONS = {
