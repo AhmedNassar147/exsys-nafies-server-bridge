@@ -7,7 +7,7 @@ import { isObjectHasData } from "@exsys-server/helpers";
 import {
   CERTIFICATE_NAMES,
   RESULTS_FOLDER_PATHS,
-  RESTART_CALLING_EXSYS_QUERY_MS,
+  RASD_TIME_OUT_MS,
 } from "../../constants.mjs";
 import createRasdRequestAndUpdateExsysServer from "./createRasdRequestAndUpdateExsysServer.mjs";
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
@@ -35,10 +35,7 @@ const startRasdApis = async (options) => {
     }
 
     if (!isObjectHasData(response)) {
-      setTimeout(
-        async () => await startRasdApis(options),
-        RESTART_CALLING_EXSYS_QUERY_MS
-      );
+      setTimeout(async () => await startRasdApis(options), RASD_TIME_OUT_MS);
       return;
     }
 
@@ -50,10 +47,7 @@ const startRasdApis = async (options) => {
     });
 
     if (!rasdApiBaseData.length) {
-      setTimeout(
-        async () => await startRasdApis(options),
-        RESTART_CALLING_EXSYS_QUERY_MS
-      );
+      setTimeout(async () => await startRasdApis(options), RASD_TIME_OUT_MS);
 
       return;
     }
@@ -101,10 +95,7 @@ const startRasdApis = async (options) => {
     await startRasdApis(options);
   } catch (error) {
     console.error("error", error);
-    setTimeout(
-      async () => await startRasdApis(options),
-      RESTART_CALLING_EXSYS_QUERY_MS
-    );
+    setTimeout(async () => await startRasdApis(options), RASD_TIME_OUT_MS);
   }
 };
 
