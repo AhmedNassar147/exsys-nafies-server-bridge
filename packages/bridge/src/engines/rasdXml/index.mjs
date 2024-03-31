@@ -92,7 +92,7 @@ const startRasdApis = async (options) => {
       return;
     }
 
-    await startRasdApis(options);
+    setTimeout(async () => await startRasdApis(options), RASD_TIME_OUT_MS);
   } catch (error) {
     console.error("error", error);
     setTimeout(async () => await startRasdApis(options), RASD_TIME_OUT_MS);
