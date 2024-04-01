@@ -10,7 +10,7 @@ const EXSYS_DEV_BASE_URL = "http://149.102.140.8:9090/ords/exsys_api";
 const RESTART_MS = 60000;
 const RESTART_CALLING_EXSYS_QUERY_MS = 3000;
 
-const RASD_TIME_OUT_MS = 2 * 3600000; // 2 hours;
+const RASD_TIME_OUT_MS = 900000; // 15 mins;
 
 const NPHIES_CERT_FILE_NAME = "certs/Certificate_pkcs12.p12";
 const RASD_CERT_FILE_NAME = "certs/rasd.cer";
