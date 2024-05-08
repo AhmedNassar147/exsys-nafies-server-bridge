@@ -3,7 +3,7 @@
  * Engine: `startRasdApis`.
  *
  */
-import { isObjectHasData } from "@exsys-server/helpers";
+import { isArrayHasData, isObjectHasData } from "@exsys-server/helpers";
 import {
   CERTIFICATE_NAMES,
   RESULTS_FOLDER_PATHS,
@@ -46,7 +46,7 @@ const startRasdApis = async (options) => {
       exsysBaseUrl,
     });
 
-    if (!rasdApiBaseData.length) {
+    if (!isArrayHasData(rasdApiBaseData)) {
       setTimeout(async () => await startRasdApis(options), RASD_TIME_OUT_MS);
 
       return;
