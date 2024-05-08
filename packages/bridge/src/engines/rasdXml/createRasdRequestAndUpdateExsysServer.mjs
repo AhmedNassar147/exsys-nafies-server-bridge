@@ -70,6 +70,9 @@ const createRasdRequestAndUpdateExsysServer = async ({
         isDataSentToExsys: false,
       };
 
+  const { httpsAgent, ...otherCompanySiteRequestOptions } =
+    companySiteRequestOptions;
+
   return {
     shouldRestartServer: isInternetDisconnectedWhenPostingDataToExsys,
     localResultsData: {
@@ -77,7 +80,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
       exsysData,
       apiUrl,
       exsysDataSentToRasdServer: bodyData,
-      requestOptions: companySiteRequestOptions,
+      requestOptions: otherCompanySiteRequestOptions,
       rasdBaseResponse: response,
       rasdResponseBasedExsysData: apiPostDataToExsys,
       isRasdDataSentToExsys: isDataSentToExsys,
