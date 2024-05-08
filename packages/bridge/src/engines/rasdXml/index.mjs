@@ -52,10 +52,6 @@ const startRasdApis = async (options) => {
       return;
     }
 
-    const configPromises = rasdApiBaseData.map((options) =>
-      createRasdRequestAndUpdateExsysServer(options)
-    );
-
     let localResultsToPrint = [];
     let shouldRestartServer = false;
 
