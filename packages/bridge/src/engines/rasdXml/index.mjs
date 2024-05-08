@@ -65,7 +65,7 @@ const startRasdApis = async (options) => {
           localResultsData,
           shouldRestartServer: itemShouldRestartServer,
         } = response;
-        localResultsToPrint = results.concat(localResultsData);
+        localResultsToPrint = localResultsToPrint.concat(localResultsData);
         shouldRestartServer = itemShouldRestartServer || shouldRestartServer;
       }
     }
