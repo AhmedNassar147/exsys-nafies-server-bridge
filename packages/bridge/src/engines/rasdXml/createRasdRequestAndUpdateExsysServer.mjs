@@ -76,6 +76,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
       rasdApiName,
       exsysData,
       exsysDataSentToRasdServer: bodyData,
+      rasdBaseResponse: response,
       rasdResponseBasedExsysData: apiPostDataToExsys,
       isRasdDataSentToExsys: isDataSentToExsys,
       successededToPostRasdDataToExsysServer:
