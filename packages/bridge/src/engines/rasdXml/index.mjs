@@ -56,31 +56,23 @@ const startRasdApis = async (options) => {
       createRasdRequestAndUpdateExsysServer(options)
     );
 
-    const results = await Promise.allSettled(configPromises);
+    let localResultsToPrint = [];
+    let shouldRestartServer = false;
 
-    const { shouldRestartServer, localResultsToPrint } = results.reduce(
-      (acc, { value }) => {
-        if (!value) {
-          return acc;
-        }
+    while (rasdApiBaseData.length) {
+      const [requestData] = rasdApiBaseData.splice(0, 1);
+
+      const response = await createRasdRequestAndUpdateExsysServer(requestData);
+
+      if (response) {
         const {
           localResultsData,
           shouldRestartServer: itemShouldRestartServer,
-        } = value;
-        acc.localResultsToPrint = [
-          ...acc.localResultsToPrint,
-          localResultsData,
-        ];
-        acc.shouldRestartServer =
-          itemShouldRestartServer || acc.shouldRestartServer;
-
-        return acc;
-      },
-      {
-        shouldRestartServer: false,
-        localResultsToPrint: [],
+        } = response;
+        localResultsToPrint = results.concat(localResultsData);
+        shouldRestartServer = itemShouldRestartServer || shouldRestartServer;
       }
-    );
+    }
 
     await updateResultsFolder({
       resultsFolderPath,
