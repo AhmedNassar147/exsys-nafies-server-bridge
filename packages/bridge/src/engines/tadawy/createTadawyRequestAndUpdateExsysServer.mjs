@@ -60,7 +60,7 @@ const createTadawyRequestAndUpdateExsysServer = async ({
     isSuccessPostingDataToExsys,
     isDataSentToExsys,
   } = await postCompanyDataResponseToExsysDB({
-    apiId: "POST_TADAWY_RESPONSE_TO_EXSYS",
+    apiId: "POST_WHATSAPP_RESPONSE_TO_EXSYS",
     apiPostData: apiPostDataToExsys,
     exsysBaseUrl,
   });

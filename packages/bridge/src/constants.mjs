@@ -30,19 +30,21 @@ const COMPANY_API_URLS = {
   JAWALBSMS_PRODUCTION: "https://www.jawalbsms.ws/api.php/sendsms",
   // https://api.taqnyat.sa/v1/messages?bearerTokens=ab8b66d58fcd96afdd1283cf6403f5b3&sender=Centralcare&recipients=966565658140&body=Test
   TAQNYAT_PRODUCTION: "https://api.taqnyat.sa/v1/messages",
+  TAQNYAT_WHATSAPP_PRODUCTION: "https://api.taqnyat.sa/wa/v2/messages/",
 };
 
 const RESULTS_FOLDER_PATHS = {
   NPHIES: "nphies",
-  RASD: "rasd",
-  TADAWY: "tadawy",
   JAWALY: "sms/jawaly",
   BRCITCO: "sms/brcitco",
   TAQNYAT: "sms/taqnyat",
   JAWALBSMS: "sms/jawalbsms",
+  RASD: "rasd",
   RASD_XML: "rasd_xml",
+  TADAWY: "tadawy",
   ZOHO_CRM: "zoho_crm",
-  MOTTASL: "mottasl",
+  MOTTASL: "whatsapp/mottasl",
+  TAQNYAT_WHATSAPP: "whatsapp/taqnyat",
 };
 
 const RESULT_FOLDER_KEYS = Object.keys(RESULTS_FOLDER_PATHS);
@@ -58,6 +60,7 @@ const CERTIFICATE_NAMES = {
   ZOHO_CRM: "ZOHO_CRM",
   MOTTASL: "MOTTASL",
   TAQNYAT: "TAQNYAT",
+  TAQNYAT_WHATSAPP: "TAQNYAT_WHATSAPP",
 };
 
 const CLI_OPTIONS = {
@@ -71,7 +74,7 @@ const CLI_OPTIONS = {
     },
     {
       keyOrKeys: "company",
-      description: `point the bridge to call a company endpoints (--company=${CERTIFICATE_NAMES.RASD.toLowerCase()})`,
+      description: `point the bridge to call a company endpoints (--company=${CERTIFICATE_NAMES.RASD})`,
     },
     {
       keyOrKeys: "production",

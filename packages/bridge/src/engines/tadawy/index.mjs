@@ -27,7 +27,7 @@ const startTadawyApis = async (options) => {
 
     const { response, isInternetDisconnected } = await createExsysQueryRequest({
       exsysBaseUrl,
-      apiId: "QUERY_EXSYS_TADAWY_MESSAGE_DATA",
+      apiId: "QUERY_EXSYS_WHATSAPP_MESSAGE_DATA",
       params: {
         companyName: TADAWY,
       },

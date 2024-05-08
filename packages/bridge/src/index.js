@@ -29,7 +29,7 @@ import runTadawyEngine from "./engines/tadawy/index.mjs";
 import runJawalyEngine from "./engines/jawaly/index.mjs";
 import runRasdXmlEngine from "./engines/rasdXml/index.mjs";
 import runZohoCrmEngine from "./engines/zohoCrm/index.mjs";
-import runMottaslEngine from "./engines/mottasl/index.mjs";
+import runWhatsAppEngine from "./engines/whatsapp/index.mjs";
 
 const COMPANY_API_START = {
   [CERTIFICATE_NAMES.NPHIES]: runNphiesEngine,
@@ -38,7 +38,8 @@ const COMPANY_API_START = {
   [CERTIFICATE_NAMES.JAWALY]: runJawalyEngine,
   [CERTIFICATE_NAMES.RASD_XML]: runRasdXmlEngine,
   [CERTIFICATE_NAMES.ZOHO_CRM]: runZohoCrmEngine,
-  [CERTIFICATE_NAMES.MOTTASL]: runMottaslEngine,
+  [CERTIFICATE_NAMES.MOTTASL]: runWhatsAppEngine,
+  [CERTIFICATE_NAMES.TAQNYAT_WHATSAPP]: runWhatsAppEngine,
 };
 
 const runCliFn = async ({
@@ -131,10 +132,11 @@ const runCliFn = async ({
     updateTimeoutRefAndRestart,
     isProduction: production,
     exsysBaseUrl: devMode ? curredExsysBaseUrl : exsysBaseUrl,
+    companyName: certificateNameKey,
   });
 };
 
 createCliController({
   ...CLI_OPTIONS,
   runCliFn,
-});
+}).catch(console.log);

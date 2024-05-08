@@ -1,21 +1,22 @@
 /*
  *
- * Engine: `startMottaslApis`.
+ * Engine: `startWhatsAppClientsApis`.
  *
  */
 import { isObjectHasData } from "@exsys-server/helpers";
 import { CERTIFICATE_NAMES, RESULTS_FOLDER_PATHS } from "../../constants.mjs";
 import createExsysQueryRequest from "../../helpers/createExsysQueryRequest.mjs";
-import createMottaslRequestAndUpdateExsysServer from "./createMottaslRequestAndUpdateExsysServer.mjs";
+import createWhatsAppRequestAndUpdateExsysServer from "./createWhatsAppRequestAndUpdateExsysServer.mjs";
 import updateResultsFolder from "../../helpers/updateResultsFolder.mjs";
 
 const { MOTTASL } = CERTIFICATE_NAMES;
 
-const resultsFolderPath = RESULTS_FOLDER_PATHS[MOTTASL];
-
 const maxRestartMs = 8000;
 
-const startMottaslApis = async (options) => {
+const startWhatsAppClientsApis = async (options) => {
+  const { companyName } = options;
+  const resultsFolderPath = RESULTS_FOLDER_PATHS[companyName];
+
   try {
     const {
       updateTimeoutRefAndRestart,
@@ -24,9 +25,9 @@ const startMottaslApis = async (options) => {
     } = options;
     const { response, isInternetDisconnected } = await createExsysQueryRequest({
       exsysBaseUrl,
-      apiId: "QUERY_EXSYS_TADAWY_MESSAGE_DATA",
+      apiId: "QUERY_EXSYS_WHATSAPP_MESSAGE_DATA",
       params: {
-        companyName: MOTTASL,
+        companyName,
       },
     });
 
@@ -35,37 +36,28 @@ const startMottaslApis = async (options) => {
       return;
     }
 
-    const {
-      authorization_Key,
-      authorization_Value,
-      message_id,
-      recipient,
-      channel,
-      type,
-      templateId,
-      templateLanguage,
-      templateArgs,
-    } = response || {};
+    const { authorization_Key, authorization_Value, message_id, ...bodyData } =
+      response || {};
 
-    if (!isObjectHasData(response) || !message_id || !templateArgs) {
-      setTimeout(async () => await startMottaslApis(options), maxRestartMs);
+    if (
+      !isObjectHasData(response) ||
+      !message_id ||
+      !authorization_Value ||
+      !authorization_Key
+    ) {
+      setTimeout(
+        async () => await startWhatsAppClientsApis(options),
+        maxRestartMs
+      );
       return;
     }
 
-    const bodyData = {
-      channel,
-      recipient,
-      type,
-      templateId,
-      templateArgs,
-      templateLanguage,
-    };
-
     const { localResultsData, shouldRestartServer } =
-      await createMottaslRequestAndUpdateExsysServer({
+      await createWhatsAppRequestAndUpdateExsysServer({
         bodyData: bodyData,
         exsysBaseUrl,
         messageId: message_id,
+        companyName,
         companySiteRequestOptions: {
           ...companySiteRequestOptions,
           headers: {
@@ -85,11 +77,17 @@ const startMottaslApis = async (options) => {
       return;
     }
 
-    setTimeout(async () => await startMottaslApis(options), maxRestartMs);
+    setTimeout(
+      async () => await startWhatsAppClientsApis(options),
+      maxRestartMs
+    );
   } catch (error) {
     console.error("error", error);
-    setTimeout(async () => await startMottaslApis(options), maxRestartMs);
+    setTimeout(
+      async () => await startWhatsAppClientsApis(options),
+      maxRestartMs
+    );
   }
 };
 
-export default startMottaslApis;
+export default startWhatsAppClientsApis;

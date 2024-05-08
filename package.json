@@ -25,6 +25,8 @@
     "nassar-start-tadawy": "yarn start --ignore-cert --company=TADAWY --dev-mode",
     "start-mottasl": "yarn start --ignore-cert --company=MOTTASL",
     "nassar-start-mottasl": "yarn start --ignore-cert --company=MOTTASL --dev-mode",
+    "start-taqnyat-whatsapp": "yarn start --ignore-cert --company=TAQNYAT_WHATSAPP",
+    "nassar-start-taqnyat-whatsapp": "yarn start --ignore-cert --company=TAQNYAT_WHATSAPP --dev-mode",
     "start-jawaly": "yarn start --ignore-cert --company=JAWALY",
     "nassar-start-jawaly": "yarn start --ignore-cert --company=JAWALY --dev-mode",
     "start-zoho-crm": "yarn start --ignore-cert --company=ZOHO_CRM",
