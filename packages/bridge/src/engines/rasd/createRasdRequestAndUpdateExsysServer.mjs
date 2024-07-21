@@ -17,6 +17,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
   companySiteRequestOptions,
   isProduction,
   exsysBaseUrl,
+  rsdTraceType,
 }) => {
   const baseApiUrl = isProduction ? RASD_PRODUCTION : RASD_DEVELOPMENT;
 
@@ -82,6 +83,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
 
   const apiPostDataToExsys = {
     type: rasdApiName,
+    rsd_trace_type: rsdTraceType,
     data: curredRasdResponse,
   };
 

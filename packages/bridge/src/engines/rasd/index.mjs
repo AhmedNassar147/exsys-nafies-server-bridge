@@ -55,6 +55,7 @@ const startRasdApis = async (options) => {
     }
 
     const {
+      rsd_trace_type,
       [inventory_accept]: inventoryAcceptBody,
       [inventory_return]: inventoryReturnBody,
       [inventory_transfer]: inventoryTransferBody,
@@ -91,6 +92,7 @@ const startRasdApis = async (options) => {
         companySiteRequestOptions,
         isProduction,
         exsysBaseUrl,
+        rsdTraceType: rsd_trace_type,
       })
     );
 
