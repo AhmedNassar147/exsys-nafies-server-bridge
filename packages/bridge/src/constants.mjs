@@ -107,6 +107,8 @@ const RASD_API_TYPE_NAMES = {
   pos_sale: "pos_sale",
   pos_sale_cancel: "pos_sale_cancel",
   dispatch_info: "dispatch_info",
+  inventory_accept_batch: "inventory_accept_batch",
+  inventory_transfer_batch: "inventory_transfer_batch",
 };
 
 export {

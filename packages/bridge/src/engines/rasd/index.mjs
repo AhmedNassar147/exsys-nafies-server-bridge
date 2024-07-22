@@ -22,6 +22,8 @@ const {
   pos_sale_cancel,
   inventory_transfer,
   dispatch_info,
+  inventory_accept_batch,
+  inventory_transfer_batch,
 } = RASD_API_TYPE_NAMES;
 
 const createRasdApiWithData = (rasdApiName, baseData) => {
@@ -62,6 +64,8 @@ const startRasdApis = async (options) => {
       [pos_sale]: posSaleBody,
       [pos_sale_cancel]: posSaleCancelBody,
       [dispatch_info]: dispatchInfoBody,
+      [inventory_accept_batch]: inventoryAcceptBatchBody,
+      [inventory_transfer_batch]: inventoryTransferBatchBody,
     } = response || {};
 
     const filteredApiBaseData = [
@@ -71,6 +75,14 @@ const startRasdApis = async (options) => {
       ...createRasdApiWithData(pos_sale, posSaleBody),
       ...createRasdApiWithData(pos_sale_cancel, posSaleCancelBody),
       ...createRasdApiWithData(dispatch_info, dispatchInfoBody),
+      ...createRasdApiWithData(
+        inventory_accept_batch,
+        inventoryAcceptBatchBody
+      ),
+      ...createRasdApiWithData(
+        inventory_transfer_batch,
+        inventoryTransferBatchBody
+      ),
     ].filter(({ rasdApiName, bodyData }) => {
       const { product_list, notification } = bodyData || {};
       return rasdApiName === dispatch_info
