@@ -7,7 +7,7 @@ import RASD_REQUESTS_XML_TEMP from "./createRasdApisXml.mjs";
 import createDispatchInfoProperResponseFromParsedXml from "./xmlResponseTransformers/createDispatchInfoProperResponseFromParsedXml.mjs";
 
 const createBuildRasdRequestData =
-  ({ companySiteRequestOptions, isProduction, exsysBaseUrl }) =>
+  ({ companySiteRequestOptions, isProduction, exsysBaseUrl, rasdTraceType }) =>
   (data, rasdApiName) => {
     if (!data || !data.length) {
       return [];
@@ -21,6 +21,7 @@ const createBuildRasdRequestData =
         isProduction,
         exsysBaseUrl,
         exsysData,
+        rasdTraceType,
         companySiteRequestOptions: {
           ...companySiteRequestOptions,
           headers: {

@@ -17,6 +17,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
   rasdApiName,
   bodyData,
   exsysData,
+  rasdTraceType,
   companySiteRequestOptions,
   exsysBaseUrl,
   jsonFromXmlBodyTransformer,
@@ -50,7 +51,11 @@ const createRasdRequestAndUpdateExsysServer = async ({
 
   const apiPostDataToExsys = {
     responseFromRasdApiName: rasdApiName,
+    apiUrl,
+    exsysDataSentToRasdServer: bodyData,
+    rasdBaseResponse: response,
     acceptType,
+    rsd_trace_type: rasdTraceType,
     ...transformedRasdResponse,
   };
 
@@ -82,7 +87,7 @@ const createRasdRequestAndUpdateExsysServer = async ({
       exsysDataSentToRasdServer: bodyData,
       requestOptions: otherCompanySiteRequestOptions,
       rasdBaseResponse: response,
-      rasdResponseBasedExsysData: apiPostDataToExsys,
+      savedDataSentToExsysApi: apiPostDataToExsys,
       isRasdDataSentToExsys: isDataSentToExsys,
       successededToPostRasdDataToExsysServer:
         isInternetDisconnectedWhenPostingDataToExsys

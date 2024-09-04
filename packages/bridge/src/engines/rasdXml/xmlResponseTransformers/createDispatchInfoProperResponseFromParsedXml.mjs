@@ -4,7 +4,10 @@
  *
  */
 
-const getTextValueOfObject = ({ _text } = {}) => _text;
+const getTextValueOfObject = (object) => {
+  const { _text } = object || {};
+  return _text;
+};
 
 const createDispatchInfoProperResponseFromParsedXml =
   (exsysDataWhenRasdRespondsWithError) => (foundParsedXmlBody, htmlBody) => {
@@ -54,9 +57,11 @@ const createDispatchInfoProperResponseFromParsedXml =
 
         const products = Array.isArray(PRODUCT)
           ? PRODUCT.filter(
-              ({ GTIN, SN, BN, XD }) => !!GTIN && !!SN && !!BN && !!XD
-            ).map(({ GTIN, SN, BN, XD, RC }) => ({
+              ({ GTIN, QUANTITY, BN, XD, SN }) =>
+                !!GTIN || !!QUANTITY || !!BN || !!XD || !!SN
+            ).map(({ GTIN, SN, BN, XD, RC, SN }) => ({
               gtin: getTextValueOfObject(GTIN),
+              quantity: getTextValueOfObject(QUANTITY),
               sn: getTextValueOfObject(SN),
               bn: getTextValueOfObject(BN),
               xd: getTextValueOfObject(XD),

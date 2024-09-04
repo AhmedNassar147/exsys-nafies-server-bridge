@@ -50,6 +50,7 @@ const createProductsXml = ({ data, toGln, prescriptionDate, rasdApiName }) => {
     dataLength === 1
       ? {
           gtin: "",
+          quantity: "",
           sn: "",
           bn: "",
           xd: "",
@@ -69,10 +70,10 @@ const createProductsXml = ({ data, toGln, prescriptionDate, rasdApiName }) => {
         <PRODUCTLIST xmlns="">
           ${finalData
             .map(
-              ({ gtin, sn, bn, xd }) =>
+              ({ gtin, quantity, bn, sn, xd }) =>
                 `<PRODUCT>
                   <GTIN>${gtin}</GTIN>
-                  <SN>${sn}</SN>
+                  ${sn ? `<SN>${sn}</SN>` : `<QUANTITY>${quantity}</QUANTITY>`}
                   <BN>${bn}</BN>
                   <XD>${xd}</XD>
                 </PRODUCT>

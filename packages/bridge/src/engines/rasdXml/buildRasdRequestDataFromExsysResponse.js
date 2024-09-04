@@ -14,16 +14,19 @@ const buildRasdRequestDataFromExsysResponse = ({
   isProduction,
   exsysBaseUrl,
 }) => {
+  const { rsd_trace_type, rasdBaseRequests } = response;
+
   const buildRasdRequestData = createBuildRasdRequestData({
     companySiteRequestOptions,
     isProduction,
     exsysBaseUrl,
+    rasdTraceType: rsd_trace_type,
   });
 
   let apiBaseData = [];
 
-  for (const key in response) {
-    const data = response[key];
+  for (const key in rasdBaseRequests) {
+    const data = rasdBaseRequests[key];
     const rasdApiName = getRasdApiKeyFromString(key);
 
     apiBaseData = apiBaseData.concat(buildRasdRequestData(data, rasdApiName));
