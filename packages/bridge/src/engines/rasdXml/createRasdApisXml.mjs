@@ -7,13 +7,16 @@ import { camelCaseFirstLetter } from "@exsys-server/helpers";
 import { RASD_API_TYPE_NAMES_XML } from "./constants.mjs";
 
 const {
-  dispatchDetailService,
-  acceptDispatchService,
   pharmacySaleService,
   pharmacySaleCancelService,
+  dispatchBatchService,
+  acceptDispatchService,
   dispatchService,
+  acceptBatchService,
   acceptService,
   returnService,
+  dispatchDetailService,
+  returnBatchService,
 } = RASD_API_TYPE_NAMES_XML;
 
 const getApiAndTagName = (rasdApiName) => {
@@ -89,10 +92,13 @@ const createProductsXml = ({ data, toGln, prescriptionDate, rasdApiName }) => {
 const RASD_REQUESTS_XML_TEMP = {
   [dispatchDetailService]: createOrAcceptDispatchServiceXml,
   [acceptDispatchService]: createOrAcceptDispatchServiceXml,
+  [dispatchBatchService]: createProductsXml,
   [pharmacySaleService]: createProductsXml,
   [pharmacySaleCancelService]: createProductsXml,
   [dispatchService]: createProductsXml,
+  [acceptBatchService]: createProductsXml,
   [acceptService]: createProductsXml,
+  [returnBatchService]: createProductsXml,
   [returnService]: createProductsXml,
 };
 

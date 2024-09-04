@@ -14,7 +14,7 @@ const buildRasdRequestDataFromExsysResponse = ({
   isProduction,
   exsysBaseUrl,
 }) => {
-  const { rsd_trace_type, rasdBaseRequests } = response;
+  const { rsd_trace_type, ...rasdBaseRequests } = response;
 
   const buildRasdRequestData = createBuildRasdRequestData({
     companySiteRequestOptions,
