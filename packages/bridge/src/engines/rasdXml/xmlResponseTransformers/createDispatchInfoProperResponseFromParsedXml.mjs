@@ -3,7 +3,6 @@
  * Helper: `createDispatchInfoProperResponseFromParsedXml`.
  *
  */
-
 const getTextValueOfObject = (object) => {
   const { _text } = object || {};
   return _text;
@@ -48,6 +47,11 @@ const createDispatchInfoProperResponseFromParsedXml =
           PRODUCTLIST,
         } = foundParsedXmlBody[key];
         const { PRODUCT } = PRODUCTLIST || {};
+        const __PRODUCT = !!PRODUCT
+          ? Array.isArray(PRODUCT)
+            ? PRODUCT
+            : [PRODUCT]
+          : undefined;
 
         const notificationId = getTextValueOfObject(
           DISPATCHNOTIFICATIONID || NOTIFICATIONID
@@ -55,21 +59,23 @@ const createDispatchInfoProperResponseFromParsedXml =
         const notificationDate = getTextValueOfObject(NOTIFICATIONDATE);
         const fromGln = getTextValueOfObject(FROMGLN);
 
-        const products = Array.isArray(PRODUCT)
-          ? PRODUCT.filter(
-              ({ GTIN, QUANTITY, BN, XD, SN }) =>
-                !!GTIN || !!QUANTITY || !!BN || !!XD || !!SN
-            ).map(({ GTIN, QUANTITY, BN, XD, SN, RC }) => ({
-              gtin: getTextValueOfObject(GTIN),
-              quantity: getTextValueOfObject(QUANTITY),
-              sn: getTextValueOfObject(SN),
-              bn: getTextValueOfObject(BN),
-              xd: getTextValueOfObject(XD),
-              rc: getTextValueOfObject(RC),
-              notificationId,
-              notificationDate,
-              fromGln,
-            }))
+        const products = Array.isArray(__PRODUCT)
+          ? __PRODUCT
+              .filter(
+                ({ GTIN, QUANTITY, BN, XD, SN }) =>
+                  !!GTIN || !!QUANTITY || !!BN || !!XD || !!SN
+              )
+              .map(({ GTIN, QUANTITY, BN, XD, SN, RC }) => ({
+                gtin: getTextValueOfObject(GTIN),
+                quantity: getTextValueOfObject(QUANTITY),
+                sn: getTextValueOfObject(SN),
+                bn: getTextValueOfObject(BN),
+                xd: getTextValueOfObject(XD),
+                rc: getTextValueOfObject(RC),
+                notificationId,
+                notificationDate,
+                fromGln,
+              }))
           : [];
 
         acc.push(...products);
