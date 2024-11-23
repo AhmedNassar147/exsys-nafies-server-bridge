@@ -16,11 +16,13 @@
   "typescript.tsdk": "exsys-bridge-app/node_modules/typescript/lib",
   "cSpell.words": [
     "BRCITCO",
+    "desformat",
     "DISPATCHNOTIFICATIONID",
     "EXSYS",
     "faultcode",
     "faultstring",
     "FROMGLN",
+    "GOWHATS",
     "GTIN",
     "JAWALBSMS",
     "jawaly",
@@ -29,6 +31,7 @@
     "NOTIFICATIONDATE",
     "NOTIFICATIONID",
     "rasd",
+    "TADAWY",
     "TAQNYAT"
   ]
 }
