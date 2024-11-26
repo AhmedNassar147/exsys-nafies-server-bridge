@@ -6,7 +6,7 @@
 import { sharedHelperKey } from "@exsys-server/command-line-utils";
 
 const EXSYS_BASE_URL = "http://LOCALHOST:9090/ords/exsys_api";
-const EXSYS_DEV_BASE_URL = "http://149.102.140.8:9090/ords/exsys_api";
+const EXSYS_DEV_BASE_URL = "http://136.243.62.235:9090/ords/exsys_api";
 const RESTART_MS = 60000;
 const RESTART_CALLING_EXSYS_QUERY_MS = 3000;
 
@@ -31,6 +31,8 @@ const COMPANY_API_URLS = {
   // https://api.taqnyat.sa/v1/messages?bearerTokens=ab8b66d58fcd96afdd1283cf6403f5b3&sender=Centralcare&recipients=966565658140&body=Test
   TAQNYAT_PRODUCTION: "https://api.taqnyat.sa/v1/messages",
   TAQNYAT_WHATSAPP_PRODUCTION: "https://api.taqnyat.sa/wa/v2/messages/",
+  JAWALY_4_WHATSAPP_PRODUCTION:
+    "https://api-users.4jawaly.com/api/v1/whatsapp/415",
 };
 
 const RESULTS_FOLDER_PATHS = {
@@ -45,6 +47,7 @@ const RESULTS_FOLDER_PATHS = {
   ZOHO_CRM: "zoho_crm",
   MOTTASL: "whatsapp/mottasl",
   TAQNYAT_WHATSAPP: "whatsapp/taqnyat",
+  JAWALY_4_WHATSAPP: "whatsapp/4jawaly",
 };
 
 const RESULT_FOLDER_KEYS = Object.keys(RESULTS_FOLDER_PATHS);
@@ -61,6 +64,7 @@ const CERTIFICATE_NAMES = {
   MOTTASL: "MOTTASL",
   TAQNYAT: "TAQNYAT",
   TAQNYAT_WHATSAPP: "TAQNYAT_WHATSAPP",
+  JAWALY_4_WHATSAPP: "JAWALY_4_WHATSAPP",
 };
 
 const CLI_OPTIONS = {

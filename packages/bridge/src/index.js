@@ -40,6 +40,7 @@ const COMPANY_API_START = {
   [CERTIFICATE_NAMES.ZOHO_CRM]: runZohoCrmEngine,
   [CERTIFICATE_NAMES.MOTTASL]: runWhatsAppEngine,
   [CERTIFICATE_NAMES.TAQNYAT_WHATSAPP]: runWhatsAppEngine,
+  [CERTIFICATE_NAMES.JAWALY_4_WHATSAPP]: runWhatsAppEngine,
 };
 
 const runCliFn = async ({

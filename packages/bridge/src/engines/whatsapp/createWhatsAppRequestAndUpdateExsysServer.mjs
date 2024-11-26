@@ -8,9 +8,13 @@ import { COMPANY_API_URLS, CERTIFICATE_NAMES } from "../../constants.mjs";
 import createAxiosPostRequest from "../../helpers/createAxiosPostRequest.mjs";
 import postCompanyDataResponseToExsysDB from "../../helpers/postCompanyDataResponseToExsysDB.mjs";
 
-const { MOTTASL, TAQNYAT_WHATSAPP } = CERTIFICATE_NAMES;
+const { MOTTASL, TAQNYAT_WHATSAPP, JAWALY_4_WHATSAPP } = CERTIFICATE_NAMES;
 
-const { MOTTASL_PRODUCTION, TAQNYAT_WHATSAPP_PRODUCTION } = COMPANY_API_URLS;
+const {
+  MOTTASL_PRODUCTION,
+  TAQNYAT_WHATSAPP_PRODUCTION,
+  JAWALY_4_WHATSAPP_PRODUCTION,
+} = COMPANY_API_URLS;
 
 const variablesMap = {
   [MOTTASL]: {
@@ -41,6 +45,29 @@ const variablesMap = {
       return {
         status: responseStatus,
         whatsapp_message_id,
+      };
+    },
+  },
+
+  [JAWALY_4_WHATSAPP]: {
+    apiUrl: JAWALY_4_WHATSAPP_PRODUCTION,
+    createExsysDataFromResponse: (response, responseStatus) => {
+      const {
+        id: whatsapp_message_id,
+        sent,
+        message,
+        number,
+        description,
+      } = response;
+
+      return {
+        status: responseStatus,
+        statusText: !!sent ? "ok" : undefined,
+        whatsapp_message_id,
+        sent,
+        message,
+        description,
+        number,
       };
     },
   },
