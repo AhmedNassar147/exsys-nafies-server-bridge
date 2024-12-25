@@ -15,6 +15,7 @@ const {
   BRCITCO_PRODUCTION,
   JAWALBSMS_PRODUCTION,
   TAQNYAT_PRODUCTION,
+  MORA_SA_PRODUCTION,
 } = COMPANY_API_URLS;
 
 const getDataFromResponse = ({
@@ -104,6 +105,7 @@ const getDataFromResponse = ({
         smsSendingCompanyName: sms_sending_company_name,
         printNoCompanyProvided: baseRestartIf,
         isCompanyQueryPostByQueryFetch: true,
+        dataToSendToExsys,
         requestDataParamsOrBody: {
           bearerTokens,
           sender,
@@ -111,7 +113,40 @@ const getDataFromResponse = ({
           body,
         },
         companyApiUrl: TAQNYAT_PRODUCTION,
+        companySiteRequestOptionsAuth: undefined,
+      };
+
+    case CERTIFICATE_NAMES.MORA_SA:
+      const {
+        api_key: apiKey,
+        username,
+        numbers,
+        message: currentMessage,
+      } = response;
+
+      return {
+        restartIf:
+          baseRestartIf ||
+          !sender ||
+          !apiKey ||
+          !numbers ||
+          !message_id ||
+          !currentMessage,
+        resultsFolderPath,
+        smsSendingCompanyName: sms_sending_company_name,
+        printNoCompanyProvided: baseRestartIf,
+        isCompanyQueryPostByQueryFetch: true,
         dataToSendToExsys,
+        noParamsEncoding: true,
+        requestDataParamsOrBody: {
+          api_key: apiKey,
+          username,
+          message: currentMessage,
+          sender,
+          numbers,
+          response: undefined,
+        },
+        companyApiUrl: MORA_SA_PRODUCTION,
         companySiteRequestOptionsAuth: undefined,
       };
 

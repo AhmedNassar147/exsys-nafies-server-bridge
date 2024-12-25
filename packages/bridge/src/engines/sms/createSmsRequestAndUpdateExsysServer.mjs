@@ -14,11 +14,13 @@ const createSmsRequestAndUpdateExsysServer = async ({
   createDataWillBePostedToExsys,
   companyApiUrl,
   isCompanyQueryPostByQueryFetch,
+  noParamsEncoding,
 }) => {
   const { response, responseStatus } = await (isCompanyQueryPostByQueryFetch
     ? createQueryRequest({
         baseApiUrl: companyApiUrl,
         params: bodyData,
+        noParamsEncoding,
       })
     : createAxiosPostRequest({
         apiUrl: companyApiUrl,

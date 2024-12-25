@@ -26,7 +26,7 @@ import getCompanyByCertificateKey from "./helpers/getCompanyByCertificateKey.mjs
 import runNphiesEngine from "./engines/nphies/index.mjs";
 import runRasdEngine from "./engines/rasd/index.mjs";
 import runTadawyEngine from "./engines/tadawy/index.mjs";
-import runJawalyEngine from "./engines/jawaly/index.mjs";
+import runSmsEngine from "./engines/sms/index.mjs";
 import runRasdXmlEngine from "./engines/rasdXml/index.mjs";
 import runZohoCrmEngine from "./engines/zohoCrm/index.mjs";
 import runWhatsAppEngine from "./engines/whatsapp/index.mjs";
@@ -34,9 +34,10 @@ import runWhatsAppEngine from "./engines/whatsapp/index.mjs";
 const COMPANY_API_START = {
   [CERTIFICATE_NAMES.NPHIES]: runNphiesEngine,
   [CERTIFICATE_NAMES.RASD]: runRasdEngine,
-  [CERTIFICATE_NAMES.TADAWY]: runTadawyEngine,
-  [CERTIFICATE_NAMES.JAWALY]: runJawalyEngine,
   [CERTIFICATE_NAMES.RASD_XML]: runRasdXmlEngine,
+  [CERTIFICATE_NAMES.TADAWY]: runTadawyEngine,
+  [CERTIFICATE_NAMES.JAWALY]: runSmsEngine,
+  [CERTIFICATE_NAMES.MORA_SA]: runSmsEngine,
   [CERTIFICATE_NAMES.ZOHO_CRM]: runZohoCrmEngine,
   [CERTIFICATE_NAMES.MOTTASL]: runWhatsAppEngine,
   [CERTIFICATE_NAMES.TAQNYAT_WHATSAPP]: runWhatsAppEngine,

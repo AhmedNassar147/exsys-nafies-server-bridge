@@ -32,7 +32,9 @@
     "start-zoho-crm": "yarn start --ignore-cert --company=ZOHO_CRM",
     "nassar-start-zoho-crm": "yarn start --ignore-cert --company=ZOHO_CRM --dev-mode",
     "start-jawaly4-whatsapp": "yarn start --ignore-cert --company=JAWALY_4_WHATSAPP",
-    "nassar-start-jawaly4-whatsapp": "yarn start --ignore-cert --company=JAWALY_4_WHATSAPP --dev-mode"
+    "nassar-start-jawaly4-whatsapp": "yarn start --ignore-cert --company=JAWALY_4_WHATSAPP --dev-mode",
+    "start-mora-sms": "yarn start --ignore-cert --company=MORA_SA",
+    "nassar-start-mora-sms": "yarn start --ignore-cert --company=MORA_SA --dev-mode"
   },
   "dependencies": {
     "@exsys-server/bridge": "1.0.0",

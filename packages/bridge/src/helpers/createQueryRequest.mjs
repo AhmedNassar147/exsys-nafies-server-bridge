@@ -9,8 +9,8 @@ import { createCmdMessage } from "@exsys-server/helpers";
 import buildQueryParamsToUrl from "./buildQueryParamsToUrl.mjs";
 import printRequestNetworkError from "./printRequestNetworkError.mjs";
 
-const createQueryRequest = async ({ baseApiUrl, params }) => {
-  const apiUrl = buildQueryParamsToUrl(baseApiUrl, params);
+const createQueryRequest = async ({ baseApiUrl, params, noParamsEncoding }) => {
+  const apiUrl = buildQueryParamsToUrl(baseApiUrl, params, noParamsEncoding);
 
   let response = {};
   let fetchError;

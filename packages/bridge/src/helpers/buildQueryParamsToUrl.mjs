@@ -3,7 +3,7 @@
  * Helper: `buildQueryParamsToUrl`.
  *
  */
-const buildQueryParamsToUrl = (baseApiUrl, apiParams) => {
+const buildQueryParamsToUrl = (baseApiUrl, apiParams, noParamsEncoding) => {
   let apiUrl = baseApiUrl;
 
   if (apiParams) {
@@ -17,7 +17,11 @@ const buildQueryParamsToUrl = (baseApiUrl, apiParams) => {
 
       let keyValue = apiParams[key];
       keyValue =
-        typeof keyValue === "undefined" ? "" : encodeURIComponent(keyValue);
+        typeof keyValue === "undefined"
+          ? ""
+          : noParamsEncoding
+          ? keyValue
+          : encodeURIComponent(keyValue);
       const isLastKey = keysLength - 1 === index;
 
       apiUrl += `${key}=${keyValue || ""}${isLastKey ? "" : "&"}`;

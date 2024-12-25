@@ -50,6 +50,7 @@ const startSmsApis = async (options) => {
       smsSendingCompanyName,
       companyApiUrl,
       isCompanyQueryPostByQueryFetch,
+      noParamsEncoding,
     } = formattedResults || {};
 
     if (printNoCompanyProvided) {
@@ -75,6 +76,7 @@ const startSmsApis = async (options) => {
         exsysBaseUrl,
         companyApiUrl,
         isCompanyQueryPostByQueryFetch,
+        noParamsEncoding,
         createDataWillBePostedToExsys: createDataWillBePostedToExsys({
           smsSendingCompanyName,
           dataToSendToExsys,

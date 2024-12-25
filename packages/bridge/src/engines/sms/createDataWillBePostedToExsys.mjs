@@ -63,6 +63,31 @@ const createDataWillBePostedToExsys =
           ...(dataToSendToExsys || null),
         };
 
+      case CERTIFICATE_NAMES.MORA_SA:
+        const { status: statusObject, data: dataObject } = response || {};
+
+        const {
+          code: _code,
+          message: statusMessage,
+          error: isError,
+        } = statusObject || {};
+
+        const {
+          code: dataCode,
+          message: dataMessage,
+          ref_id,
+        } = dataObject || {};
+
+        return {
+          status: _code || responseStatus,
+          statusMessage,
+          dataMessage,
+          dataCode,
+          ref_id,
+          error_details: isError ? statusMessage : undefined,
+          ...(dataToSendToExsys || null),
+        };
+
       default:
         return {};
     }

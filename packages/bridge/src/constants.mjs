@@ -33,6 +33,7 @@ const COMPANY_API_URLS = {
   TAQNYAT_WHATSAPP_PRODUCTION: "https://api.taqnyat.sa/wa/v2/messages/",
   JAWALY_4_WHATSAPP_PRODUCTION:
     "https://api-users.4jawaly.com/api/v1/whatsapp/415",
+  MORA_SA_PRODUCTION: "https://www.mora-sa.com/api/v1/sendsms",
 };
 
 const RESULTS_FOLDER_PATHS = {
@@ -41,6 +42,7 @@ const RESULTS_FOLDER_PATHS = {
   BRCITCO: "sms/brcitco",
   TAQNYAT: "sms/taqnyat",
   JAWALBSMS: "sms/jawalbsms",
+  MORA_SA: "sms/mora-sa",
   RASD: "rasd",
   RASD_XML: "rasd_xml",
   TADAWY: "tadawy",
@@ -65,6 +67,7 @@ const CERTIFICATE_NAMES = {
   TAQNYAT: "TAQNYAT",
   TAQNYAT_WHATSAPP: "TAQNYAT_WHATSAPP",
   JAWALY_4_WHATSAPP: "JAWALY_4_WHATSAPP",
+  MORA_SA: "MORA_SA",
 };
 
 const CLI_OPTIONS = {
