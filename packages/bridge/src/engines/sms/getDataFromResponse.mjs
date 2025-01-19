@@ -137,7 +137,7 @@ const getDataFromResponse = ({
         printNoCompanyProvided: baseRestartIf,
         isCompanyQueryPostByQueryFetch: true,
         dataToSendToExsys,
-        noParamsEncoding: true,
+        noParamsEncoding: false,
         requestDataParamsOrBody: {
           api_key: apiKey,
           username,
